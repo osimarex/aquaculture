@@ -15,14 +15,16 @@ const useWebSocket = () => {
   });
 
   useEffect(() => {
-    const ws = new WebSocket("wss://marketdata.tradermade.com/feedadv");
+    const ws = new WebSocket(
+      process.env.WEBSOCKET_URL || "wss://marketdata.tradermade.com/feedadv"
+    );
 
     ws.onopen = () => {
       console.log("WebSocket connection opened.");
       ws.send(
         JSON.stringify({
           userKey: process.env.NEXT_PUBLIC_WEBSOCKET_USER_KEY,
-          symbol: "CHFNOK,GBPNOK,NOKGBP,EURNOK,EURUSD,DKKNOK,NOKSEK,USDNOK",
+          symbol: "CHFNOK,EURNOK,USDNOK",
         })
       );
       console.log("Sent user key and symbol.");
