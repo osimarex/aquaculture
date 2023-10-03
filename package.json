@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "highcharts": "^11.1.0",
+    "mssql": "^10.0.1",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
     "ws": "^8.14.2"
   },
   "devDependencies": {
+    "@types/mssql": "^9.1.1",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
