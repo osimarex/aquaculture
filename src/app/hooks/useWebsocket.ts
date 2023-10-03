@@ -21,7 +21,7 @@ const useWebSocket = () => {
       console.log("WebSocket connection opened.");
       ws.send(
         JSON.stringify({
-          userKey: "wshq6U4xzFH3pFQy_EFA",
+          userKey: process.env.NEXT_PUBLIC_WEBSOCKET_USER_KEY,
           symbol: "CHFNOK,GBPNOK,NOKGBP,EURNOK,EURUSD,DKKNOK,NOKSEK,USDNOK",
         })
       );
