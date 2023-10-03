@@ -1,7 +1,6 @@
 "use client";
-// src/app/components/client/FXDailyForecast.tsx
-import React, { useEffect } from "react";
 
+import React, { useEffect } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
@@ -52,29 +51,84 @@ const FXDailyForecast: React.FC = () => {
     fetchData();
   }, []);
 
-  const options = {
+  const optionsUSDNOK = {
     title: {
-      text: "USDNOK / EURNOK",
+      text: "",
+    },
+    credits: {
+      enabled: false,
+    },
+    xAxis: {
+      type: "datetime",
+      text: "ff",
+    },
+    yAxis: {
+      title: {
+        text: "",
+      },
+      range: 0.1,
+      labels: {
+        format: "{value:.2f}",
+      },
+    },
+    legend: {
+      enabled: false,
+    },
+    series: chartData?.filter((series) => series.name === "USDNOK"),
+  };
+
+  const optionsEURNOK = {
+    title: {
+      text: "",
+    },
+    credits: {
+      enabled: false,
     },
     xAxis: {
       type: "datetime",
     },
     yAxis: {
       title: {
-        text: "Price",
+        text: "",
+      },
+      range: 0.1,
+      labels: {
+        format: "{value:.2f}",
       },
     },
-    series: chartData,
+    legend: {
+      enabled: false,
+    },
+    series: chartData?.filter((series) => series.name === "EURNOK"),
   };
 
   return (
     <div>
       {chartData ? (
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={options}
-          containerProps={{ style: { width: "33%", height: "40%" } }}
-        />
+        <div className="flex flex-col items-start mt-4 ml-[-1rem]">
+          <div className="relative w-[33%]">
+            <div className="absolute top-1/2 left-1/2 transform[-50%,-50%] z-10 text-black text-6xl opacity-20">
+              USDNOK
+            </div>
+            <div id="firstHighcharts">
+              <HighchartsReact
+                highcharts={Highcharts}
+                options={optionsUSDNOK}
+              />
+            </div>
+          </div>
+          <div className="relative w-[33%]">
+            <div className="absolute top-1/2 left-1/2 transform[-50%,-50%] z-10 text-black text-6xl opacity-20">
+              EURNOK
+            </div>
+            <div>
+              <HighchartsReact
+                highcharts={Highcharts}
+                options={optionsEURNOK}
+              />
+            </div>
+          </div>
+        </div>
       ) : (
         "Loading data..."
       )}

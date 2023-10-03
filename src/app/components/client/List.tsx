@@ -9,7 +9,6 @@ const getFlagImagePath = (currencyCode: string) => {
     EUR: "europe",
     NOK: "norway",
     USD: "usa",
-    CHF: "switzerland",
     // ... add more later
   };
 
@@ -26,6 +25,7 @@ interface PriceData {
 interface SymbolProps extends PriceData {
   prevBid: number | null;
   prevAsk: number | null;
+  signal: number | null; // new prop for signal value
 }
 
 const SymbolRow: React.FC<SymbolProps> = ({
@@ -34,6 +34,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
   ask,
   prevBid = null,
   prevAsk = null,
+  signal, // new prop for signal value
 }) => {
   const bidClass =
     prevBid !== null
@@ -53,9 +54,13 @@ const SymbolRow: React.FC<SymbolProps> = ({
       : "";
   const [currency1, currency2] = [symbol.slice(0, 3), symbol.slice(3, 6)];
 
+  const circleColor = signal === 1 ? "bg-green-500" : "bg-red-500";
+
   return (
-    <div className="flex items-center">
-      <div className="w-6 h-6 rounded-full overflow-hidden">
+    <div className="flex items-center mt-2">
+      <div className={`w-7 h-7 mr-4 rounded-full ${circleColor}`} />{" "}
+      {/* colored circle */}
+      <div className="w-8 h-6">
         <img
           src={getFlagImagePath(currency1)}
           alt={`${currency1} flag`}
@@ -65,7 +70,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
       <span className="pl-2">{currency1}</span>
       <span>/</span>
       <span className="pr-2">{currency2}</span>
-      <div className="w-6 h-6 rounded-full overflow-hidden">
+      <div className="w-8 h-6">
         <img
           src={getFlagImagePath(currency2)}
           alt={`${currency2} flag`}
@@ -84,11 +89,39 @@ const List: React.FC = () => {
     null
   );
 
+  // Declare state variables for the signal values
+  const [usdNokSignal, setUsdNokSignal] = useState<number | null>(null);
+  const [eurNokSignal, setEurNokSignal] = useState<number | null>(null);
+
   useEffect(() => {
     if (data) {
       setPrevData(data as unknown as { [key: string]: PriceData });
     }
   }, [data]);
+
+  useEffect(() => {
+    const fetchSignalData = async () => {
+      try {
+        const response = await fetch("/api/dailyForecast");
+        const data = await response.json();
+        // Assume the signal data is structured similarly to your chart data
+        const usdNokSignalValue = data.find(
+          (item: any) => item.pair === "USDNOK"
+        ).signal_5;
+        const eurNokSignalValue = data.find(
+          (item: any) => item.pair === "EURNOK"
+        ).signal_5;
+
+        // Update the state with the fetched signal values
+        setUsdNokSignal(usdNokSignalValue);
+        setEurNokSignal(eurNokSignalValue);
+      } catch (error) {
+        console.error("Error fetching signal data:", error);
+      }
+    };
+
+    fetchSignalData();
+  }, []);
 
   return (
     <>
@@ -98,16 +131,7 @@ const List: React.FC = () => {
             {...data.USDNOK}
             prevBid={prevData?.USDNOK?.bid || null}
             prevAsk={prevData?.USDNOK?.ask || null}
-          />
-        </div>
-      )}
-
-      {data.CHFNOK && (
-        <div className="mb-2">
-          <SymbolRow
-            {...data.CHFNOK}
-            prevBid={prevData?.CHFNOK?.bid || null}
-            prevAsk={prevData?.CHFNOK?.ask || null}
+            signal={usdNokSignal}
           />
         </div>
       )}
@@ -118,6 +142,7 @@ const List: React.FC = () => {
             {...data.EURNOK}
             prevBid={prevData?.EURNOK?.bid || null}
             prevAsk={prevData?.EURNOK?.ask || null}
+            signal={eurNokSignal}
           />
         </div>
       )}

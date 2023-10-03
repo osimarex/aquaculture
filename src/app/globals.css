@@ -19,6 +19,10 @@ body {
   padding: 1rem;
 }
 
+.highcharts-container {
+  height: 200px !important;
+}
+
 .flash {
   animation: flash 2000ms ease-in-out; /* 2000ms for 2 seconds duration */
 }
