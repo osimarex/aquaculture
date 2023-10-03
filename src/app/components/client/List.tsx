@@ -9,7 +9,7 @@ const getFlagImagePath = (currencyCode: string) => {
     EUR: "europe",
     NOK: "norway",
     USD: "usa",
-    CHF: "chf",
+    CHF: "switzerland",
     // ... add more later
   };
 
