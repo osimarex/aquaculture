@@ -74,7 +74,25 @@ const FXDailyForecast: React.FC = () => {
     legend: {
       enabled: false,
     },
-    series: chartData?.filter((series) => series.name === "USDNOK"),
+    series: chartData
+      ?.filter((series) => series.name === "USDNOK")
+      .map((series) => ({
+        ...series,
+        type: "spline",
+        color: "#40ca16", // Default color is green
+        marker: {
+          enabled: false,
+        },
+        zones: [
+          {
+            value: series.data[0]?.y - 0.001, // Replace with your threshold value
+            color: "#fd2b2b", // Color will be red for values less than threshold
+          },
+          {
+            color: "#40ca16", // Color will revert to green for values greater or equal to threshold
+          },
+        ],
+      })),
   };
 
   const optionsEURNOK = {
@@ -99,15 +117,36 @@ const FXDailyForecast: React.FC = () => {
     legend: {
       enabled: false,
     },
-    series: chartData?.filter((series) => series.name === "EURNOK"),
+    series: chartData
+      ?.filter((series) => series.name === "EURNOK")
+      .map((series) => ({
+        ...series,
+        type: "spline",
+        color: "#40ca16", // Default color is green
+        marker: {
+          enabled: false,
+        },
+        zones: [
+          {
+            value: series.data[0]?.y - 0.001, // Replace with your threshold value
+            color: "#fd2b2b", // Color will be red for values less than threshold
+          },
+          {
+            color: "#40ca16", // Color will revert to green for values greater or equal to threshold
+          },
+        ],
+      })),
   };
 
   return (
     <div>
       {chartData ? (
-        <div className="flex flex-col items-start mt-4 ml-[-1rem]">
-          <div className="relative w-[33%]">
-            <div className="absolute top-1/2 left-1/2 transform[-50%,-50%] z-10 text-black text-6xl opacity-20">
+        <div className="flex flex-col items-start mt-4 ml-1">
+          <div className="relative w-[483px]">
+            <div
+              className="absolute top-2 left-16 transform[-50%,-50%] 
+            z-10 text-black text-2xl opacity-20"
+            >
               USDNOK
             </div>
             <div id="firstHighcharts">
@@ -117,8 +156,11 @@ const FXDailyForecast: React.FC = () => {
               />
             </div>
           </div>
-          <div className="relative w-[33%]">
-            <div className="absolute top-1/2 left-1/2 transform[-50%,-50%] z-10 text-black text-6xl opacity-20">
+          <div className="relative w-[483px]">
+            <div
+              className="absolute top-2 left-16 transform[-50%,-50%]
+             z-10 text-black text-2xl opacity-20"
+            >
               EURNOK
             </div>
             <div>

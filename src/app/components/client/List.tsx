@@ -34,8 +34,10 @@ const SymbolRow: React.FC<SymbolProps> = ({
   ask,
   prevBid = null,
   prevAsk = null,
-  signal, // new prop for signal value
+  signal,
 }) => {
+  // console.log("Signal prop in SymbolRow:", signal);
+
   const bidClass =
     prevBid !== null
       ? prevBid < bid
@@ -54,7 +56,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
       : "";
   const [currency1, currency2] = [symbol.slice(0, 3), symbol.slice(3, 6)];
 
-  const circleColor = signal === 1 ? "bg-green-500" : "bg-red-500";
+  const circleColor = Number(signal) === 1 ? "bg-green-500" : "bg-red-500";
 
   return (
     <div className="flex items-center mt-2">
@@ -77,8 +79,8 @@ const SymbolRow: React.FC<SymbolProps> = ({
           className="object-cover w-full h-full"
         />
       </div>
-      <span className={`px-2 mx-2 ${bidClass}`}>Bid: {bid}</span>
-      <span className={`mx-2 ${askClass}`}>Ask: {ask}</span>
+      <span className={`px-2 mx-2  w-32 ${bidClass}`}>Bid: {bid}</span>
+      <span className={`w-32 mx-2 ${askClass}`}>Ask: {ask}</span>
     </div>
   );
 };
@@ -115,6 +117,9 @@ const List: React.FC = () => {
         // Update the state with the fetched signal values
         setUsdNokSignal(usdNokSignalValue);
         setEurNokSignal(eurNokSignalValue);
+
+        console.log("USDNOK Signal:", usdNokSignalValue);
+        console.log("EURNOK Signal:", eurNokSignalValue);
       } catch (error) {
         console.error("Error fetching signal data:", error);
       }
@@ -124,9 +129,9 @@ const List: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <div className="mt-2 w-fit border-solid border-2 border-sky-800 rounded-xl pr-2">
       {data.USDNOK && (
-        <div className="mb-2">
+        <div className="mb-2 ml-4 mt-4">
           <SymbolRow
             {...data.USDNOK}
             prevBid={prevData?.USDNOK?.bid || null}
@@ -137,16 +142,18 @@ const List: React.FC = () => {
       )}
 
       {data.EURNOK && (
-        <div className="mb-2">
+        <div className="mb-2 ml-4">
+          <hr className="border-gray-400 mr-4" />
           <SymbolRow
             {...data.EURNOK}
             prevBid={prevData?.EURNOK?.bid || null}
             prevAsk={prevData?.EURNOK?.ask || null}
             signal={eurNokSignal}
           />
+          <hr className="border-white mr-4 mt-2" />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
