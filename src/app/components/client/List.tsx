@@ -25,7 +25,7 @@ interface PriceData {
 interface SymbolProps extends PriceData {
   prevBid: number | null;
   prevAsk: number | null;
-  signal: number | null; // new prop for signal value
+  signal: number | null;
 }
 
 const SymbolRow: React.FC<SymbolProps> = ({
@@ -129,7 +129,7 @@ const List: React.FC = () => {
   }, []);
 
   return (
-    <div className="mt-2 w-fit border-solid border-2 border-sky-800 rounded-xl pr-2">
+    <div className="w-fit border-solid border-2 border-sky-800 shadow-lg rounded-xl pr-2">
       {data.USDNOK && (
         <div className="mb-2 ml-4 mt-4">
           <SymbolRow
