@@ -1,3 +1,4 @@
+"use client";
 import FXDailyForecast from "./components/client/FXDailyForecast";
 import List from "./components/client/List";
 import SalmonForecast from "./components/client/SalmonForecast";
@@ -13,14 +14,12 @@ export default function Home() {
         />
         <hr className="border-cyan-500 border-2" />
       </div>
-      <div className="flex flex-grow">
-        <div className="mt-2 w-fit border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl">
-          <div className="">
-            <List />
-            <FXDailyForecast />
-          </div>
+      <div className="flex flex-1">
+        <div className="mt-2 w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl">
+          <List />
+          <FXDailyForecast />
         </div>
-        <div className="ml-4 mt-2 h-fit w-fit border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl">
+        <div className="ml-4 mt-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl">
           <SalmonForecast />
         </div>
       </div>

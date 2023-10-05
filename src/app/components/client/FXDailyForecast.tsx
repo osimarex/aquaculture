@@ -145,28 +145,22 @@ const FXDailyForecast: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="w-full h-auto">
       {chartData ? (
         <div className="flex flex-col items-start mt-4 ml-1">
-          <div className="relative w-[483px]">
-            <div
-              className="absolute top-2 left-16 transform[-50%,-50%] 
-            z-10 text-black text-2xl opacity-20"
-            >
+          <div className="relative w-full">
+            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black text-2xl">
               USDNOK
             </div>
-            <div id="firstHighcharts">
+            <div>
               <HighchartsReact
                 highcharts={Highcharts}
                 options={optionsUSDNOK}
               />
             </div>
           </div>
-          <div className="relative w-[483px]">
-            <div
-              className="absolute top-2 left-16 transform[-50%,-50%]
-             z-10 text-black text-2xl opacity-20"
-            >
+          <div className="relative w-full">
+            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black text-2xl">
               EURNOK
             </div>
             <div>

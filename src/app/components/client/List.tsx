@@ -96,6 +96,7 @@ const List: React.FC = () => {
   const [eurNokSignal, setEurNokSignal] = useState<number | null>(null);
 
   useEffect(() => {
+    console.log(data);
     if (data) {
       setPrevData(data as unknown as { [key: string]: PriceData });
     }

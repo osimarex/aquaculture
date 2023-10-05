@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -54,7 +53,6 @@ const SalmonForecast: React.FC = () => {
   const optionsUSDNOK = {
     chart: {
       height: 350,
-      width: 700,
     },
     title: {
       text: "",
@@ -100,17 +98,14 @@ const SalmonForecast: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="w-full h-auto">
       {chartData ? (
         <div className="flex flex-col items-start mt-4 ml-1">
-          <div className="relative w-fit">
-            <div
-              className="absolute top-2 left-16 transform[-50%,-50%] 
-            z-10 text-black text-2xl"
-            >
+          <div className="relative w-full">
+            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black text-2xl">
               SALMON PRICE
             </div>
-            <div id="firstHighcharts">
+            <div>
               <HighchartsReact
                 highcharts={Highcharts}
                 options={optionsUSDNOK}
