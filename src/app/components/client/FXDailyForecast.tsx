@@ -53,7 +53,7 @@ const FXDailyForecast: React.FC = () => {
 
   const optionsUSDNOK = {
     chart: {
-      height: 200,
+      height: 160,
     },
     title: {
       text: "",
@@ -100,7 +100,7 @@ const FXDailyForecast: React.FC = () => {
 
   const optionsEURNOK = {
     chart: {
-      height: 200,
+      height: 160,
     },
     title: {
       text: "",

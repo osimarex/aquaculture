@@ -31,22 +31,29 @@ const useWebSocket = () => {
     };
 
     ws.onmessage = (event) => {
-      console.log(event.data);
+      console.log("event data:", event.data);
       const dataStr = event.data.toString();
       try {
-        const parsedData = JSON.parse(dataStr) as WebSocketData;
-        const { symbol } = parsedData;
-
-        if (symbol === "USDNOK" || symbol === "EURNOK" || symbol === "CHFNOK") {
-          setData((prevData) => ({
-            ...prevData,
-            [symbol]: parsedData,
-          }));
+        if (isJSON(dataStr)) {
+          const parsedData = JSON.parse(dataStr) as WebSocketData;
+          const { symbol } = parsedData;
+          // rest of your code
+        } else {
+          console.log("Received non-JSON message:", dataStr);
         }
       } catch (e) {
         console.log("Error parsing JSON:", e);
       }
     };
+
+    function isJSON(str: string): boolean {
+      try {
+        JSON.parse(str);
+      } catch (e) {
+        return false;
+      }
+      return true;
+    }
 
     ws.onerror = (error) => {
       console.log("WebSocket Error:", error);

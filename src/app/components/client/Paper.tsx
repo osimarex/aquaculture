@@ -53,7 +53,7 @@ const SalmonForecast: React.FC = () => {
 
   const optionsUSDNOK = {
     chart: {
-      height: 323,
+      height: 255,
     },
     title: {
       text: "",
@@ -63,7 +63,6 @@ const SalmonForecast: React.FC = () => {
     },
     xAxis: {
       type: "datetime",
-      text: "ff",
     },
     yAxis: {
       title: {
@@ -104,7 +103,7 @@ const SalmonForecast: React.FC = () => {
         <div className="flex flex-col items-start mt-4 ml-1">
           <div className="relative w-full">
             <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black text-2xl">
-              SALMON PRICE
+              FORWARD PRICES
             </div>
             <div>
               <HighchartsReact
