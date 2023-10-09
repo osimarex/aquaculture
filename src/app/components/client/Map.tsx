@@ -17,7 +17,11 @@ const fetchMapData = async () => {
   return topology;
 };
 
-const Map = () => {
+interface MapProps {
+  darkMode: boolean;
+}
+
+const Map: React.FC<MapProps> = ({ darkMode }) => {
   const [topology, setTopology] = useState(null);
 
   useEffect(() => {
@@ -31,21 +35,52 @@ const Map = () => {
     chart: {
       map: topology,
       height: 543,
+      backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
+      style: {
+        fontFamily: "Arial",
+        color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+      },
     },
     credits: {
       enabled: false,
+      style: {
+        color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+      },
     },
     title: {
       text: "AQUACULTURE",
+      style: {
+        color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+      },
     },
     mapNavigation: {
       enabled: true,
       buttonOptions: {
         verticalAlign: "bottom",
+        theme: {
+          fill: darkMode ? "#505365" : "#f0f0f0", // Fill color based on dark mode
+          "stroke-width": 1,
+          stroke: darkMode ? "#707070" : "#e6e6e6", // Stroke color based on dark mode
+          r: 0,
+          states: {
+            hover: {
+              fill: darkMode ? "#707070" : "#e6e6e6", // Hover fill color based on dark mode
+            },
+            select: {
+              stroke: darkMode ? "#000000" : "#000000",
+              fill: darkMode ? "#707070" : "#e6e6e6", // Select fill color based on dark mode
+            },
+          },
+        },
       },
     },
     colorAxis: {
       min: 0,
+      labels: {
+        style: {
+          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+        },
+      },
     },
     series: [
       {
@@ -71,6 +106,10 @@ const Map = () => {
         dataLabels: {
           enabled: true,
           format: "{point.name}",
+          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+          style: {
+            textOutline: "none", // Optional: This will remove the text outline
+          },
         },
       },
     ],

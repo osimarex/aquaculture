@@ -10,6 +10,10 @@ declare module "highcharts" {
   }
 }
 
+interface Props {
+  darkMode: boolean;
+}
+
 const defaultColors = [
   "#7cb5ec",
   "#434348",
@@ -23,13 +27,41 @@ const defaultColors = [
   "#91e8e1",
 ];
 
-const legendBackgroundColor = "rgba(255,255,255,0.25)";
+const ChartComponent: React.FC<Props> = ({ darkMode }) => {
+  const themeColors = darkMode
+    ? [
+        "#DDDF0D",
+        "#7798BF",
+        "#55BF3B",
+        "#DF5353",
+        "#aaeeee",
+        "#ff0066",
+        "#eeaaee",
+        "#55BF3B",
+        "#DF5353",
+        "#7798BF",
+      ]
+    : [
+        "#7cb5ec",
+        "#434348",
+        "#90ed7d",
+        "#f7a35c",
+        "#8085e9",
+        "#f15c80",
+        "#e4d354",
+        "#2b908f",
+        "#f45b5b",
+        "#91e8e1",
+      ];
 
-const ChartComponent: React.FC = () => {
+  const backgroundColor = darkMode ? "#2c2c2c" : "#ffffff";
+  const textColor = darkMode ? "#ffffff" : "#000000";
+
   const options: Highcharts.Options = {
     chart: {
       zoomType: "xy" as any,
       height: 340,
+      backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     credits: {
       enabled: false,
@@ -37,9 +69,15 @@ const ChartComponent: React.FC = () => {
     title: {
       text: "SMOLT",
       align: "left",
+      style: {
+        color: textColor,
+      },
     },
     subtitle: {
       align: "left",
+      style: {
+        color: textColor,
+      },
     },
     xAxis: [
       {
@@ -58,6 +96,11 @@ const ChartComponent: React.FC = () => {
           "Dec",
         ],
         crosshair: true,
+        labels: {
+          style: {
+            color: textColor,
+          },
+        },
       },
     ],
     yAxis: [
@@ -121,7 +164,10 @@ const ChartComponent: React.FC = () => {
       verticalAlign: "top",
       y: 55,
       floating: true,
-      backgroundColor: legendBackgroundColor,
+      backgroundColor: darkMode ? "rgba(0,0,0,0.25)" : "rgba(255,255,255,0.25)",
+      itemStyle: {
+        color: textColor,
+      },
     },
     series: [
       {
@@ -177,6 +223,9 @@ const ChartComponent: React.FC = () => {
               verticalAlign: "bottom",
               x: 0,
               y: 0,
+              itemStyle: {
+                color: textColor,
+              },
             },
             yAxis: [
               {
@@ -184,6 +233,14 @@ const ChartComponent: React.FC = () => {
                   align: "right",
                   x: 0,
                   y: -6,
+                  style: {
+                    color: textColor,
+                  },
+                },
+                title: {
+                  style: {
+                    color: textColor,
+                  },
                 },
                 showLastLabel: false,
               },
@@ -192,6 +249,14 @@ const ChartComponent: React.FC = () => {
                   align: "left",
                   x: 0,
                   y: -6,
+                  style: {
+                    color: textColor,
+                  },
+                },
+                title: {
+                  style: {
+                    color: textColor,
+                  },
                 },
                 showLastLabel: false,
               },
@@ -206,7 +271,11 @@ const ChartComponent: React.FC = () => {
   };
 
   return (
-    <figure className="highcharts-figure">
+    <figure
+      className={`highcharts-figure ${
+        darkMode ? "text-white bg-black" : "text-black bg-white"
+      }`}
+    >
       <div className="min-w-[310px] max-w-[800px] mx-auto">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>

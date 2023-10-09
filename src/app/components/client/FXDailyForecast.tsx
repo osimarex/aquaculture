@@ -96,7 +96,7 @@ const FXDailyForecast: React.FC<Props> = ({ darkMode }) => {
   const optionsUSDNOK = {
     chart: {
       height: 160,
-      backgroundColor: darkMode ? "#2c2c2c" : "#ffffff",
+      backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     title: {
       text: "",
@@ -158,7 +158,7 @@ const FXDailyForecast: React.FC<Props> = ({ darkMode }) => {
   const optionsEURNOK = {
     chart: {
       height: 160,
-      backgroundColor: darkMode ? "#2c2c2c" : "#ffffff",
+      backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     title: {
       text: "",

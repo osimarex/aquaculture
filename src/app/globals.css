@@ -22,7 +22,7 @@ body {
   padding: 1rem;
 
   /* Tailwind dark mode background color */
-  @apply dark:bg-gray-800; /* Change bg-gray-800 to any dark color you prefer */
+  @apply dark:bg-gray-900; /* Change bg-gray-800 to any dark color you prefer */
 }
 
 .flash {

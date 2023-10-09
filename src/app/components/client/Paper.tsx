@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 type ChartSeries = { name: string; data: { x: number; y: number }[] }[];
 
-const SalmonForecast: React.FC = () => {
-  const [chartData, setChartData] = React.useState<ChartSeries | null>(null);
+interface Props {
+  darkMode: boolean;
+}
+
+const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
+  const [chartData, setChartData] = useState<ChartSeries | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,26 +55,53 @@ const SalmonForecast: React.FC = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (darkMode) {
+      Highcharts.theme = {
+        // ...dark theme properties
+      };
+    } else {
+      Highcharts.theme = {
+        // ...light theme properties
+      };
+    }
+    Highcharts.setOptions(Highcharts.theme);
+  }, [darkMode]);
+
   const optionsUSDNOK = {
     chart: {
       height: 255,
+      backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     title: {
       text: "",
+      style: {
+        color: darkMode ? "#ffffff" : "#000000",
+      },
     },
     credits: {
       enabled: false,
     },
     xAxis: {
       type: "datetime",
+      labels: {
+        style: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
+      },
     },
     yAxis: {
       title: {
-        text: "",
+        style: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
       },
       range: 0.1,
       labels: {
         format: "{value:.2f}",
+        style: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
       },
     },
     legend: {
@@ -98,11 +129,15 @@ const SalmonForecast: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-auto">
+    <div
+      className={`w-full h-auto ${
+        darkMode ? "bg-black text-white" : "bg-white text-black"
+      }`}
+    >
       {chartData ? (
         <div className="flex flex-col items-start mt-4 ml-1">
           <div className="relative w-full">
-            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black text-2xl">
+            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-2xl">
               FORWARD PRICES
             </div>
             <div>
