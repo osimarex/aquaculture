@@ -32,6 +32,9 @@ const Map = () => {
       map: topology,
       height: 543,
     },
+    credits: {
+      enabled: false,
+    },
     title: {
       text: "AQUACULTURE",
     },

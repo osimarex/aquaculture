@@ -29,6 +29,10 @@ const ChartComponent: React.FC = () => {
   const options: Highcharts.Options = {
     chart: {
       zoomType: "xy" as any,
+      height: 340,
+    },
+    credits: {
+      enabled: false,
     },
     title: {
       text: "SMOLT",
@@ -203,7 +207,7 @@ const ChartComponent: React.FC = () => {
 
   return (
     <figure className="highcharts-figure">
-      <div className="min-w-[310px] max-w-[800px] mx-auto p-4">
+      <div className="min-w-[310px] max-w-[800px] mx-auto">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </figure>
