@@ -38,9 +38,11 @@ const getColor = (price: number, maxPrice: number): string => {
 
 const Protein: React.FC = () => {
   return (
-    <div className="mt-4">
-      <h2 className="ml-4 mb-4 font-semibold">Competing Proteins</h2>
-      <div className="grid grid-cols-4 text-left text-gray-400 mb-2 ml-4">
+    <div className="mt-4 ">
+      <h2 className="ml-4 mb-4 font-semibold text-gray-800 ">
+        Competing Proteins
+      </h2>
+      <div className="grid grid-cols-4 text-left text-gray-400 mb-2 ml-4 ">
         <div>Protein</div>
         <div>Price per kg</div>
         <div>Date</div>
@@ -49,18 +51,18 @@ const Protein: React.FC = () => {
       {proteins.map((protein, index) => (
         <div
           key={index}
-          className="grid grid-cols-4 text-left border-t py-2 ml-4 mb-2"
+          className="grid grid-cols-4 text-left border-t py-2 ml-4 mb-2 text-gray-800 "
         >
           <div>{protein.name}</div>
           <div>${protein.pricePerKg.toFixed(2)}</div>
           <div>{protein.date}</div>
           <div className="relative h-10">
             <div
-              className="absolute bottom-4"
+              className="absolute bottom-4 bg-green-400 "
               style={{
                 width: `${(protein.pricePerKg / maxPrice) * 100}%`,
                 height: "70%",
-                backgroundColor: getColor(protein.pricePerKg, maxPrice),
+                // backgroundColor: getColor(protein.pricePerKg, maxPrice), // Comment this line out if you want to use Tailwind colors
               }}
             ></div>
           </div>

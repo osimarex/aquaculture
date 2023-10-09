@@ -1,18 +1,26 @@
 "use client";
 
-import React, { useEffect } from "react";
-import Highcharts from "highcharts";
+import React, { useEffect, useState } from "react";
+import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
-type ChartSeries = { name: string; data: { x: number; y: number }[] }[];
+interface SeriesData {
+  name: string;
+  data: [number, number][];
+}
 
-const SalmonForecast: React.FC = () => {
-  const [chartData, setChartData] = React.useState<ChartSeries | null>(null);
+interface BiomassProps {
+  series: SeriesData[];
+}
+
+const Biomass: React.FC<BiomassProps> = ({}) => {
+  const [chartData, setChartData] = useState<any | null>(null);
+  const [dateRange, setDateRange] = useState<any | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/dailyForecast");
+        const response = await fetch("/api/productionNumbers");
         const data = await response.json();
         processChartData(data);
       } catch (error) {
@@ -21,80 +29,48 @@ const SalmonForecast: React.FC = () => {
     };
 
     const processChartData = (data: any) => {
-      const usdNokData = data.find((item: any) => item.pair === "USDNOK");
-      const eurNokData = data.find((item: any) => item.pair === "EURNOK");
+      console.log("Biomasse data: ", data);
+      const biomassSeries = data.map((item: any) => {
+        return [
+          new Date(item.Date).getTime(), // x-value as timestamp
+          item.Biomasse_tonn, // y-value
+        ];
+      });
 
-      const usdNokSeries = Object.keys(usdNokData)
-        .filter((key) => key.startsWith("date_"))
-        .map((key, index) => {
-          return {
-            x: new Date(usdNokData[key]).getTime(),
-            y: usdNokData[`price_${index}`],
-          };
-        });
+      // Find the minimum and maximum dates from your data
+      const minDate = Math.min(...biomassSeries.map((item: any) => item[0]));
+      const maxDate = Math.max(...biomassSeries.map((item: any) => item[0]));
 
-      const eurNokSeries = Object.keys(eurNokData)
-        .filter((key) => key.startsWith("date_"))
-        .map((key, index) => {
-          return {
-            x: new Date(eurNokData[key]).getTime(),
-            y: eurNokData[`price_${index}`],
-          };
-        });
-
-      setChartData([
-        { name: "USDNOK", data: usdNokSeries },
-        { name: "EURNOK", data: eurNokSeries },
-      ]);
+      setChartData([{ name: "Biomasse_tonn", data: biomassSeries }]);
+      setDateRange({ min: minDate, max: maxDate });
+      console.log(biomassSeries); // Add this line in processChartData function
     };
 
     fetchData();
   }, []);
 
-  const optionsUSDNOK = {
+  const biomasseData = {
     chart: {
       height: 255,
     },
-    title: {
-      text: "",
+    rangeSelector: {
+      selected: 1,
+      inputEnabled: true,
+      allButtonsEnabled: true,
     },
-    credits: {
-      enabled: false,
-    },
+
     xAxis: {
       type: "datetime",
-    },
-    yAxis: {
-      title: {
-        text: "",
-      },
-      range: 0.1,
-      labels: {
-        format: "{value:.2f}",
-      },
-    },
-    legend: {
-      enabled: false,
+      // Optionally, set the min and max dates for the x-axis based on your data
+      min: dateRange ? dateRange.min : undefined,
+      max: dateRange ? dateRange.max : undefined,
     },
     series: chartData
-      ?.filter((series) => series.name === "USDNOK")
-      .map((series) => ({
-        ...series,
-        type: "spline",
-        color: "#40ca16", // Default color is green
-        marker: {
-          enabled: false,
-        },
-        zones: [
-          {
-            value: series.data[0]?.y - 0.001, // Replace with your threshold value
-            color: "#fd2b2b", // Color will be red for values less than threshold
-          },
-          {
-            color: "#40ca16", // Color will revert to green for values greater or equal to threshold
-          },
-        ],
-      })),
+      ? chartData.map((seriesItem: any) => ({
+          ...seriesItem,
+          type: "line", // or 'spline' or other chart type if preferred
+        }))
+      : [],
   };
 
   return (
@@ -108,7 +84,8 @@ const SalmonForecast: React.FC = () => {
             <div>
               <HighchartsReact
                 highcharts={Highcharts}
-                options={optionsUSDNOK}
+                constructorType={"stockChart"}
+                options={biomasseData}
               />
             </div>
           </div>
@@ -120,4 +97,4 @@ const SalmonForecast: React.FC = () => {
   );
 };
 
-export default SalmonForecast;
+export default Biomass;

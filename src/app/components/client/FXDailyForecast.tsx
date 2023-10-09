@@ -6,7 +6,7 @@ import HighchartsReact from "highcharts-react-official";
 
 type ChartSeries = { name: string; data: { x: number; y: number }[] }[];
 
-const FXDailyForecast: React.FC = () => {
+const FXDailyForecast: React.FC = ({}) => {
   const [chartData, setChartData] = React.useState<ChartSeries | null>(null);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const FXDailyForecast: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, []); //
 
   const optionsUSDNOK = {
     chart: {
@@ -145,11 +145,11 @@ const FXDailyForecast: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-auto">
+    <div className="w-full h-auto ">
       {chartData ? (
         <div className="flex flex-col items-start mt-4 ml-1">
           <div className="relative w-full">
-            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black text-2xl">
+            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black ">
               USDNOK
             </div>
             <div>
@@ -160,7 +160,7 @@ const FXDailyForecast: React.FC = () => {
             </div>
           </div>
           <div className="relative w-full">
-            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black text-2xl">
+            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black ">
               EURNOK
             </div>
             <div>
@@ -172,7 +172,7 @@ const FXDailyForecast: React.FC = () => {
           </div>
         </div>
       ) : (
-        "Loading data..."
+        <div className="text-black">Loading data...</div>
       )}
     </div>
   );
