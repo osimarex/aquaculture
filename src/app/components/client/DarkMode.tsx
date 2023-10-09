@@ -1,4 +1,3 @@
-// components/client/DarkMode.tsx or similar file path
 import React, { Dispatch, SetStateAction } from "react";
 
 interface Props {
@@ -18,7 +17,18 @@ const DarkModeToggle: React.FC<Props> = ({ darkMode, setDarkMode }) => {
     });
   };
 
-  return <button onClick={handleToggle}>Toggle Dark Mode</button>;
+  return (
+    <button
+      onClick={handleToggle}
+      style={{ background: "none", border: "none", cursor: "pointer" }}
+    >
+      {darkMode ? (
+        <img src="/moon.png" alt="Toggle to Light Mode" width={"40px"} />
+      ) : (
+        <img src="/sun.png" alt="Toggle to Dark Mode" width={"40px"} />
+      )}
+    </button>
+  );
 };
 
 export default DarkModeToggle;

@@ -56,7 +56,6 @@ export default function Home() {
       </div>
       <div className="text-black dark:text-white">
         <DarkModeToggle darkMode={darkMode} setDarkMode={setDarkMode} />{" "}
-        {/* Pass darkMode state and setDarkMode function here */}
       </div>
     </main>
   );

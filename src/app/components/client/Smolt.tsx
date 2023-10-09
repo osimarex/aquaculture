@@ -142,13 +142,13 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
         title: {
           text: "Smolt price",
           style: {
-            color: defaultColors[1],
+            color: defaultColors[0],
           },
         },
         labels: {
           format: "{value} mb",
           style: {
-            color: defaultColors[1],
+            color: defaultColors[0],
           },
         },
         opposite: true,
