@@ -1,12 +1,16 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 type ChartSeries = { name: string; data: { x: number; y: number }[] }[];
 
-const SalmonForecast: React.FC = () => {
+interface Props {
+  darkMode: boolean;
+}
+
+const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   const [chartData, setChartData] = React.useState<ChartSeries | null>(null);
 
   useEffect(() => {
@@ -51,12 +55,54 @@ const SalmonForecast: React.FC = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (darkMode) {
+      Highcharts.theme = {
+        colors: [
+          "#DDDF0D",
+          "#7798BF",
+          "#55BF3B",
+          "#DF5353",
+          "#aaeeee",
+          "#ff0066",
+          "#eeaaee",
+          "#55BF3B",
+          "#DF5353",
+          "#7798BF",
+        ],
+        // ...rest of dark theme properties
+      };
+    } else {
+      Highcharts.theme = {
+        colors: [
+          "#7cb5ec",
+          "#434348",
+          "#90ed7d",
+          "#f7a35c",
+          "#8085e9",
+          "#f15c80",
+          "#e4d354",
+          "#2b908f",
+          "#f45b5b",
+          "#91e8e1",
+        ],
+        // ...rest of light theme properties
+      };
+    }
+
+    Highcharts.setOptions(Highcharts.theme);
+  }, [darkMode]);
+
   const optionsUSDNOK = {
     chart: {
       height: 323,
+      backgroundColor: darkMode ? "#2c2c2c" : "#ffffff",
     },
     title: {
       text: "",
+      style: {
+        color: darkMode ? "#ffffff" : "#000000",
+      },
     },
     credits: {
       enabled: false,
@@ -64,14 +110,25 @@ const SalmonForecast: React.FC = () => {
     xAxis: {
       type: "datetime",
       text: "ff",
+      labels: {
+        style: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
+      },
     },
     yAxis: {
       title: {
         text: "",
+        style: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
       },
       range: 0.1,
       labels: {
         format: "{value:.2f}",
+        style: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
       },
     },
     legend: {
@@ -82,28 +139,32 @@ const SalmonForecast: React.FC = () => {
       .map((series) => ({
         ...series,
         type: "spline",
-        color: "#40ca16", // Default color is green
+        color: darkMode ? "#aaaaaa" : "#40ca16", // Color changes based on dark mode
         marker: {
           enabled: false,
         },
         zones: [
           {
-            value: series.data[0]?.y - 0.001, // Replace with your threshold value
-            color: "#fd2b2b", // Color will be red for values less than threshold
+            value: series.data[0]?.y - 0.001,
+            color: darkMode ? "#ff4545" : "#fd2b2b", // Color changes based on dark mode
           },
           {
-            color: "#40ca16", // Color will revert to green for values greater or equal to threshold
+            color: darkMode ? "#aaaaaa" : "#40ca16", // Color changes based on dark mode
           },
         ],
       })),
   };
 
   return (
-    <div className="w-full h-auto">
+    <div
+      className={`w-full h-auto ${
+        darkMode ? "bg-black text-white" : "bg-white text-black"
+      }`}
+    >
       {chartData ? (
         <div className="flex flex-col items-start mt-4 ml-1">
           <div className="relative w-full">
-            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-black text-2xl">
+            <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-2xl">
               SALMON PRICE
             </div>
             <div>

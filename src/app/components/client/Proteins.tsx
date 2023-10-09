@@ -39,7 +39,7 @@ const getColor = (price: number, maxPrice: number): string => {
 const Protein: React.FC = () => {
   return (
     <div className="mt-4 ">
-      <h2 className="ml-4 mb-4 font-semibold text-gray-800 ">
+      <h2 className="ml-4 mb-4 font-semibold text-gray-800 dark:text-white">
         Competing Proteins
       </h2>
       <div className="grid grid-cols-4 text-left text-gray-400 mb-2 ml-4 ">
@@ -51,7 +51,7 @@ const Protein: React.FC = () => {
       {proteins.map((protein, index) => (
         <div
           key={index}
-          className="grid grid-cols-4 text-left border-t py-2 ml-4 mb-2 text-gray-800 "
+          className="grid grid-cols-4 text-left border-t py-2 ml-4 mb-2 text-gray-800 dark:text-white"
         >
           <div>{protein.name}</div>
           <div>${protein.pricePerKg.toFixed(2)}</div>

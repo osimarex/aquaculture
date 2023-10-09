@@ -1,14 +1,24 @@
-"use client";
+// components/client/DarkMode.tsx or similar file path
+import React, { Dispatch, SetStateAction } from "react";
 
-// DarkModeToggle.tsx
-import { useEffect, useState } from "react";
+interface Props {
+  darkMode: boolean;
+  setDarkMode: Dispatch<SetStateAction<boolean>>;
+}
 
-type DarkModeToggleProps = {
-  onToggle: () => void;
-};
+const DarkModeToggle: React.FC<Props> = ({ darkMode, setDarkMode }) => {
+  const handleToggle = () => {
+    setDarkMode((prevMode) => {
+      if (!prevMode) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      return !prevMode;
+    });
+  };
 
-const DarkModeToggle: React.FC<DarkModeToggleProps> = ({ onToggle }) => {
-  return <button onClick={onToggle}>Toggle Dark Mode</button>;
+  return <button onClick={handleToggle}>Toggle Dark Mode</button>;
 };
 
 export default DarkModeToggle;

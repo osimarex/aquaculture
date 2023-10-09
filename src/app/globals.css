@@ -1,11 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 214, 219, 220;
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -18,6 +20,9 @@ body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(243, 243, 243);
   padding: 1rem;
+
+  /* Tailwind dark mode background color */
+  @apply dark:bg-gray-800; /* Change bg-gray-800 to any dark color you prefer */
 }
 
 .flash {
