@@ -37,7 +37,10 @@ const useWebSocket = () => {
         if (isJSON(dataStr)) {
           const parsedData = JSON.parse(dataStr) as WebSocketData;
           const { symbol } = parsedData;
-          // rest of your code
+          setData((prevData) => ({
+            ...prevData,
+            [symbol]: parsedData,
+          }));
         } else {
           console.log("Received non-JSON message:", dataStr);
         }

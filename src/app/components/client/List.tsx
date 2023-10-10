@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import useWebSocket from "../../hooks/useWebsocket";
+import useWebSocket from "@/app/hooks/useWebsocket";
 
 // Utility function to map currency code to flag image file path
 const getFlagImagePath = (currencyCode: string) => {
@@ -96,7 +96,7 @@ const List: React.FC = () => {
   const [eurNokSignal, setEurNokSignal] = useState<number | null>(null);
 
   useEffect(() => {
-    console.log(data);
+    console.log("UseEffect data: ", data);
     if (data) {
       setPrevData(data as unknown as { [key: string]: PriceData });
     }
