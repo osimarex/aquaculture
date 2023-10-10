@@ -206,6 +206,7 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
       {
         name: "Slakt volum",
         type: "spline",
+        color: "#90ED7D",
         data: [
           7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6,
         ],
@@ -278,7 +279,7 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
   return (
     <figure
       className={`highcharts-figure ${
-        darkMode ? "text-white bg-black" : "text-black bg-white"
+        darkMode ? "text-white" : "text-black bg-white"
       }`}
     >
       <div className="min-w-[310px] max-w-[800px] mx-auto">

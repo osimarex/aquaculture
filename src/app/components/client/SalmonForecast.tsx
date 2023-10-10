@@ -70,7 +70,6 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
           "#DF5353",
           "#7798BF",
         ],
-        // ...rest of dark theme properties
       };
     } else {
       Highcharts.theme = {
@@ -86,7 +85,6 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
           "#f45b5b",
           "#91e8e1",
         ],
-        // ...rest of light theme properties
       };
     }
 
@@ -164,7 +162,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   return (
     <div
       className={`w-full h-auto ${
-        darkMode ? "bg-black text-white" : "bg-white text-black"
+        darkMode ? "text-white" : "bg-white text-black"
       }`}
     >
       {chartData ? (

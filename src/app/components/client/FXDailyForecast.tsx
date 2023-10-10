@@ -231,7 +231,7 @@ const FXDailyForecast: React.FC<Props> = ({ darkMode }) => {
   return (
     <div
       className={`w-full h-auto ${
-        darkMode ? "bg-black text-white" : "bg-white text-black"
+        darkMode ? "text-white" : "bg-white text-black"
       }`}
     >
       {chartData ? (
