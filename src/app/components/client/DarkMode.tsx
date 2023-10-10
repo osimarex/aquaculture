@@ -19,13 +19,13 @@ const DarkModeToggle: React.FC<Props> = ({ darkMode, setDarkMode }) => {
 
   return (
     <button
+      className="cursor-pointer fixed bottom-10 right-4"
       onClick={handleToggle}
-      style={{ background: "none", border: "none", cursor: "pointer" }}
     >
       {darkMode ? (
-        <img src="/moon.png" alt="Toggle to Light Mode" width={"40px"} />
+        <img src="/moon.png" alt="Toggle to Light Mode" className="w-[60px] " />
       ) : (
-        <img src="/sun.png" alt="Toggle to Dark Mode" width={"40px"} />
+        <img src="/sun.png" alt="Toggle to Dark Mode" className="w-[60px]" />
       )}
     </button>
   );

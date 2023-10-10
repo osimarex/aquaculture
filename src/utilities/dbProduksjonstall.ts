@@ -1,8 +1,6 @@
 import { ConnectionPool } from "mssql";
 
-async function getProductionsNumbers(
-  periodLength: string = "10 minutes"
-): Promise<any> {
+async function getProductionsNumbers(numPoints: string = "All"): Promise<any> {
   const user = process.env.DB_USER;
   const password = process.env.DB_PASSWORD;
   const server = process.env.DB_SERVER;
@@ -24,13 +22,15 @@ async function getProductionsNumbers(
 
   try {
     const pool = await new ConnectionPool(config).connect();
+    let pointsClause = numPoints === "All" ? "" : `TOP ${numPoints}`;
     let query = `
-    SELECT Biomasse_tonn, Date 
+    SELECT ${pointsClause} *  
     FROM ${process.env.DB_PT_TABLE} 
-    ORDER BY Date DESC
+    ORDER BY Date ASC
   `;
 
     console.log(query); // Log the query string to the console
+    console.log("Biomasse data: ", query);
 
     const result = await pool.request().query(query);
     return result.recordset; // Return the result as an array of objects

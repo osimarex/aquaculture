@@ -64,7 +64,7 @@ const Map: React.FC<MapProps> = ({ darkMode }) => {
           r: 0,
           states: {
             hover: {
-              fill: darkMode ? "#707070" : "#e6e6e6", // Hover fill color based on dark mode
+              fill: darkMode ? "#ffffff" : "#e6e6e6", // Hover fill color based on dark mode
             },
             select: {
               stroke: darkMode ? "#000000" : "#000000",

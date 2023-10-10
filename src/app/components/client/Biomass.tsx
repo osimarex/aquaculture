@@ -4,19 +4,14 @@ import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
-interface SeriesData {
-  name: string;
-  data: [number, number][];
-}
+type ChartSeries = { name: string; data: { x: number; y: number }[] }[];
 
 interface BiomassProps {
-  series: SeriesData[];
   darkMode: boolean;
 }
 
-const Biomass: React.FC<BiomassProps> = ({ series, darkMode }) => {
-  const [chartData, setChartData] = useState<any | null>(null);
-  const [dateRange, setDateRange] = useState<any | null>(null);
+const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
+  const [chartData, setChartData] = React.useState<ChartSeries | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,50 +29,11 @@ const Biomass: React.FC<BiomassProps> = ({ series, darkMode }) => {
         return [new Date(item.Date).getTime(), item.Biomasse_tonn];
       });
 
-      const minDate = Math.min(...biomassSeries.map((item: any) => item[0]));
-      const maxDate = Math.max(...biomassSeries.map((item: any) => item[0]));
-
       setChartData([{ name: "Biomasse_tonn", data: biomassSeries }]);
-      setDateRange({ min: minDate, max: maxDate });
     };
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    if (darkMode) {
-      Highcharts.theme = {
-        colors: [
-          "#DDDF0D",
-          "#7798BF",
-          "#55BF3B",
-          "#DF5353",
-          "#aaeeee",
-          "#ff0066",
-          "#eeaaee",
-          "#55BF3B",
-          "#DF5353",
-          "#7798BF",
-        ],
-      };
-    } else {
-      Highcharts.theme = {
-        colors: [
-          "#7cb5ec",
-          "#434348",
-          "#90ed7d",
-          "#f7a35c",
-          "#8085e9",
-          "#f15c80",
-          "#e4d354",
-          "#2b908f",
-          "#f45b5b",
-          "#91e8e1",
-        ],
-      };
-    }
-    Highcharts.setOptions(Highcharts.theme);
-  }, [darkMode]);
 
   const biomasseData = {
     chart: {
@@ -85,19 +41,30 @@ const Biomass: React.FC<BiomassProps> = ({ series, darkMode }) => {
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     title: {
+      text: "",
       style: {
         color: darkMode ? "#ffffff" : "#000000",
       },
     },
+    credits: {
+      enabled: false,
+    },
+    plotOptions: {
+      series: {
+        lineWidth: 3,
+      },
+    },
+    rangeSelector: {
+      enabled: false,
+    },
     xAxis: {
       type: "datetime",
+      text: "ff",
       labels: {
         style: {
           color: darkMode ? "#ffffff" : "#000000",
         },
       },
-      min: dateRange ? dateRange.min : undefined,
-      max: dateRange ? dateRange.max : undefined,
     },
     yAxis: {
       labels: {
@@ -105,11 +72,24 @@ const Biomass: React.FC<BiomassProps> = ({ series, darkMode }) => {
           color: darkMode ? "#ffffff" : "#000000",
         },
       },
+      title: {
+        text: "",
+        style: {
+          color: darkMode ? "#ffffff" : "#000000",
+        },
+      },
+    },
+    legend: {
+      enabled: false,
     },
     series: chartData
       ? chartData.map((seriesItem: any) => ({
           ...seriesItem,
-          type: "line",
+          type: "spline",
+          color: "#4895EF",
+          marker: {
+            enabled: false,
+          },
         }))
       : [],
   };
@@ -123,7 +103,7 @@ const Biomass: React.FC<BiomassProps> = ({ series, darkMode }) => {
       {chartData ? (
         <div className="flex flex-col items-start mt-4 ml-1">
           <div className="relative w-full">
-            <div className="absolute top-2 ml-64 transform[-50%,-50%] z-10 text-2xl">
+            <div className="absolute top-1 left-16 transform[-50%,-50%] z-10 text-2xl">
               BIOMASS
             </div>
             <div>

@@ -107,6 +107,11 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
     credits: {
       enabled: false,
     },
+    plotOptions: {
+      series: {
+        lineWidth: 3,
+      },
+    },
     xAxis: {
       type: "datetime",
       text: "ff",
@@ -117,6 +122,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     yAxis: {
+      gridLineColor: darkMode ? "" : "",
       title: {
         text: "",
         style: {
@@ -139,7 +145,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       .map((series) => ({
         ...series,
         type: "spline",
-        color: darkMode ? "#aaaaaa" : "#40ca16", // Color changes based on dark mode
+        color: darkMode ? "#40ca16" : "#40ca16", // Color changes based on dark mode
         marker: {
           enabled: false,
         },
@@ -149,7 +155,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             color: darkMode ? "#ff4545" : "#fd2b2b", // Color changes based on dark mode
           },
           {
-            color: darkMode ? "#aaaaaa" : "#40ca16", // Color changes based on dark mode
+            color: darkMode ? "#40ca16" : "#40ca16", // Color changes based on dark mode
           },
         ],
       })),

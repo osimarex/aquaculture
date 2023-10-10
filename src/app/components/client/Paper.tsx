@@ -82,6 +82,11 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
     credits: {
       enabled: false,
     },
+    plotOptions: {
+      series: {
+        lineWidth: 3,
+      },
+    },
     xAxis: {
       type: "datetime",
       labels: {
@@ -91,7 +96,9 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     yAxis: {
+      gridLineColor: darkMode ? "" : "",
       title: {
+        text: "",
         style: {
           color: darkMode ? "#ffffff" : "#000000",
         },

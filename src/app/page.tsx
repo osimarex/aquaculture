@@ -36,7 +36,6 @@ export default function Home() {
         </div>
         <div className="ml-4 mt-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <SalmonForecast darkMode={darkMode} />
-          {/* Pass darkMode state here */}
         </div>
         <div className="ml-4 mt-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <Smolt darkMode={darkMode} />
@@ -47,7 +46,7 @@ export default function Home() {
           <Proteins />
         </div>
         <div className="ml-4 mt-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
-          <Biomass series={[]} darkMode={darkMode} />
+          <Biomass darkMode={darkMode} />
           <Paper darkMode={darkMode} />
         </div>
         <div className="ml-4 mt-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">

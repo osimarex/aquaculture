@@ -66,6 +66,11 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
     credits: {
       enabled: false,
     },
+    plotOptions: {
+      series: {
+        lineWidth: 2,
+      },
+    },
     title: {
       text: "SMOLT",
       align: "left",
@@ -105,7 +110,7 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
     ],
     yAxis: [
       {
-        // Primary yAxis
+        gridLineColor: darkMode ? "#333333" : "",
         labels: {
           format: "{value}°C",
           style: {
@@ -121,7 +126,6 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
         opposite: true,
       },
       {
-        // Secondary yAxis
         gridLineWidth: 0,
         title: {
           text: "Smolt volum",
@@ -190,6 +194,7 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
           1016, 1016, 1015.9, 1015.5, 1012.3, 1009.5, 1009.6, 1010.2, 1013.1,
           1016.9, 1018.2, 1016.7,
         ],
+        color: darkMode ? "#ffffff" : "#000000",
         marker: {
           enabled: false,
         },

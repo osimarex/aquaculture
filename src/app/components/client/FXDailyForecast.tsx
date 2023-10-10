@@ -107,6 +107,11 @@ const FXDailyForecast: React.FC<Props> = ({ darkMode }) => {
     credits: {
       enabled: false,
     },
+    plotOptions: {
+      series: {
+        lineWidth: 3,
+      },
+    },
     xAxis: {
       type: "datetime",
       text: "ff",
@@ -117,6 +122,7 @@ const FXDailyForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     yAxis: {
+      gridLineColor: darkMode ? "" : "",
       title: {
         text: "",
         style: {
@@ -169,6 +175,11 @@ const FXDailyForecast: React.FC<Props> = ({ darkMode }) => {
     credits: {
       enabled: false,
     },
+    plotOptions: {
+      series: {
+        lineWidth: 3,
+      },
+    },
     xAxis: {
       type: "datetime",
       labels: {
@@ -178,6 +189,7 @@ const FXDailyForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     yAxis: {
+      gridLineColor: darkMode ? "" : "",
       title: {
         text: "",
         style: {
