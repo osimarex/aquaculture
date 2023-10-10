@@ -9,13 +9,13 @@ interface CompetingProteins {
 }
 
 const proteins: CompetingProteins[] = [
-  { name: "Salmon", pricePerKg: 20.0, date: "01/01/2023" },
-  { name: "Beef", pricePerKg: 15.0, date: "01/01/2023" },
-  { name: "Pork", pricePerKg: 12.0, date: "01/01/2023" },
-  { name: "Chicken", pricePerKg: 10.0, date: "01/01/2023" },
-  { name: "Eggs", pricePerKg: 8.0, date: "01/01/2023" },
-  { name: "Whey Protein", pricePerKg: 25.0, date: "01/01/2023" },
-  { name: "Insect Protein", pricePerKg: 30.0, date: "01/01/2023" },
+  { name: "Salmon", pricePerKg: 20.0, date: "01/01/23" },
+  { name: "Beef", pricePerKg: 15.0, date: "01/01/23" },
+  { name: "Pork", pricePerKg: 12.0, date: "01/01/23" },
+  { name: "Chicken", pricePerKg: 10.0, date: "01/01/23" },
+  { name: "Eggs", pricePerKg: 8.0, date: "01/01/23" },
+  { name: "Whey Protein", pricePerKg: 25.0, date: "01/01/23" },
+  { name: "Insect Protein", pricePerKg: 30.0, date: "01/01/23" },
 ];
 
 const maxPrice = Math.max(...proteins.map((p) => p.pricePerKg));
@@ -46,7 +46,7 @@ const Protein: React.FC = () => {
         <div>Protein</div>
         <div>Price per kg</div>
         <div>Date</div>
-        <div>Price Chart</div>
+        <div className="md:block hidden">Price Chart</div>
       </div>
       {proteins.map((protein, index) => (
         <div
@@ -58,11 +58,10 @@ const Protein: React.FC = () => {
           <div>{protein.date}</div>
           <div className="relative h-10">
             <div
-              className="absolute bottom-4 bg-green-400 "
+              className="absolute bottom-4 bg-green-400 md:block hidden"
               style={{
                 width: `${(protein.pricePerKg / maxPrice) * 100}%`,
                 height: "70%",
-                // backgroundColor: getColor(protein.pricePerKg, maxPrice), // Comment this line out if you want to use Tailwind colors
               }}
             ></div>
           </div>
