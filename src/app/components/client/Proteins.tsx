@@ -38,7 +38,7 @@ const getColor = (price: number, maxPrice: number): string => {
 
 const Protein: React.FC = () => {
   return (
-    <div className="mt-4 ">
+    <div className="mt-4">
       <h2 className="ml-4 mb-4 font-semibold text-gray-800 dark:text-white">
         Competing Proteins
       </h2>
