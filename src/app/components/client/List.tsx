@@ -57,26 +57,38 @@ const SymbolRow: React.FC<SymbolProps> = ({
 
   return (
     <div className="flex items-center mt-2">
-      <div className={`w-7 h-7 mr-4 rounded-full ${circleColor}`} />{" "}
-      <div className="w-8 h-6">
+      <div
+        className={`w-7 h-7 mr-4 rounded-full flex-shrink-0 ${circleColor}`}
+      />{" "}
+      <div className="w-8 h-6 hidden sm:block">
         <img
           src={getFlagImagePath(currency1)}
           alt={`${currency1} flag`}
-          className="object-cover w-full h-full"
+          className="object-cover w-full h-full min-w-[32px]"
         />
       </div>
       <span className="pl-2">{currency1}</span>
       <span>/</span>
       <span className="pr-2">{currency2}</span>
-      <div className="w-8 h-6">
+      <div className="w-8 h-6 hidden sm:block">
         <img
           src={getFlagImagePath(currency2)}
           alt={`${currency2} flag`}
-          className="object-cover w-full h-full"
+          className="object-cover w-full h-full min-w-[32px]"
         />
       </div>
-      <span className={`ml-8 w-24 ${bidClass}`}>{bid}</span>
-      <span className={`ml-2 w-24 ${askClass}`}>{ask}</span>
+      <span
+        className={`ml-8 w-24 ${bidClass} hover:text-blue-500 transition duration-200`}
+        title="Bid"
+      >
+        {bid}
+      </span>
+      <span
+        className={` ${askClass} hover:text-blue-500 transition duration-200`}
+        title="Ask"
+      >
+        {ask}
+      </span>
     </div>
   );
 };
