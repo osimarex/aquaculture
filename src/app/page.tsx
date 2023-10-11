@@ -11,6 +11,7 @@ import Map from "./components/client/Map";
 import Smolt from "./components/client/Smolt";
 import DarkModeToggle from "./components/client/DarkMode";
 import SalmonToday from "./components/client/SalmonToday";
+import ProductionAreas from "./components/client/ProductionAreas";
 
 const Proteins = dynamic(() => import("./components/client/Proteins"), {
   ssr: false, // This will disable Server Side Rendering for this component
@@ -51,6 +52,7 @@ export default function Home() {
         </div>
         <div className="lg:ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <Map darkMode={darkMode} />
+          <ProductionAreas />
         </div>
       </div>
       <div className="text-black dark:text-white">
