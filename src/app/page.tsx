@@ -30,29 +30,44 @@ export default function Home() {
         />
         <hr className="border-cyan-500 border-2" />
       </div>
-      <div className="flex flex-1">
-        <div className="text-black dark:text-white mt-2 h-fit w-full max-w-lg overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
-          <List />
-          <FXDailyForecast darkMode={darkMode} />
+      <div
+        className="grid grid-cols-3 gap-4"
+        style={{ flex: 1, display: "flex", flexDirection: "column" }}
+      >
+        {" "}
+        {/* Adjusted grid container */}
+        <div className="flex flex-col">
+          {/* First Row */}
+          <div className="grid grid-cols-3 gap-4 h-fit">
+            <div className="text-black dark:text-white h-fit w-full overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+              <List />
+              <FXDailyForecast darkMode={darkMode} />
+            </div>
+            <div className="ml-2 text-black dark:text-white h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+              <SalmonToday />
+              <SalmonForecast darkMode={darkMode} />
+            </div>
+            <div className="ml-4 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+              <Smolt darkMode={darkMode} />
+            </div>
+          </div>
         </div>
-        <div className="text-black dark:text-white ml-4 mt-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
-          <SalmonToday />
-          <SalmonForecast darkMode={darkMode} />
-        </div>
-        <div className="ml-4 mt-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
-          <Smolt darkMode={darkMode} />
-        </div>
-      </div>
-      <div className="flex flex-1">
-        <div className="mt-2 h-fit w-full max-w-lg overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
-          <Proteins />
-        </div>
-        <div className="ml-4 mt-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
-          <Biomass darkMode={darkMode} />
-          <Paper darkMode={darkMode} />
-        </div>
-        <div className="ml-4 mt-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
-          <Map darkMode={darkMode} />
+        <div className="flex flex-col flex-grow">
+          {/* Second Row */}
+          <div className="grid grid-cols-3 gap-4 h-full">
+            {" "}
+            {/* set h-full on the second row */}
+            <div className="h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
+              <Proteins />
+            </div>
+            <div className="ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
+              <Biomass darkMode={darkMode} />
+              <Paper darkMode={darkMode} />
+            </div>
+            <div className="ml-4 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+              <Map darkMode={darkMode} />
+            </div>
+          </div>
         </div>
       </div>
       <div className="text-black dark:text-white">

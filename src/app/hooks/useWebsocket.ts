@@ -31,7 +31,7 @@ const useWebSocket = () => {
     };
 
     ws.onmessage = (event) => {
-      console.log("event data:", event.data);
+      // console.log("event data:", event.data);
       const dataStr = event.data.toString();
       try {
         if (isJSON(dataStr)) {

@@ -9,7 +9,6 @@ const getFlagImagePath = (currencyCode: string) => {
     EUR: "europe",
     NOK: "norway",
     USD: "usa",
-    // ... add more later
   };
 
   const country = countryMap[currencyCode];
@@ -36,8 +35,6 @@ const SymbolRow: React.FC<SymbolProps> = ({
   prevAsk = null,
   signal,
 }) => {
-  // console.log("Signal prop in SymbolRow:", signal);
-
   const bidClass =
     prevBid !== null
       ? prevBid < bid
@@ -61,7 +58,6 @@ const SymbolRow: React.FC<SymbolProps> = ({
   return (
     <div className="flex items-center mt-2">
       <div className={`w-7 h-7 mr-4 rounded-full ${circleColor}`} />{" "}
-      {/* colored circle */}
       <div className="w-8 h-6">
         <img
           src={getFlagImagePath(currency1)}
@@ -79,8 +75,8 @@ const SymbolRow: React.FC<SymbolProps> = ({
           className="object-cover w-full h-full"
         />
       </div>
-      <span className={`px-2 mx-2  w-32 ${bidClass}`}>Bid: {bid}</span>
-      <span className={`w-32 mx-2 ${askClass}`}>Ask: {ask}</span>
+      <span className={`ml-8 w-24 ${bidClass}`}>{bid}</span>
+      <span className={`ml-2 w-24 ${askClass}`}>{ask}</span>
     </div>
   );
 };
@@ -96,7 +92,6 @@ const List: React.FC = () => {
   const [eurNokSignal, setEurNokSignal] = useState<number | null>(null);
 
   useEffect(() => {
-    console.log("UseEffect data: ", data);
     if (data) {
       setPrevData(data as unknown as { [key: string]: PriceData });
     }
@@ -130,7 +125,7 @@ const List: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-fit border-solid border-2 border-sky-800 shadow-lg rounded-xl pr-2">
+    <div className="w-full border-solid border-2 border-sky-800 shadow-lg rounded-xl pr-2">
       {data.USDNOK && (
         <div className="mb-2 ml-4 mt-4">
           <SymbolRow

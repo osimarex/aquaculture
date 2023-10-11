@@ -235,7 +235,7 @@ const FXDailyForecast: React.FC<Props> = ({ darkMode }) => {
       }`}
     >
       {chartData ? (
-        <div className="flex flex-col items-start mt-4 ml-1">
+        <div className="flex flex-col items-start mt-8 ml-1">
           <div className="relative w-full">
             <div className="absolute top-2 left-16 transform[-50%,-50%] z-10  ">
               USDNOK

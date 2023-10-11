@@ -282,7 +282,7 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
         darkMode ? "text-white" : "text-black bg-white"
       }`}
     >
-      <div className="min-w-[310px] max-w-[800px] mx-auto">
+      <div className="min-w-[310px] max-w-[800px] mx-auto mt-8">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </figure>

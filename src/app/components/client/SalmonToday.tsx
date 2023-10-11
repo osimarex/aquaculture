@@ -28,9 +28,9 @@ const List: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-fit border-solid border-2 border-sky-800 bg-sky-900 dark:bg-sky-600 font-bold shadow-lg rounded-xl pr-3 pb-2 text-white">
+    <div className="h-[105px] w-fit border-solid border-2 border-sky-800 bg-sky-900 dark:bg-sky-600 font-bold shadow-lg rounded-xl px-3 pb-2 text-white flex items-center justify-center">
       {usdNokPrice !== null && (
-        <div className="mb-2 ml-4 mt-4">
+        <div>
           <span>Now: ${usdNokPrice}</span>
         </div>
       )}
