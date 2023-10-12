@@ -50,9 +50,8 @@ export default function Home() {
           <Biomass darkMode={darkMode} />
           <Paper darkMode={darkMode} />
         </div>
-        <div className="lg:ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
-          <Map darkMode={darkMode} />
-          <ProductionAreas />
+        <div className="lg:ml-2 text-white h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+          <ProductionAreas darkMode={darkMode} />
         </div>
       </div>
       <div className="text-black dark:text-white">
