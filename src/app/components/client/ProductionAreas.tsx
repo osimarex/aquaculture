@@ -46,10 +46,11 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
 
   //Where the areasGeoJson was//
 
-  const areasMap = Highcharts.geojson(areasGeoJson, "map");
+  const areasMap = areasGeoJson.features;
 
   const options = mapData && {
     chart: {
+      height: 520,
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
       style: {
         fontFamily: "Arial",
