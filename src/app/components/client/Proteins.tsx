@@ -58,7 +58,7 @@ const Protein: React.FC = () => {
           <div>{protein.date}</div>
           <div className="relative h-10">
             <div
-              className="absolute bottom-4 bg-green-400 md:block hidden"
+              className="absolute bottom-4 bg-green-400 sm:block hidden"
               style={{
                 width: `${(protein.pricePerKg / maxPrice) * 100}%`,
                 height: "70%",
