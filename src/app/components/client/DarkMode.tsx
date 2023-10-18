@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 
 interface Props {
   darkMode: boolean;
@@ -6,14 +6,30 @@ interface Props {
 }
 
 const DarkModeToggle: React.FC<Props> = ({ darkMode, setDarkMode }) => {
-  const handleToggle = () => {
-    setDarkMode((prevMode) => {
-      if (!prevMode) {
+  // Check localStorage when component mounts
+  useEffect(() => {
+    const storedDarkMode = localStorage.getItem("darkMode");
+    if (storedDarkMode) {
+      const isDarkMode = storedDarkMode === "true";
+      setDarkMode(isDarkMode);
+      if (isDarkMode) {
         document.documentElement.classList.add("dark");
       } else {
         document.documentElement.classList.remove("dark");
       }
-      return !prevMode;
+    }
+  }, []);
+
+  const handleToggle = () => {
+    setDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      if (newMode) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      localStorage.setItem("darkMode", newMode.toString()); // Save preference in localStorage
+      return newMode;
     });
   };
 
