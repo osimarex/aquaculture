@@ -44,9 +44,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
     })();
   }, []);
 
-  //Where the areasGeoJson was//
-
-  const areasMap = areasGeoJson.features;
+  const areasMap = Highcharts.geojson(areasGeoJson, "map");
 
   const options = mapData && {
     chart: {
