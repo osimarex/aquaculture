@@ -31,7 +31,7 @@ async function getDailyForecast(
       FROM ${process.env.DB_TABLE} 
       ORDER BY timestamp DESC
     `;
-    console.log(query); // Log the query string to the console
+    // console.log(query); // Log the query string to the console
 
     const result = await pool.request().query(query);
     return result.recordset; // Return the result as an array of objects

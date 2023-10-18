@@ -126,8 +126,8 @@ const List: React.FC = () => {
         setUsdNokSignal(usdNokSignalValue);
         setEurNokSignal(eurNokSignalValue);
 
-        console.log("USDNOK Signal:", usdNokSignalValue);
-        console.log("EURNOK Signal:", eurNokSignalValue);
+        // console.log("USDNOK Signal:", usdNokSignalValue);
+        // console.log("EURNOK Signal:", eurNokSignalValue);
       } catch (error) {
         console.error("Error fetching signal data:", error);
       }

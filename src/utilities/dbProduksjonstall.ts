@@ -29,8 +29,8 @@ async function getProductionsNumbers(numPoints: string = "All"): Promise<any> {
     ORDER BY Date ASC
   `;
 
-    console.log(query); // Log the query string to the console
-    console.log("Biomasse data: ", query);
+    // console.log(query); // Log the query string to the console
+    // console.log("Biomasse data: ", query);
 
     const result = await pool.request().query(query);
     return result.recordset; // Return the result as an array of objects
