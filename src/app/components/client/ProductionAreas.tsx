@@ -23,17 +23,6 @@ interface MapProps {
   darkMode: boolean;
 }
 
-const processGeoJson = (geoJson: { features: any[] }) => {
-  return geoJson.features.map((feature) => {
-    return {
-      name: feature.properties.name,
-      path: Highcharts.maps[feature.geometry.type](
-        feature.geometry.coordinates
-      ),
-    };
-  });
-};
-
 const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
   const [mapData, setMapData] = useState(null);
 
@@ -43,8 +32,6 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
       setMapData(data);
     })();
   }, []);
-
-  const areasMap = Highcharts.geojson(areasGeoJson, "map");
 
   const options = mapData && {
     chart: {
@@ -72,6 +59,9 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
         color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
       },
     },
+    tooltip: {
+      pointFormat: "{point.properties.name}",
+    },
     series: [
       {
         mapData,
@@ -83,8 +73,8 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
       },
       {
         type: "map",
-        name: "Production Ares",
-        data: areasMap,
+        name: "Production Areas",
+        data: areasGeoJson.features,
         joinBy: "name",
         opacity: 0.9,
         states: {
