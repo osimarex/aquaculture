@@ -79,7 +79,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
         opacity: 0.9,
         states: {
           hover: {
-            color: Highcharts.getOptions()?.colors?.[2] || "#7cb5ec", // default color if undefined
+            color: Highcharts.getOptions()?.colors?.[1] || "#7cb5ec", // default color if undefined
           },
         },
         point: {
