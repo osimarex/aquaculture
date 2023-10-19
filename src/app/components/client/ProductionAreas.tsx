@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import "jquery";
@@ -36,76 +36,81 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
     })();
   }, []);
 
-  const options = mapData && {
-    chart: {
-      height: 520,
-      backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
-      style: {
-        fontFamily: "Arial",
-        color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
-      },
-    },
-    credits: {
-      enabled: false,
-      style: {
-        color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
-      },
-    },
-    title: {
-      text: "AQUACULTURE",
-      style: {
-        color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
-      },
-    },
-    legend: {
-      itemStyle: {
-        color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
-      },
-    },
-    tooltip: {
-      pointFormat: "{point.properties.name}",
-    },
-    series: [
-      {
-        mapData,
-        name: "Norway",
-        borderColor: "#707070",
-        nullColor: "rgba(200, 200, 200, 0.3)",
-        showInLegend: false,
-        color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
-      },
-      {
-        type: "map",
-        name: "Production Areas",
-        data: areasGeoJson.features,
-        joinBy: "name",
-        opacity: 0.7,
-        states: {
-          hover: {
-            color: Highcharts.getOptions()?.colors?.[2] || "#7cb5ec", // default color if undefined
-          },
-        },
-        point: {
-          events: {
-            click: function () {
-              const point: any = this;
-              const chart = point.series.chart;
-              chart.mapZoom(5, point.plotX, point.plotY);
+  const options = useMemo(() => {
+    if (!mapData) return null;
 
-              setShowInfoCard(true);
-              setInfoCardContent(point.properties.name);
+    return {
+      chart: {
+        height: 520,
+        backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
+        style: {
+          fontFamily: "Arial",
+          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+        },
+      },
+      credits: {
+        enabled: false,
+        style: {
+          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+        },
+      },
+      title: {
+        text: "AQUACULTURE",
+        style: {
+          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+        },
+      },
+      legend: {
+        itemStyle: {
+          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+        },
+      },
+      tooltip: {
+        pointFormat: "{point.properties.name}",
+      },
+      series: [
+        {
+          mapData,
+          name: "Norway",
+          borderColor: "#707070",
+          nullColor: "rgba(200, 200, 200, 0.3)",
+          showInLegend: false,
+          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+        },
+        {
+          type: "map",
+          name: "Production Areas",
+          data: areasGeoJson.features,
+          joinBy: "name",
+          opacity: 0.7,
+          states: {
+            hover: {
+              color: Highcharts.getOptions()?.colors?.[2] || "#7cb5ec", // default color if undefined
+            },
+          },
+          point: {
+            events: {
+              click: function () {
+                const point: any = this;
+                console.log(point.properties.name); // <-- Log here
+                const chart = point.series.chart;
+
+                point.zoomTo(); // <-- Added this line to zoom to the clicked point
+
+                setShowInfoCard(true);
+                setInfoCardContent(point.properties.name);
+              },
             },
           },
         },
-      },
-    ],
-  };
+      ],
+    };
+  }, [mapData, darkMode]);
 
   return (
     <div className="h-full w-full relative">
-      {" "}
       {/* relative for positioning context */}
-      {mapData && (
+      {options && (
         <HighchartsReact
           highcharts={Highcharts}
           constructorType={"mapChart"}
@@ -117,13 +122,13 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
       )}
       {showInfoCard && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-          {" "}
           {/* Modal overlay */}
           <div className="bg-white p-4 rounded-lg shadow-lg relative w-64">
-            {" "}
             {/* Modal content */}
             <div className="flex justify-between items-center">
-              <span className="text-lg font-bold">{infoCardContent}</span>
+              <span className="text-black text-lg font-bold">
+                {infoCardContent}
+              </span>
               <button
                 className="ml-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-700 focus:outline-none"
                 onClick={() => {
