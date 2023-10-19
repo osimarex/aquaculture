@@ -25,6 +25,9 @@ interface MapProps {
 
 const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
   const [mapData, setMapData] = useState(null);
+  const [showInfoCard, setShowInfoCard] = useState(false);
+  const [infoCardContent, setInfoCardContent] = useState<string | null>(null);
+  const [chartInstance, setChartInstance] = useState<any>(null);
 
   useEffect(() => {
     (async () => {
@@ -76,10 +79,10 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
         name: "Production Areas",
         data: areasGeoJson.features,
         joinBy: "name",
-        opacity: 0.9,
+        opacity: 0.7,
         states: {
           hover: {
-            color: Highcharts.getOptions()?.colors?.[1] || "#7cb5ec", // default color if undefined
+            color: Highcharts.getOptions()?.colors?.[2] || "#7cb5ec", // default color if undefined
           },
         },
         point: {
@@ -88,6 +91,9 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
               const point: any = this;
               const chart = point.series.chart;
               chart.mapZoom(5, point.plotX, point.plotY);
+
+              setShowInfoCard(true);
+              setInfoCardContent(point.properties.name);
             },
           },
         },
@@ -96,13 +102,45 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
   };
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full relative">
+      {" "}
+      {/* relative for positioning context */}
       {mapData && (
         <HighchartsReact
           highcharts={Highcharts}
           constructorType={"mapChart"}
           options={options}
+          callback={(chart: any) => {
+            setChartInstance(chart);
+          }}
         />
+      )}
+      {showInfoCard && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+          {" "}
+          {/* Modal overlay */}
+          <div className="bg-white p-4 rounded-lg shadow-lg relative w-64">
+            {" "}
+            {/* Modal content */}
+            <div className="flex justify-between items-center">
+              <span className="text-lg font-bold">{infoCardContent}</span>
+              <button
+                className="ml-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-700 focus:outline-none"
+                onClick={() => {
+                  setShowInfoCard(false);
+                  if (chartInstance) {
+                    chartInstance.mapZoom(); // This zooms out
+                  }
+                }}
+              >
+                ×
+              </button>
+            </div>
+            <div className="mt-4">
+              {/* Any other content you want in your modal */}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
