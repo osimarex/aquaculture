@@ -85,18 +85,29 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
           opacity: 0.7,
           states: {
             hover: {
-              color: Highcharts.getOptions()?.colors?.[2] || "#7cb5ec", // default color if undefined
+              color: Highcharts.getOptions()?.colors?.[2] || "#7cb5ec", // Existing hover color (this can be changed to green if it isn't)
+            },
+            select: {
+              color: "#00FF00", // Green color when selected
             },
           },
+
           point: {
             events: {
               click: function () {
                 const point: any = this;
-                console.log(point.properties.name); // <-- Log here
+                console.log(point.properties.name);
                 const chart = point.series.chart;
 
-                point.zoomTo(); // <-- Added this line to zoom to the clicked point
+                // Deselect previously selected point if any
+                if (chart.selectedPoint && chart.selectedPoint !== point) {
+                  chart.selectedPoint.select(false);
+                }
 
+                point.select(null, true); // Toggle selection of the clicked point
+                chart.selectedPoint = point; // Save the reference of the selected point
+
+                point.zoomTo();
                 setShowInfoCard(true);
                 setInfoCardContent(point.properties.name);
               },
