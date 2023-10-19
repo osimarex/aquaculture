@@ -14,60 +14,74 @@ const useWebSocket = () => {
     CHFNOK: null,
   });
 
+  const [shouldReconnect, setShouldReconnect] = useState(true);
+
   useEffect(() => {
-    const ws = new WebSocket(
-      process.env.WEBSOCKET_URL || "wss://marketdata.tradermade.com/feedadv"
-    );
+    let ws: WebSocket | null;
 
-    ws.onopen = () => {
-      console.log("WebSocket connection opened.");
-      ws.send(
-        JSON.stringify({
-          userKey: process.env.NEXT_PUBLIC_WEBSOCKET_USER_KEY,
-          symbol: "CHFNOK,EURNOK,USDNOK",
-        })
+    const connectWebSocket = () => {
+      ws = new WebSocket(
+        process.env.WEBSOCKET_URL || "wss://marketdata.tradermade.com/feedadv"
       );
-      console.log("Sent user key and symbol.");
-    };
 
-    ws.onmessage = (event) => {
-      // console.log("event data:", event.data);
-      const dataStr = event.data.toString();
-      try {
-        if (isJSON(dataStr)) {
-          const parsedData = JSON.parse(dataStr) as WebSocketData;
-          const { symbol } = parsedData;
-          setData((prevData) => ({
-            ...prevData,
-            [symbol]: parsedData,
-          }));
-        } else {
-          console.log("Received non-JSON message:", dataStr);
+      ws.onopen = () => {
+        console.log("WebSocket connection opened.");
+        ws?.send(
+          JSON.stringify({
+            userKey: process.env.NEXT_PUBLIC_WEBSOCKET_USER_KEY,
+            symbol: "CHFNOK,EURNOK,USDNOK",
+          })
+        );
+        console.log("Sent user key and symbol.");
+      };
+
+      ws.onmessage = (event) => {
+        // console.log("event data:", event.data);
+        const dataStr = event.data.toString();
+        try {
+          if (isJSON(dataStr)) {
+            const parsedData = JSON.parse(dataStr) as WebSocketData;
+            const { symbol } = parsedData;
+            setData((prevData) => ({
+              ...prevData,
+              [symbol]: parsedData,
+            }));
+          } else {
+            console.log("Received non-JSON message:", dataStr);
+          }
+        } catch (e) {
+          console.log("Error parsing JSON:", e);
         }
-      } catch (e) {
-        console.log("Error parsing JSON:", e);
+      };
+
+      function isJSON(str: string): boolean {
+        try {
+          JSON.parse(str);
+        } catch (e) {
+          return false;
+        }
+        return true;
       }
+
+      ws.onerror = (error) => {
+        console.log("WebSocket Error:", error);
+      };
+
+      ws.onclose = (event) => {
+        console.log("WebSocket connection closed.");
+
+        // Auto-reconnect logic
+        if (shouldReconnect) {
+          setTimeout(connectWebSocket, 5000); // Attempt to reconnect every 5 seconds
+        }
+      };
     };
 
-    function isJSON(str: string): boolean {
-      try {
-        JSON.parse(str);
-      } catch (e) {
-        return false;
-      }
-      return true;
-    }
-
-    ws.onerror = (error) => {
-      console.log("WebSocket Error:", error);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket connection closed.");
-    };
+    connectWebSocket();
 
     return () => {
-      ws.close();
+      setShouldReconnect(false); // Prevent reconnection after component unmount
+      ws?.close();
     };
   }, []);
 
