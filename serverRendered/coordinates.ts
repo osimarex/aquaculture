@@ -286,7 +286,7 @@ export const areasGeoJson = {
 
     {
       type: "Feature",
-      properties: { name: "Karmøya til Sotra" },
+      properties: { name: "Karmøy til Sotra" },
       geometry: {
         type: "Polygon",
         coordinates: [

@@ -25,14 +25,14 @@ const useWebSocket = () => {
       );
 
       ws.onopen = () => {
-        console.log("WebSocket connection opened.");
+        // console.log("WebSocket connection opened.");
         ws?.send(
           JSON.stringify({
             userKey: process.env.NEXT_PUBLIC_WEBSOCKET_USER_KEY,
             symbol: "CHFNOK,EURNOK,USDNOK",
           })
         );
-        console.log("Sent user key and symbol.");
+        // console.log("Sent user key and symbol.");
       };
 
       ws.onmessage = (event) => {
@@ -47,7 +47,7 @@ const useWebSocket = () => {
               [symbol]: parsedData,
             }));
           } else {
-            console.log("Received non-JSON message:", dataStr);
+            // console.log("Received non-JSON message:", dataStr);
           }
         } catch (e) {
           console.log("Error parsing JSON:", e);
@@ -68,7 +68,7 @@ const useWebSocket = () => {
       };
 
       ws.onclose = (event) => {
-        console.log("WebSocket connection closed.");
+        // console.log("WebSocket connection closed.", event);
 
         // Auto-reconnect logic
         if (shouldReconnect) {

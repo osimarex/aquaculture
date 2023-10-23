@@ -33,7 +33,7 @@ export default function Home() {
         <hr className="border-cyan-500 border-2" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-fit">
-        <div className="text-black dark:text-white h-fit w-full overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+        <div className="lg:ml-2 text-black dark:text-white h-fit w-full overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <List />
           <FXDailyForecast darkMode={darkMode} />
         </div>

@@ -19,12 +19,53 @@ const fetchMapData = async () => {
   return mapData;
 };
 
+const fetchStatusData = async () => {
+  const response = await fetch(
+    "https://gis.fiskeridir.no/server/rest/services/Yggdrasil/Produksjonsomr%C3%A5der/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json"
+  );
+  const statusData = await response.json();
+  return statusData.features;
+};
+
 interface MapProps {
   darkMode: boolean;
 }
 
+interface CustomHighchartsPoint {
+  properties: {
+    name: string;
+  };
+  series: {
+    chart: {
+      setTitle: (options: { text: string }) => void;
+    };
+  };
+}
+
+interface StatusFeature {
+  attributes: {
+    name: string;
+    status: string;
+  };
+}
+
+interface HighchartsPoint {
+  point: {
+    properties: {
+      name: string;
+    };
+  };
+}
+
+const statusColors: { [key: string]: string } = {
+  grønn: "green",
+  rød: "red",
+  gul: "yellow",
+};
+
 const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
   const [mapData, setMapData] = useState(null);
+  const [statusData, setStatusData] = useState<StatusFeature[]>([]);
   const [showInfoCard, setShowInfoCard] = useState(false);
   const [infoCardContent, setInfoCardContent] = useState<string | null>(null);
   const [chartInstance, setChartInstance] = useState<any>(null);
@@ -33,6 +74,13 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
     (async () => {
       const data = await fetchMapData();
       setMapData(data);
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const data = await fetchStatusData();
+      setStatusData(data);
     })();
   }, []);
 
@@ -55,7 +103,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
         },
       },
       title: {
-        text: "AQUACULTURE",
+        text: "PRODUCTION AREAS",
         style: {
           color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
         },
@@ -66,7 +114,25 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
         },
       },
       tooltip: {
-        pointFormat: "{point.properties.name}",
+        formatter(this: HighchartsPoint) {
+          // Explicitly typed 'this'
+          const areaName = this.point.properties.name;
+          const areaStatusEntry = statusData.find(
+            (area) => area.attributes.name === areaName
+          );
+
+          if (!areaStatusEntry) return `<b>${areaName}</b> <br>Status: Unknown`;
+
+          const translatedStatus =
+            {
+              grønn: "green",
+              rød: "red",
+              gul: "yellow",
+            }[areaStatusEntry.attributes.status] ||
+            areaStatusEntry.attributes.status;
+
+          return `<b>${areaName}</b> <br>Status: ${translatedStatus}`;
+        },
       },
       series: [
         {
@@ -75,23 +141,34 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
           borderColor: "#707070",
           nullColor: "rgba(200, 200, 200, 0.3)",
           showInLegend: false,
-          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+          color: darkMode ? "#ffffff" : "#000000",
         },
         {
           type: "map",
           name: "Production Areas",
-          data: areasGeoJson.features,
+          data: areasGeoJson.features.map((feature) => {
+            const name = feature.properties.name;
+            const areaStatus = statusData.find(
+              (area) => area.attributes.name === name
+            )?.attributes.status;
+            const statusColor = {
+              grønn: "green",
+              rød: "red",
+              gul: "yellow",
+            }[areaStatus || ""];
+
+            return {
+              ...feature,
+              color: statusColor || "gray", // Fallback to gray if status isn't recognized
+            };
+          }),
           joinBy: "name",
           opacity: 0.7,
           states: {
             hover: {
-              color: Highcharts.getOptions()?.colors?.[2] || "#7cb5ec", // Existing hover color (this can be changed to green if it isn't)
-            },
-            select: {
-              color: "#00FF00", // Green color when selected
+              color: Highcharts.getOptions()?.colors?.[2] || "#7cb5ec",
             },
           },
-
           point: {
             events: {
               click: function () {
@@ -111,12 +188,20 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
                 setShowInfoCard(true);
                 setInfoCardContent(point.properties.name);
               },
+              // Setting the hovered region name on mouse over
+              mouseOver: function (this: CustomHighchartsPoint) {
+                this.series.chart.setTitle({ text: this.properties.name });
+              },
+              // Reset the title to "AQUACULTURE" on mouse out
+              mouseOut: function (this: CustomHighchartsPoint) {
+                this.series.chart.setTitle({ text: "AQUACULTURE" });
+              },
             },
           },
         },
       ],
     };
-  }, [mapData, darkMode]);
+  }, [mapData, darkMode, statusData]);
 
   return (
     <div className="h-full w-full relative">
