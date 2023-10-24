@@ -91,6 +91,13 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
       chart: {
         height: 520,
         backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
+        options3d: {
+          enabled: true,
+          alpha: 15, // tilt down angle, 0 is viewing from top, 90 is from side
+          beta: 0, // rotation around the vertical axis, similar to rotating a globe
+          depth: 100, // depth of the 3D chart, how thick it appears
+          viewDistance: 25, // adjust if needed
+        },
         style: {
           fontFamily: "Arial",
           color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
@@ -114,6 +121,11 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
         },
       },
       tooltip: {
+        backgroundColor: "#000000",
+        style: {
+          color: "#fff",
+          opacity: 0.6,
+        },
         formatter(this: HighchartsPoint) {
           // Explicitly typed 'this'
           const areaName = this.point.properties.name;
@@ -166,7 +178,8 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
           opacity: 0.7,
           states: {
             hover: {
-              color: Highcharts.getOptions()?.colors?.[2] || "#7cb5ec",
+              color: "#2b2828",
+              opacity: 1,
             },
           },
           point: {
@@ -194,7 +207,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
               },
               // Reset the title to "AQUACULTURE" on mouse out
               mouseOut: function (this: CustomHighchartsPoint) {
-                this.series.chart.setTitle({ text: "AQUACULTURE" });
+                this.series.chart.setTitle({ text: "PRODUCTION AREAS" });
               },
             },
           },
@@ -204,7 +217,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
   }, [mapData, darkMode, statusData]);
 
   return (
-    <div className="h-full w-full relative">
+    <div className="h-full w-full relative flex justify-start">
       {/* relative for positioning context */}
       {options && (
         <HighchartsReact
