@@ -53,6 +53,9 @@ interface HighchartsPoint {
   point: {
     properties: {
       name: string;
+      biomasse: string;
+      romming: string;
+      temperatur: string;
     };
   };
 }
@@ -129,6 +132,9 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
         formatter(this: HighchartsPoint) {
           // Explicitly typed 'this'
           const areaName = this.point.properties.name;
+          const biomasseAmount = this.point.properties.biomasse;
+          const romming = this.point.properties.romming;
+          const temperatur = this.point.properties.temperatur;
           const areaStatusEntry = statusData.find(
             (area) => area.attributes.name === areaName
           );
@@ -143,7 +149,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
             }[areaStatusEntry.attributes.status] ||
             areaStatusEntry.attributes.status;
 
-          return `<b>${areaName}</b> <br>Status: ${translatedStatus}`;
+          return `<b>${areaName}</b> <br>Status: ${translatedStatus} <br>Biomasse: ${biomasseAmount}  <br>Rømming: ${romming}  <br>Temperatur: ${temperatur}`;
         },
       },
       series: [
@@ -178,7 +184,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
           opacity: 0.7,
           states: {
             hover: {
-              color: "#2b2828",
+              color: "#00ff37",
               opacity: 1,
             },
           },
