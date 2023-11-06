@@ -28,8 +28,9 @@ export default function Home() {
       <div className="">
         <Image
           src={darkMode ? "/imarex-logo-dark.png" : "/imarex-logo.png"}
+          width={142}
+          height={52}
           alt="Logo"
-          style={{ width: "142px", height: "52px" }}
         />
         <hr className="border-cyan-500 border-2" />
       </div>
