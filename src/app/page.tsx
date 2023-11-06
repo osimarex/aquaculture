@@ -31,6 +31,7 @@ export default function Home() {
           width={142}
           height={52}
           alt="Logo"
+          priority={true} // {false} | {true}
         />
         <hr className="border-cyan-500 border-2" />
       </div>
