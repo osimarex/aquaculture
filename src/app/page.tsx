@@ -13,6 +13,7 @@ import DarkModeToggle from "./components/client/DarkMode";
 import SalmonToday from "./components/client/SalmonToday";
 import ProductionAreas from "./components/client/ProductionAreas";
 import Proteins from "./components/client/Proteins";
+import Image from "next/image";
 
 // const Proteins = dynamic(() => import("./components/client/Proteins"), {
 //   ssr: false, // This will disable Server Side Rendering for this component
@@ -25,7 +26,7 @@ export default function Home() {
   return (
     <main className={darkMode ? "dark" : ""}>
       <div className="">
-        <img
+        <Image
           src={darkMode ? "/imarex-logo-dark.png" : "/imarex-logo.png"}
           alt="Logo"
           style={{ width: "142px", height: "52px" }}
