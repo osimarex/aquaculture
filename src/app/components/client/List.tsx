@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import useWebSocket from "@/app/hooks/useWebsocket";
+import Image from "next/image";
 
 // Utility function to map currency code to flag image file path
 const getFlagImagePath = (currencyCode: string) => {
@@ -61,7 +62,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
         className={`w-7 h-7 mr-4 rounded-full flex-shrink-0 ${circleColor}`}
       />{" "}
       <div className="w-8 h-6 hidden sm:block">
-        <img
+        <Image
           src={getFlagImagePath(currency1)}
           alt={`${currency1} flag`}
           className="object-cover w-full h-full min-w-[32px]"
@@ -71,7 +72,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
       <span>/</span>
       <span className="pr-2">{currency2}</span>
       <div className="w-8 h-6 hidden sm:block">
-        <img
+        <Image
           src={getFlagImagePath(currency2)}
           alt={`${currency2} flag`}
           className="object-cover w-full h-full min-w-[32px]"
