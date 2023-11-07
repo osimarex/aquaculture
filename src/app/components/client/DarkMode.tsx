@@ -43,13 +43,16 @@ const DarkModeToggle: React.FC<Props> = ({ darkMode, setDarkMode }) => {
         <Image
           src="/moon.png"
           alt="Toggle to Light Mode"
-          className="w-[60px] "
+          width={60}
+          height={40}
         />
       ) : (
         <Image
           src="/sun.png"
           alt="Toggle to Dark Mode"
-          className="bg-white rounded-full w-[60px]"
+          width={60}
+          height={40}
+          className="bg-white rounded-full"
         />
       )}
     </button>

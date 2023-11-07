@@ -65,6 +65,8 @@ const SymbolRow: React.FC<SymbolProps> = ({
         <Image
           src={getFlagImagePath(currency1)}
           alt={`${currency1} flag`}
+          width={32}
+          height={24}
           className="object-cover w-full h-full min-w-[32px]"
         />
       </div>
@@ -75,6 +77,8 @@ const SymbolRow: React.FC<SymbolProps> = ({
         <Image
           src={getFlagImagePath(currency2)}
           alt={`${currency2} flag`}
+          width={32}
+          height={24}
           className="object-cover w-full h-full min-w-[32px]"
         />
       </div>
