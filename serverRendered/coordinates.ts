@@ -3,7 +3,12 @@ export const areasGeoJson = {
   features: [
     {
       type: "Feature",
-      properties: { name: "Svenskegrensen til Jæren" },
+      properties: {
+        name: "Svenskegrensen til Jæren",
+        biomasse: "10000 tonn",
+        romming: "2500",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
@@ -286,7 +291,7 @@ export const areasGeoJson = {
 
     {
       type: "Feature",
-      properties: { name: "Karmøya til Sotra" },
+      properties: { name: "Karmøy til Sotra" },
       geometry: {
         type: "Polygon",
         coordinates: [

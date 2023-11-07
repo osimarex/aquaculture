@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
+import Image from "next/image";
 
 interface Props {
   darkMode: boolean;
@@ -39,12 +40,19 @@ const DarkModeToggle: React.FC<Props> = ({ darkMode, setDarkMode }) => {
       onClick={handleToggle}
     >
       {darkMode ? (
-        <img src="/moon.png" alt="Toggle to Light Mode" className="w-[60px] " />
+        <Image
+          src="/moon.png"
+          alt="Toggle to Light Mode"
+          width={60}
+          height={40}
+        />
       ) : (
-        <img
+        <Image
           src="/sun.png"
           alt="Toggle to Dark Mode"
-          className="bg-white rounded-full w-[60px]"
+          width={60}
+          height={40}
+          className="bg-white rounded-full"
         />
       )}
     </button>

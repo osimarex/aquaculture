@@ -13,6 +13,7 @@ import DarkModeToggle from "./components/client/DarkMode";
 import SalmonToday from "./components/client/SalmonToday";
 import ProductionAreas from "./components/client/ProductionAreas";
 import Proteins from "./components/client/Proteins";
+import Image from "next/image";
 
 // const Proteins = dynamic(() => import("./components/client/Proteins"), {
 //   ssr: false, // This will disable Server Side Rendering for this component
@@ -25,15 +26,17 @@ export default function Home() {
   return (
     <main className={darkMode ? "dark" : ""}>
       <div className="">
-        <img
+        <Image
           src={darkMode ? "/imarex-logo-dark.png" : "/imarex-logo.png"}
+          width={142}
+          height={52}
           alt="Logo"
-          style={{ width: "142px", height: "52px" }}
+          priority={true} // {false} | {true}
         />
         <hr className="border-cyan-500 border-2" />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-fit">
-        <div className="text-black dark:text-white h-fit w-full overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+        <div className="lg:ml-2 text-black dark:text-white h-fit w-full overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <List />
           <FXDailyForecast darkMode={darkMode} />
         </div>
