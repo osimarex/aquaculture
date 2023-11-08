@@ -45,6 +45,7 @@ const DarkModeToggle: React.FC<Props> = ({ darkMode, setDarkMode }) => {
           alt="Toggle to Light Mode"
           width={60}
           height={40}
+          priority={true}
         />
       ) : (
         <Image
@@ -52,6 +53,7 @@ const DarkModeToggle: React.FC<Props> = ({ darkMode, setDarkMode }) => {
           alt="Toggle to Dark Mode"
           width={60}
           height={40}
+          priority={true}
           className="bg-white rounded-full"
         />
       )}
