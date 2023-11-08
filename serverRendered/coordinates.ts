@@ -240,6 +240,10 @@ const fetchDataAndLogProperties = async () => {
         const lat: number = attributes.lat;
         const lon: number = attributes.lon;
 
+        const rommingdatoMilliseconds = attributes.rommingsdato;
+        const rommingdatoSeconds = rommingdatoMilliseconds / 1000; // Convert to seconds
+        const rommingDate = new Date(rommingdatoSeconds * 1000); // Convert to milliseconds
+
         if (art === "Laks") {
           // Check if the coordinates are within the "Svenskegrensen til Jæren" area
           if (isPointInPolygon([lon, lat], polygonCoordinatesSvenskegrensen)) {
@@ -252,7 +256,13 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInSvenskegrensenCount++;
+            console.log(
+              "rommingdato (Svenskegrensen):",
+              rommingDate.toUTCString()
+            );
+            console.log("Beskrivelse:", attributes.beskrivelse);
+
+            placesInSvenskegrensenCount += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Ryfylke" area
@@ -260,7 +270,7 @@ const fetchDataAndLogProperties = async () => {
             console.log("selskapsnavn (Ryfylke):", attributes.selskapsnavn);
             console.log("antatt_romt (Ryfylke):", attributes.antall_romt);
 
-            placesInRyfylkeCount++;
+            placesInRyfylkeCount += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Karmøy til Sotra" area
@@ -274,7 +284,7 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInKarmoyCount++;
+            placesInKarmoyCount += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Nordhordaland til Stadt" area
@@ -288,7 +298,7 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInNordtilStadt++;
+            placesInNordtilStadt += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Stadt til Hustadvika" area
@@ -302,7 +312,7 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInStadtHustadvika++;
+            placesInStadtHustadvika += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Nordmøre og Sør-trøndelag" area
@@ -316,7 +326,7 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInNordOgSor++;
+            placesInNordOgSor += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Nord-Trøndelag med Bindal" area
@@ -330,7 +340,7 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInBindal++;
+            placesInBindal += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Helgeland til Bodø" area
@@ -344,7 +354,7 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInHelgelandBodoCount++;
+            placesInHelgelandBodoCount += attributes.antall_romt;
           }
 
           // Check if the coordinates are within the "Vestfjorden og Vesterålen" area
@@ -358,7 +368,7 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInVestfjorden++;
+            placesInVestfjorden += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Andøya til Senja" area
@@ -372,7 +382,7 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInSenja++;
+            placesInSenja += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Kvaløya til Loppa" area
@@ -386,7 +396,7 @@ const fetchDataAndLogProperties = async () => {
               attributes.antall_romt
             );
 
-            placesInLoppa++;
+            placesInLoppa += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Vest-Finnmark" area
@@ -397,7 +407,7 @@ const fetchDataAndLogProperties = async () => {
             );
             console.log("antatt_romt (Vest-Finnmark):", attributes.antall_romt);
 
-            placesInVestFinnmark++;
+            placesInVestFinnmark += attributes.antall_romt; // Add to the total
           }
 
           // Check if the coordinates are within the "Øst-Finnmark" area
@@ -406,9 +416,10 @@ const fetchDataAndLogProperties = async () => {
               "selskapsnavn (Øst-Finnmark):",
               attributes.selskapsnavn
             );
-            console.log("antatt_romt (Øst-Finnmark):", attributes.antall_romt);
+            const antattRomt = attributes.antall_romt;
+            console.log("antatt_romt (Øst-Finnmark):", antattRomt);
 
-            placesInOstFinnmark++;
+            placesInOstFinnmark += antattRomt; // Add to the total
           }
         }
       });
