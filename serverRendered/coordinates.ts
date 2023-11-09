@@ -1,3 +1,16 @@
+let placesInRyfylkeCount2014 = 0;
+let placesInRyfylkeCount2015 = 0;
+let placesInRyfylkeCount2016 = 0;
+let placesInRyfylkeCount2017 = 0;
+let placesInRyfylkeCount2018 = 0;
+let placesInRyfylkeCount2019 = 0;
+let placesInRyfylkeCount2020 = 0;
+let placesInRyfylkeCount2021 = 0;
+let placesInRyfylkeCount2022 = 0;
+let placesInRyfylkeCount2023 = 0;
+
+let placesInRyfylkeCount = 0;
+
 // Define a simple point-in-polygon function
 function isPointInPolygon(
   point: [number, number],
@@ -21,7 +34,16 @@ function isPointInPolygon(
   return inside;
 }
 
-const fetchDataAndLogProperties = async () => {
+//Per year:
+let placesInSvenskegrensenCount2019 = 0;
+let placesInSvenskegrensenCount2020 = 0;
+let placesInSvenskegrensenCount2021 = 0;
+let placesInSvenskegrensenCount2022 = 0;
+let placesInSvenskegrensenCount2023 = 0;
+
+let placesInSvenskegrensenCount = 0;
+
+async function fetchDataAndLogProperties() {
   try {
     const apiUrl =
       "https://gis.fiskeridir.no/server/rest/services/Yggdrasil/R%C3%B8mming/MapServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json";
@@ -32,17 +54,6 @@ const fetchDataAndLogProperties = async () => {
     // Extract coordinates from the provided areasGeoJson for "Svenskegrensen til Jæren", "Ryfylke", and "Helgeland til Bodø"
     const polygonCoordinatesSvenskegrensen: [number, number][] = [];
     const polygonCoordinatesRyfylke: [number, number][] = [];
-    const polygonCoordinatesKarmoy: [number, number][] = [];
-    const polygonCoordinatesNordhordaland: [number, number][] = [];
-    const polygonCoordinatesStadtHustadVika: [number, number][] = [];
-    const polygonCoordinatesNordOgSor: [number, number][] = [];
-    const polygonCoordinatesNordMedBindal: [number, number][] = [];
-    const polygonCoordinatesHelgelandBodo: [number, number][] = [];
-    const polygonCoordinatesVestfjorden: [number, number][] = [];
-    const polygonCoordinatesSenja: [number, number][] = [];
-    const polygonCoordinatesLoppa: [number, number][] = [];
-    const polygonCoordinatesVestFinnmark: [number, number][] = [];
-    const polygonCoordinatesOstFinnmark: [number, number][] = [];
 
     // Extract coordinates for "Svenskegrensen til Jæren"
     const coordinatesSvenskegrensen =
@@ -71,168 +82,6 @@ const fetchDataAndLogProperties = async () => {
     };
     flattenCoordinatesRyfylke(coordinatesRyfylke);
 
-    // Extract coordinates for "Karmøy"
-    const coordinatesKarmoy = areasGeoJson.features[2].geometry.coordinates;
-    const flattenCoordinatesKarmoy = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesKarmoy(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesKarmoy.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesKarmoy(coordinatesKarmoy);
-
-    // Extract coordinates for "Hordaland"
-    const coordinatesHordaland = areasGeoJson.features[3].geometry.coordinates;
-    const flattenCoordinatesHordaland = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesHordaland(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesNordhordaland.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesHordaland(coordinatesHordaland);
-
-    // Extract coordinates for "Stadt"
-    const coordinatesStadtHustadvika =
-      areasGeoJson.features[4].geometry.coordinates;
-    const flattenCoordinatesStadtHustadvika = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesStadtHustadvika(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesStadtHustadVika.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesStadtHustadvika(coordinatesStadtHustadvika);
-
-    // Extract coordinates for "Nord og Sør"
-    const coordinatesNordOgSor = areasGeoJson.features[5].geometry.coordinates;
-    const flattenCoordinatesNordOgSor = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesNordOgSor(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesNordOgSor.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesNordOgSor(coordinatesNordOgSor);
-
-    // Extract coordinates for "Bindal"
-    const coordinatesBindal = areasGeoJson.features[6].geometry.coordinates;
-    const flattenCoordinatesBindal = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesBindal(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesNordMedBindal.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesBindal(coordinatesBindal);
-
-    // Extract coordinates for "Helgeland til Bodø"
-    const coordinatesHelgelandBodo =
-      areasGeoJson.features[7].geometry.coordinates;
-    const flattenCoordinatesHelgelandBodo = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesHelgelandBodo(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesHelgelandBodo.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesHelgelandBodo(coordinatesHelgelandBodo);
-
-    // Extract coordinates for "Vestfjorden"
-    const coordinatesVestfjorden =
-      areasGeoJson.features[8].geometry.coordinates;
-    const flattenCoordinatesVestfjorden = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesVestfjorden(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesVestfjorden.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesVestfjorden(coordinatesVestfjorden);
-
-    // Extract coordinates for "Senja"
-    const coordinatesSenja = areasGeoJson.features[9].geometry.coordinates;
-    const flattenCoordinatesSenja = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesSenja(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesSenja.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesSenja(coordinatesSenja);
-
-    // Extract coordinates for "Loppa"
-    const coordinatesLoppa = areasGeoJson.features[10].geometry.coordinates;
-    const flattenCoordinatesLoppa = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesLoppa(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesLoppa.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesLoppa(coordinatesLoppa);
-
-    // Extract coordinates for "Vest-Finnmark"
-    const coordinatesVestFinnmark =
-      areasGeoJson.features[11].geometry.coordinates;
-    const flattenCoordinatesVestFinnmark = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesVestFinnmark(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesVestFinnmark.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesVestFinnmark(coordinatesVestFinnmark);
-
-    // Extract coordinates for "Øst-Finnmark"
-    const coordinatesOstFinnmark =
-      areasGeoJson.features[12].geometry.coordinates;
-    const flattenCoordinatesOstFinnmark = (coords: any): void => {
-      if (Array.isArray(coords[0])) {
-        coords.forEach((nestedCoord: [number, number][]) => {
-          flattenCoordinatesOstFinnmark(nestedCoord);
-        });
-      } else {
-        polygonCoordinatesOstFinnmark.push([coords[0], coords[1]]);
-      }
-    };
-    flattenCoordinatesOstFinnmark(coordinatesOstFinnmark);
-
-    let placesInSvenskegrensenCount = 0;
-    let placesInRyfylkeCount = 0;
-    let placesInKarmoyCount = 0;
-    let placesInNordtilStadt = 0;
-    let placesInStadtHustadvika = 0;
-    let placesInNordOgSor = 0;
-    let placesInBindal = 0;
-    let placesInHelgelandBodoCount = 0;
-    let placesInVestfjorden = 0;
-    let placesInSenja = 0;
-    let placesInLoppa = 0;
-    let placesInVestFinnmark = 0;
-    let placesInOstFinnmark = 0;
-
     if (data.features) {
       data.features.forEach((feature: { attributes: any }) => {
         const attributes = feature.attributes;
@@ -245,6 +94,20 @@ const fetchDataAndLogProperties = async () => {
         const rommingDate = new Date(rommingdatoSeconds * 1000); // Convert to milliseconds
 
         if (art === "Laks") {
+          const year = rommingDate.getFullYear();
+          // Check if the coordinates are within the "Svenskegrensen til Jæren" area
+          if (isPointInPolygon([lon, lat], polygonCoordinatesSvenskegrensen)) {
+            if (year === 2019)
+              placesInSvenskegrensenCount2019 += attributes.antall_romt;
+            else if (year === 2020)
+              placesInSvenskegrensenCount2020 += attributes.antall_romt;
+            else if (year === 2021)
+              placesInSvenskegrensenCount2021 += attributes.antall_romt;
+            else if (year === 2022)
+              placesInSvenskegrensenCount2022 += attributes.antall_romt;
+            else if (year === 2023)
+              placesInSvenskegrensenCount2023 += attributes.antall_romt;
+          }
           // Check if the coordinates are within the "Svenskegrensen til Jæren" area
           if (isPointInPolygon([lon, lat], polygonCoordinatesSvenskegrensen)) {
             console.log(
@@ -257,7 +120,7 @@ const fetchDataAndLogProperties = async () => {
             );
 
             console.log(
-              "rommingdato (Svenskegrensen):",
+              "Rømmingdato (Svenskegrensen):",
               rommingDate.toUTCString()
             );
             console.log("Beskrivelse:", attributes.beskrivelse);
@@ -267,223 +130,76 @@ const fetchDataAndLogProperties = async () => {
 
           // Check if the coordinates are within the "Ryfylke" area
           if (isPointInPolygon([lon, lat], polygonCoordinatesRyfylke)) {
+            if (year === 2014)
+              placesInRyfylkeCount2014 += attributes.antall_romt;
+            else if (year === 2015)
+              placesInRyfylkeCount2015 += attributes.antall_romt;
+            else if (year === 2016)
+              placesInRyfylkeCount2016 += attributes.antall_romt;
+            else if (year === 2017)
+              placesInRyfylkeCount2017 += attributes.antall_romt;
+            else if (year === 2018)
+              placesInRyfylkeCount2018 += attributes.antall_romt;
+            else if (year === 2019)
+              placesInRyfylkeCount2019 += attributes.antall_romt;
+            else if (year === 2020)
+              placesInRyfylkeCount2020 += attributes.antall_romt;
+            else if (year === 2021)
+              placesInRyfylkeCount2021 += attributes.antall_romt;
+            else if (year === 2022)
+              placesInRyfylkeCount2022 += attributes.antall_romt;
+            else if (year === 2023)
+              placesInRyfylkeCount2023 += attributes.antall_romt;
+          }
+          // Check if the coordinates are within the "Svenskegrensen til Jæren" area
+          if (isPointInPolygon([lon, lat], polygonCoordinatesRyfylke)) {
             console.log("selskapsnavn (Ryfylke):", attributes.selskapsnavn);
             console.log("antatt_romt (Ryfylke):", attributes.antall_romt);
 
+            console.log("Rømmingdato (Ryfylke):", rommingDate.toUTCString());
+            console.log("Beskrivelse:", attributes.beskrivelse);
+
             placesInRyfylkeCount += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Karmøy til Sotra" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesKarmoy)) {
-            console.log(
-              "selskapsnavn (Karmøy til Sotra):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Karmøy til Sotra):",
-              attributes.antall_romt
-            );
-
-            placesInKarmoyCount += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Nordhordaland til Stadt" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesNordhordaland)) {
-            console.log(
-              "selskapsnavn (Nordhordaland til Stadt):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Nordhordaland til Stadt):",
-              attributes.antall_romt
-            );
-
-            placesInNordtilStadt += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Stadt til Hustadvika" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesStadtHustadVika)) {
-            console.log(
-              "selskapsnavn (Stadt til Hustadvika):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Stadt til Hustadvika):",
-              attributes.antall_romt
-            );
-
-            placesInStadtHustadvika += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Nordmøre og Sør-trøndelag" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesNordOgSor)) {
-            console.log(
-              "selskapsnavn (Nordmøre og Sør-Trøndelag):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Nordmøre og Sør-Trøndelag):",
-              attributes.antall_romt
-            );
-
-            placesInNordOgSor += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Nord-Trøndelag med Bindal" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesNordMedBindal)) {
-            console.log(
-              "selskapsnavn (Nord-Trøndelag med Bindal):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Nord-Trøndelag med Bindal):",
-              attributes.antall_romt
-            );
-
-            placesInBindal += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Helgeland til Bodø" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesHelgelandBodo)) {
-            console.log(
-              "selskapsnavn (Helgeland til Bodø):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Helgeland til Bodø):",
-              attributes.antall_romt
-            );
-
-            placesInHelgelandBodoCount += attributes.antall_romt;
-          }
-
-          // Check if the coordinates are within the "Vestfjorden og Vesterålen" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesVestfjorden)) {
-            console.log(
-              "selskapsnavn (Vestfjorden og Vesterålen):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Vestfjorden og Vesterålen):",
-              attributes.antall_romt
-            );
-
-            placesInVestfjorden += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Andøya til Senja" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesSenja)) {
-            console.log(
-              "selskapsnavn (Andøya til Senja):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Andøya til Senja):",
-              attributes.antall_romt
-            );
-
-            placesInSenja += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Kvaløya til Loppa" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesLoppa)) {
-            console.log(
-              "selskapsnavn (Kvaløya til Loppa):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Kvaløya til Loppa):",
-              attributes.antall_romt
-            );
-
-            placesInLoppa += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Vest-Finnmark" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesVestFinnmark)) {
-            console.log(
-              "selskapsnavn (Vest-Finnmark):",
-              attributes.selskapsnavn
-            );
-            console.log("antatt_romt (Vest-Finnmark):", attributes.antall_romt);
-
-            placesInVestFinnmark += attributes.antall_romt; // Add to the total
-          }
-
-          // Check if the coordinates are within the "Øst-Finnmark" area
-          if (isPointInPolygon([lon, lat], polygonCoordinatesOstFinnmark)) {
-            console.log(
-              "selskapsnavn (Øst-Finnmark):",
-              attributes.selskapsnavn
-            );
-            const antattRomt = attributes.antall_romt;
-            console.log("antatt_romt (Øst-Finnmark):", antattRomt);
-
-            placesInOstFinnmark += antattRomt; // Add to the total
           }
         }
       });
 
       console.log(
-        `Total places in 
+        `Total amount escaped in 
         "Svenskegrensen til Jæren": ${placesInSvenskegrensenCount}`
       );
       console.log(
-        `Total places in 
+        `Total amount escaped in 
         "Ryfylke": ${placesInRyfylkeCount}`
       );
+      console.log(
+        `Total amount escaped in "Svenskegrensen til Jæren":\n2019: ${placesInSvenskegrensenCount2019}\n2020: ${placesInSvenskegrensenCount2020}\n2021: ${placesInSvenskegrensenCount2021}\n2022: ${placesInSvenskegrensenCount2022}\n2023: ${placesInSvenskegrensenCount2023}`
+      );
+      console.log(
+        `Total amount escaped in "Ryfylke":\n` +
+          `2014: ${placesInRyfylkeCount2014}\n` +
+          `2015: ${placesInRyfylkeCount2015}\n` +
+          `2016: ${placesInRyfylkeCount2016}\n` +
+          `2017: ${placesInRyfylkeCount2017}\n` +
+          `2018: ${placesInRyfylkeCount2018}\n` +
+          `2019: ${placesInRyfylkeCount2019}\n` +
+          `2020: ${placesInRyfylkeCount2020}\n` +
+          `2021: ${placesInRyfylkeCount2021}\n` +
+          `2022: ${placesInRyfylkeCount2022}\n` +
+          `2023: ${placesInRyfylkeCount2023}`
+      );
 
-      console.log(
-        `Total places in 
-        "Karmøy til Sotra": ${placesInKarmoyCount}`
-      );
-      console.log(
-        `Total places in 
-        "Nordhordaland til Stadt": ${placesInNordtilStadt}`
-      );
-      console.log(
-        `Total places in 
-        "Stadt til Hustadvika": ${placesInStadtHustadvika}`
-      );
-      console.log(
-        `Total places in 
-        "Nordmøre og Sør-Trøndelag": ${placesInNordOgSor}`
-      );
-      console.log(
-        `Total places in 
-        "Nord-Trøndelag med Bindal": ${placesInBindal}`
-      );
-      console.log(
-        `Total places in 
-        "Helgeland til Bodø": ${placesInHelgelandBodoCount}`
-      );
-      console.log(
-        `Total places in 
-        "Vestfjorden og Vesterålen": ${placesInVestfjorden}`
-      );
-      console.log(
-        `Total places in 
-        "Andøya til Senja": ${placesInSenja}`
-      );
-      console.log(
-        `Total places in 
-        "Kvaløya til Loppa": ${placesInLoppa}`
-      );
-      console.log(
-        `Total places in 
-        "Vest-Finnmark": ${placesInVestFinnmark}`
-      );
-      console.log(
-        `Total places in 
-        "Øst-Finnmark": ${placesInOstFinnmark}`
-      );
+      areasGeoJson.features[0].properties.romming =
+        placesInSvenskegrensenCount2020;
+      areasGeoJson.features[1].properties.romming = placesInRyfylkeCount2023;
     } else {
       console.error("No features found in the API response.");
     }
   } catch (error) {
     console.error("Error fetching data:", error);
   }
-};
+  return areasGeoJson;
+}
 
 fetchDataAndLogProperties();
 
@@ -496,6 +212,7 @@ export const areasGeoJson = {
         name: "Svenskegrensen til Jæren",
         biomasse: "10000 tonn",
         temperatur: "10 ℃",
+        romming: placesInSvenskegrensenCount2020,
       },
       geometry: {
         type: "Polygon",
@@ -566,7 +283,10 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Ryfylke" },
+      properties: {
+        name: "Ryfylke",
+        romming: placesInRyfylkeCount2015,
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
