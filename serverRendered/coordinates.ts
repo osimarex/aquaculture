@@ -6,7 +6,7 @@ export const areasGeoJson = {
       properties: {
         name: "Svenskegrensen til Jæren",
         biomasse: "10000 tonn",
-        romming: "2500",
+        romming: "3500",
         temperatur: "10 ℃",
       },
       geometry: {
