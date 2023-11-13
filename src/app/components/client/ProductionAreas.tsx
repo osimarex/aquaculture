@@ -92,7 +92,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
 
     return {
       chart: {
-        height: 520,
+        height: 620,
         backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
         options3d: {
           enabled: true,
@@ -223,7 +223,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
   }, [mapData, darkMode, statusData]);
 
   return (
-    <div className="h-full w-full relative flex justify-start">
+    <div className="h-fit w-full relative flex justify-start">
       {/* relative for positioning context */}
       {options && (
         <HighchartsReact
