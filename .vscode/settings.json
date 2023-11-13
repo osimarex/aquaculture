@@ -1,3 +1,5 @@
 {
-  "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"]
+  "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"],
+  "appService.defaultWebAppToDeploy": "/subscriptions/c0a7aa89-9d94-4fa9-99e6-b9b015742520/resourceGroups/WebApp/providers/Microsoft.Web/sites/ImarexDevApp",
+  "appService.deploySubpath": "."
 }
