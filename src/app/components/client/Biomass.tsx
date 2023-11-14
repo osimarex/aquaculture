@@ -34,6 +34,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
     "2022": false,
     "2023": false,
   });
+
   // State to manage dropdown visibility
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isBiomassOpen, setIsBiomassOpen] = useState(false);
@@ -42,18 +43,19 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
   const [isVerdiOpen, setIsVerdiOpen] = useState(false);
   const [isUtsattFiskOpen, setIsUtsattFiskOpen] = useState(false);
 
-  const [selectedProperties, setSelectedProperties] = useState<Set<string>>(
-    new Set()
-  );
-
   // State for managing selected years for each property
   const [selectedYears, setSelectedYears] = useState({
-    Biomasse_tonn: new Set<string>(),
+    Biomasse_tonn: new Set(["2021", "2022", "2023"]), // Directly initializing with desired years
     Eksportert_kvantum_tonn: new Set<string>(),
     Eksportert_verdi_mill_kr: new Set<string>(),
     Utsatt_fisk_mill: new Set<string>(),
     Fôrforbruk_tonn: new Set<string>(),
   });
+
+  // Initialize selected properties with Biomasse_tonn
+  const [selectedProperties, setSelectedProperties] = useState<Set<string>>(
+    new Set(["Biomasse_tonn"])
+  );
 
   type PropertyKey = keyof typeof selectedYears;
 
@@ -149,42 +151,29 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
   const updateChartData = (data: ApiDataItem[]) => {
     const chartSeries: ChartSeries = [];
 
-    // Define a consistent range of x-axis values (e.g., one value per month)
-    const baseDate = new Date("2020-01-01");
-    const xValues = Array.from({ length: 48 }, (_, i) =>
-      new Date(baseDate.getFullYear(), baseDate.getMonth() + i, 1).getTime()
-    );
+    selectedProperties.forEach((propertyKey) => {
+      selectedYears[propertyKey as keyof typeof selectedYears].forEach(
+        (year) => {
+          const yearlyData = data
+            .filter((d) => new Date(d.Date).getFullYear().toString() === year)
+            .map((d) => {
+              const normalizedDate = new Date(d.Date);
+              normalizedDate.setFullYear(2020); // Normalize to a common year, e.g., 2020
+              const value = d[propertyKey as keyof ApiDataItem];
+              return {
+                x: normalizedDate.getTime(),
+                y: typeof value === "number" ? value : null,
+              };
+            });
 
-    Object.entries(selectedYears).forEach(([propertyKey, yearsSet]) => {
-      if (yearsSet.size > 0 && selectedProperties.has(propertyKey)) {
-        const propertyData = xValues.map((x) => {
-          const year = new Date(x).getFullYear().toString();
-          const month = new Date(x).getMonth();
-
-          // Find the corresponding data point for the year and month
-          const dataItem = data.find((item) => {
-            const itemYear = new Date(item.Date).getFullYear().toString();
-            const itemMonth = new Date(item.Date).getMonth();
-            return (
-              itemYear === year && itemMonth === month && yearsSet.has(year)
-            );
-          });
-
-          return {
-            x: x,
-            y: dataItem
-              ? Number(dataItem[propertyKey as keyof ApiDataItem])
-              : null,
-          };
-        });
-
-        if (propertyData.length > 0) {
-          chartSeries.push({
-            name: propertyKey,
-            data: propertyData,
-          });
+          if (yearlyData.length > 0) {
+            chartSeries.push({
+              name: `${propertyKey} ${year}`,
+              data: yearlyData,
+            });
+          }
         }
-      }
+      );
     });
 
     setChartData(chartSeries);
@@ -264,17 +253,61 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
   };
 
   const selectBiomasseTonnData = () => {
-    // Update selected years for Biomasse_tonn
+    // Update selected years specifically for Biomasse_tonn
     setSelectedYears((prevYears) => ({
       ...prevYears,
       Biomasse_tonn: new Set(["2021", "2022", "2023"]),
     }));
 
-    // Ensure Biomasse_tonn is included in selected properties
-    setSelectedProperties(
-      (prevProps) => new Set([...Array.from(prevProps), "Biomasse_tonn"])
-    );
+    // Update selected properties to include only Biomasse_tonn
+    setSelectedProperties(new Set(["Biomasse_tonn"]));
   };
+
+  const selectForforbrukData = () => {
+    // Update selected years specifically for Biomasse_tonn
+    setSelectedYears((prevYears) => ({
+      ...prevYears,
+      Fôrforbruk_tonn: new Set(["2021", "2022", "2023"]),
+    }));
+
+    // Update selected properties to include only Biomasse_tonn
+    setSelectedProperties(new Set(["Fôrforbruk_tonn"]));
+  };
+
+  const selectKvantumData = () => {
+    // Update selected years specifically for Biomasse_tonn
+    setSelectedYears((prevYears) => ({
+      ...prevYears,
+      Eksportert_kvantum_tonn: new Set(["2021", "2022", "2023"]),
+    }));
+
+    // Update selected properties to include only Biomasse_tonn
+    setSelectedProperties(new Set(["Eksportert_kvantum_tonn"]));
+  };
+
+  const selectVerdiData = () => {
+    // Update selected years specifically for Biomasse_tonn
+    setSelectedYears((prevYears) => ({
+      ...prevYears,
+      Eksportert_verdi_mill_kr: new Set(["2021", "2022", "2023"]),
+    }));
+
+    // Update selected properties to include only Biomasse_tonn
+    setSelectedProperties(new Set(["Eksportert_verdi_mill_kr"]));
+  };
+
+  const selectUtsattFiskData = () => {
+    // Update selected years specifically for Biomasse_tonn
+    setSelectedYears((prevYears) => ({
+      ...prevYears,
+      Utsatt_fisk_mill: new Set(["2021", "2022", "2023"]),
+    }));
+
+    // Update selected properties to include only Biomasse_tonn
+    setSelectedProperties(new Set(["Utsatt_fisk_mill"]));
+  };
+
+  // Ensure this function is called when the Biomasse button is clicked
 
   return (
     <div
@@ -314,7 +347,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
       <div className="absolute left-[100px] ml-6 z-10">
         <button
           id="multiLevelDropdownButton"
-          onClick={toggleBiomassDropdown}
+          onClick={selectForforbrukData}
           data-dropdown-toggle="multi-dropdown"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           type="button"
@@ -340,7 +373,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
       <div className="absolute left-[200px] ml-10 z-10">
         <button
           id="multiLevelDropdownButton"
-          onClick={toggleBiomassDropdown}
+          onClick={selectKvantumData}
           data-dropdown-toggle="multi-dropdown"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           type="button"
@@ -366,7 +399,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
       <div className="absolute left-[300px] ml-10 z-10">
         <button
           id="multiLevelDropdownButton"
-          onClick={toggleBiomassDropdown}
+          onClick={selectVerdiData}
           data-dropdown-toggle="multi-dropdown"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           type="button"
@@ -392,7 +425,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
       <div className="absolute left-[370px] ml-12 z-10">
         <button
           id="multiLevelDropdownButton"
-          onClick={toggleBiomassDropdown}
+          onClick={selectUtsattFiskData}
           data-dropdown-toggle="multi-dropdown"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           type="button"
@@ -424,7 +457,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             type="button"
           >
-            Filter{" "}
+            More{" "}
             <svg
               className="w-2.5 h-2.5 ms-3"
               aria-hidden="true"
