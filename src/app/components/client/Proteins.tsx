@@ -131,7 +131,7 @@ const Protein: React.FC = () => {
             className="grid grid-cols-4 text-left border-t py-2 ml-4 mb-2 text-gray-800 dark:text-white relative"
           >
             <div>{protein.name}</div>
-            <div>{`€${convertedPrice.toFixed(5)}`}</div>
+            <div>{`€${convertedPrice.toFixed(2)}`}</div>
             <div>{protein.date}</div>
             <div className="relative h-10">
               {/* Chart */}
