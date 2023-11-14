@@ -95,6 +95,7 @@ const Protein: React.FC = () => {
   const maxPrice = Math.max(
     ...proteins.map((p) => convertPriceToEur(p.pricePerKg, p.currency))
   );
+
   return (
     <div className="mt-4">
       <h2 className="ml-4 mb-4 font-semibold text-gray-800 dark:text-white">
@@ -115,9 +116,14 @@ const Protein: React.FC = () => {
           proteins[0].pricePerKg,
           proteins[0].currency
         );
-        const result = 100 - (convertedPrice / salmonPrice) * 100;
+        let result = 100 - (convertedPrice / salmonPrice) * 100;
 
         const isNegative = result < 0;
+
+        // Set result to 100% for the "Salmon" protein
+        if (protein.name === "Salmon") {
+          result = 100;
+        }
 
         return (
           <div
@@ -134,17 +140,16 @@ const Protein: React.FC = () => {
                   isNegative ? "bg-red-400" : "bg-green-400"
                 }`}
                 style={{
-                  width: `${Math.min(100, Math.abs(result))}%`,
+                  width: `${Math.min(99, Math.abs(result))}%`,
                   height: "70%",
                 }}
               ></div>
               {/* Result Text (conditionally displayed on hover) */}
               <div
-                className={`absolute top-3 pr-20 opacity-0 hover:opacity-100 text-white transition-opacity duration-300 ease-in-out 
-                  
+                className={`absolute top-3 pr-28 opacity-0 hover:opacity-100 text-white transition-opacity duration-300 ease-in-out
                 }`}
               >
-                {result.toFixed(2)} %
+                {result === 100 ? "100%" : `${result.toFixed(1)} %`}
               </div>
             </div>
           </div>
@@ -155,58 +160,3 @@ const Protein: React.FC = () => {
 };
 
 export default Protein;
-
-// return (
-//   <div className="mt-4">
-//     <h2 className="ml-4 mb-4 font-semibold text-gray-800 dark:text-white">
-//       Competing Proteins
-//     </h2>
-//     <div className="grid grid-cols-4 text-left text-gray-400 mb-2 ml-4 ">
-//       <div>Protein</div>
-//       <div>Price per kg</div>
-//       <div>Date</div>
-//       <div className="md:block hidden">Price Chart</div>
-//     </div>
-//     {proteins.map((protein, index) => {
-//       const convertedPrice = convertPriceToEur(
-//         protein.pricePerKg,
-//         protein.currency
-//       );
-//       const salmonPrice = convertPriceToEur(
-//         proteins[0].pricePerKg,
-//         proteins[0].currency
-//       );
-//       const result = 100 - (convertedPrice / salmonPrice) * 100;
-
-//       const isNegative = result < 0;
-
-//       return (
-//         <div
-//           key={index}
-//           className="grid grid-cols-4 text-left border-t py-2 ml-4 mb-2 text-gray-800 dark:text-white"
-//         >
-//           <div>{protein.name}</div>
-//           <div>{`€${convertedPrice.toFixed(5)}`}</div>
-//           <div>{protein.date}</div>
-//           <div className="relative h-10">
-//             <div
-//               className={`absolute bottom-4 ${
-//                 isNegative ? "bg-red-400" : "bg-green-400"
-//               } sm:block hidden`}
-//               style={{
-//                 width: `${
-//                   Math.min(100, Math.abs(result)) // Corrected the calculation
-//                 }%`,
-//                 height: "70%",
-//               }}
-//             ></div>
-//           </div>
-//           console.log(`${protein.name} Result: ${result.toFixed(2)}%`)
-//         </div>
-//       );
-//     })}
-//   </div>
-// );
-// };
-
-// export default Protein;
