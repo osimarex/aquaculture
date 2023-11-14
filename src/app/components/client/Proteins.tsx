@@ -146,7 +146,7 @@ const Protein: React.FC = () => {
               ></div>
               {/* Result Text (conditionally displayed on hover) */}
               <div
-                className={`absolute top-3 pr-28 opacity-0 hover:opacity-100 text-white transition-opacity duration-300 ease-in-out
+                className={`absolute top-3 opacity-100 hover:opacity-100 text-white transition-opacity duration-300 ease-in-out
                 }`}
               >
                 {result === 100 ? "100%" : `${result.toFixed(1)} %`}
