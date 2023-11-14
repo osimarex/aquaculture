@@ -1,4 +1,3 @@
-// pages/api/productionNumbers.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import getHistoricFPI from "@/utilities/dbHistoricFPI";
 

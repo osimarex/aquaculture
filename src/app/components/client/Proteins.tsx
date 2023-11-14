@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useWebSocket from "@/app/hooks/useWebsocket";
 
 interface CompetingProteins {
   name: string;
   pricePerKg: number;
   date: string;
-  currency: "USD" | "GBP" | "AUD";
+  currency: "USD" | "GBP" | "AUD" | "NOK";
 }
 
-const proteins: CompetingProteins[] = [
+const initialProteins: CompetingProteins[] = [
+  { name: "Salmon", pricePerKg: 0, date: "10/11/23", currency: "NOK" },
   { name: "Poultry", pricePerKg: 1.33, date: "10/11/23", currency: "USD" },
   { name: "Pig", pricePerKg: 2.85, date: "10/11/23", currency: "USD" },
   { name: "Bovine", pricePerKg: 8.93, date: "10/11/23", currency: "USD" },
@@ -17,11 +18,53 @@ const proteins: CompetingProteins[] = [
 ];
 
 const Protein: React.FC = () => {
+  const [proteins, setProteins] =
+    useState<CompetingProteins[]>(initialProteins);
   const exchangeRates = useWebSocket();
+
+  const formatDateToDDMMYY = (dateString: string | number | Date) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // January is 0
+    const year = date.getFullYear().toString().substr(-2); // Get the last two digits of the year
+
+    return `${day}/${month}/${year}`;
+  };
+
+  useEffect(() => {
+    // Fetch the latest Salmon price
+    fetch("/api/historicFPI")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const latestSalmonPrice = data[data.length - 1]["NOK/kg"];
+        const latestSalmonDateISO = data[data.length - 1]["Date"];
+        const latestSalmonDateFormatted =
+          formatDateToDDMMYY(latestSalmonDateISO);
+
+        console.log(
+          "latest salmon price",
+          latestSalmonDateFormatted,
+          latestSalmonPrice
+        );
+        setProteins((proteins) =>
+          proteins.map((p) =>
+            p.name === "Salmon"
+              ? {
+                  ...p,
+                  pricePerKg: latestSalmonPrice,
+                  date: latestSalmonDateFormatted,
+                }
+              : p
+          )
+        );
+      })
+      .catch((error) => console.error("Error fetching Salmon price:", error));
+  }, []);
 
   const convertPriceToEur = (
     price: number,
-    currency: "USD" | "GBP" | "AUD"
+    currency: "USD" | "GBP" | "AUD" | "NOK"
   ): number => {
     const usdNokRate = exchangeRates.USDNOK?.bid || 0;
     const eurNokRate = exchangeRates.EURNOK?.bid || 0;
@@ -40,6 +83,9 @@ const Protein: React.FC = () => {
         const gbpToUsdRate = 1.31; // Assuming 1 GBP = 1.31 USD
         priceInUsd = price * gbpToUsdRate;
         break;
+      case "NOK":
+        priceInUsd = price / usdNokRate; // Convert NOK to USD
+        break;
       default:
         priceInUsd = 0;
     }
@@ -49,10 +95,6 @@ const Protein: React.FC = () => {
   const maxPrice = Math.max(
     ...proteins.map((p) => convertPriceToEur(p.pricePerKg, p.currency))
   );
-
-  // const getColor = (price: number, maxPrice: number): string => {
-  //   // ... Your existing getColor function ...
-  // };
 
   return (
     <div className="mt-4">
