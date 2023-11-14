@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
-type ChartSeries = { name: string; data: { x: number; y: number }[] }[];
+type ChartSeries = { name: string; data: { x: number; y: number | null }[] }[];
 
 type CheckboxStates = {
   [key: string]: boolean;
@@ -149,28 +149,45 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
   const updateChartData = (data: ApiDataItem[]) => {
     const chartSeries: ChartSeries = [];
 
-    selectedProperties.forEach((propertyKey) => {
-      const yearsSet = selectedYears[propertyKey as PropertyKey]; // Type assertion here
-      if (yearsSet.size > 0) {
-        const propertyData = data
-          .filter((item) =>
-            yearsSet.has(new Date(item.Date).getFullYear().toString())
-          )
-          .map((item) => ({
-            x: new Date(item.Date).getTime(),
-            y: Number(item[propertyKey as keyof ApiDataItem]), // Type assertion here
-          }));
+    // Define a consistent range of x-axis values (e.g., one value per month)
+    const baseDate = new Date("2020-01-01");
+    const xValues = Array.from({ length: 48 }, (_, i) =>
+      new Date(baseDate.getFullYear(), baseDate.getMonth() + i, 1).getTime()
+    );
+
+    Object.entries(selectedYears).forEach(([propertyKey, yearsSet]) => {
+      if (yearsSet.size > 0 && selectedProperties.has(propertyKey)) {
+        const propertyData = xValues.map((x) => {
+          const year = new Date(x).getFullYear().toString();
+          const month = new Date(x).getMonth();
+
+          // Find the corresponding data point for the year and month
+          const dataItem = data.find((item) => {
+            const itemYear = new Date(item.Date).getFullYear().toString();
+            const itemMonth = new Date(item.Date).getMonth();
+            return (
+              itemYear === year && itemMonth === month && yearsSet.has(year)
+            );
+          });
+
+          return {
+            x: x,
+            y: dataItem
+              ? Number(dataItem[propertyKey as keyof ApiDataItem])
+              : null,
+          };
+        });
 
         if (propertyData.length > 0) {
-          chartSeries.push({ name: propertyKey, data: propertyData });
+          chartSeries.push({
+            name: propertyKey,
+            data: propertyData,
+          });
         }
       }
     });
 
     setChartData(chartSeries);
-    console.log("Selected Properties:", selectedProperties);
-    console.log("Selected Years:", selectedYears);
-    console.log("Chart Series:", chartSeries);
   };
 
   useEffect(() => {
@@ -188,7 +205,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
 
   const biomasseData = {
     chart: {
-      height: 355,
+      height: 400,
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     title: {
@@ -246,14 +263,157 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
       : [],
   };
 
+  const selectBiomasseTonnData = () => {
+    // Update selected years for Biomasse_tonn
+    setSelectedYears((prevYears) => ({
+      ...prevYears,
+      Biomasse_tonn: new Set(["2021", "2022", "2023"]),
+    }));
+
+    // Ensure Biomasse_tonn is included in selected properties
+    setSelectedProperties(
+      (prevProps) => new Set([...Array.from(prevProps), "Biomasse_tonn"])
+    );
+  };
+
   return (
     <div
       className={`w-full h-auto relative ${
         darkMode ? "text-white" : "bg-white text-black"
       }`}
     >
-      <div className="absolute left-0 text-3xl font-light ml-4 mt-4 z-10">
-        BIOMASS
+      <div className="absolute left-0 text-2xl font-normal ml-4 mt-8 z-10">
+        PRODUCTION NUMBERS
+      </div>
+      <div className="absolute left-0 ml-4 z-10">
+        <button
+          id="multiLevelDropdownButton"
+          data-dropdown-toggle="multi-dropdown"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          type="button"
+          onClick={selectBiomasseTonnData} // Add this line
+        >
+          Biomasse{" "}
+          <svg
+            className="w-2.5 h-2.5 ms-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </button>
+      </div>
+      <div className="absolute left-[100px] ml-6 z-10">
+        <button
+          id="multiLevelDropdownButton"
+          onClick={toggleBiomassDropdown}
+          data-dropdown-toggle="multi-dropdown"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          type="button"
+        >
+          Forforbruk{" "}
+          <svg
+            className="w-2.5 h-2.5 ms-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </button>
+      </div>
+      <div className="absolute left-[200px] ml-10 z-10">
+        <button
+          id="multiLevelDropdownButton"
+          onClick={toggleBiomassDropdown}
+          data-dropdown-toggle="multi-dropdown"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          type="button"
+        >
+          Kvantum{" "}
+          <svg
+            className="w-2.5 h-2.5 ms-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </button>
+      </div>
+      <div className="absolute left-[300px] ml-10 z-10">
+        <button
+          id="multiLevelDropdownButton"
+          onClick={toggleBiomassDropdown}
+          data-dropdown-toggle="multi-dropdown"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          type="button"
+        >
+          Verdi{" "}
+          <svg
+            className="w-2.5 h-2.5 ms-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </button>
+      </div>
+      <div className="absolute left-[370px] ml-12 z-10">
+        <button
+          id="multiLevelDropdownButton"
+          onClick={toggleBiomassDropdown}
+          data-dropdown-toggle="multi-dropdown"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          type="button"
+        >
+          Utsatt fisk{" "}
+          <svg
+            className="w-2.5 h-2.5 ms-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </button>
       </div>
       <div className="absolute z-10 right-0">
         <div className="">
@@ -264,7 +424,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             type="button"
           >
-            Dropdown button{" "}
+            Filter{" "}
             <svg
               className="w-2.5 h-2.5 ms-3"
               aria-hidden="true"
