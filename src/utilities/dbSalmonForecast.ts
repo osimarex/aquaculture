@@ -1,8 +1,6 @@
 import { ConnectionPool } from "mssql";
 
-async function getHistoricFuturePrices(
-  numPoints: string = "All"
-): Promise<any> {
+async function getSalmonForecast(numPoints: string = "All"): Promise<any> {
   const user = process.env.DB_USER;
   const password = process.env.DB_PASSWORD;
   const server = process.env.DB_SERVER;
@@ -27,8 +25,8 @@ async function getHistoricFuturePrices(
     let pointsClause = numPoints === "All" ? "" : `TOP ${numPoints}`;
     let query = `
     SELECT ${pointsClause} *  
-    FROM ${process.env.DB_HFP_TABLE} 
-    ORDER BY [Closing Date] ASC
+    FROM ${process.env.DB_SF_TABLE} 
+    ORDER BY date ASC
   `;
 
     // console.log(query); // Log the query string to the console
@@ -42,4 +40,4 @@ async function getHistoricFuturePrices(
   }
 }
 
-export default getHistoricFuturePrices;
+export default getSalmonForecast;

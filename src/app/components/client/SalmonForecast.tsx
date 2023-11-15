@@ -159,10 +159,16 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       })),
   };
 
-  const [isBiomasseChecked, setIsBiomasseChecked] = useState(false);
+  const [isFirstChecked, setIsFirstChecked] = useState(false);
 
-  const handleBiomasseChange = () => {
-    setIsBiomasseChecked(!isBiomasseChecked);
+  const handleFirstChange = () => {
+    setIsFirstChecked(!isFirstChecked);
+  };
+
+  const [isSecondChecked, setIsSecondChecked] = useState(false);
+
+  const handleSecondChange = () => {
+    setIsSecondChecked(!isSecondChecked);
   };
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -203,20 +209,36 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         </button>
 
         {isDropdownOpen && (
-          <div
-            id="multi-dropdown"
-            className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded shadow-md mt-2 p-2"
-          >
-            <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
-              <input
-                type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={isBiomasseChecked}
-                onChange={handleBiomasseChange}
-              />
-              <span className="ml-2 text-sm font-medium">Biomasse</span>
-            </label>
-          </div>
+          <>
+            <div
+              id="multi-dropdown"
+              className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded shadow-md mt-2 p-2"
+            >
+              <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                  checked={isFirstChecked}
+                  onChange={handleFirstChange}
+                />
+                <span className="ml-2 text-sm font-medium">1st Month</span>
+              </label>
+            </div>
+            <div
+              id="multi-dropdown"
+              className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded shadow-md mt-2 p-2"
+            >
+              <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                  checked={isSecondChecked}
+                  onChange={handleSecondChange}
+                />
+                <span className="ml-2 text-sm font-medium">2nd Month</span>
+              </label>
+            </div>
+          </>
         )}
       </div>
       <div className="mt-14">
