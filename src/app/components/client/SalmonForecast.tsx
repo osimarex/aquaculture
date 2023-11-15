@@ -93,7 +93,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
 
   const optionsUSDNOK = {
     chart: {
-      height: 323,
+      height: 400,
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     title: {

@@ -39,21 +39,21 @@ export default function Home() {
           <List />
           <FXDailyForecast darkMode={darkMode} />
         </div>
-        <div className="lg:ml-2 text-black dark:text-white h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+        <div className="lg:ml-2 text-black dark:text-white h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           {/* <SalmonToday /> */}
           <SalmonForecast darkMode={darkMode} />
         </div>
-        <div className="lg:ml-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+        <div className="lg:ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <Smolt darkMode={darkMode} />
         </div>
-        <div className="lg:ml-2 h-fit w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
+        <div className="lg:ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
           <Proteins />
         </div>
-        <div className="lg:ml-2 h-full w-full mt-[-100px] pb-[100px] overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
+        <div className="lg:ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
           <Biomass darkMode={darkMode} />
-          <Paper darkMode={darkMode} />
+          {/* <Paper darkMode={darkMode} /> */}
         </div>
-        <div className="lg:ml-2 text-white h-full w-full mt-[-100px] pb-[100px] overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+        <div className="lg:ml-2 text-white h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <ProductionAreas darkMode={darkMode} />
         </div>
       </div>

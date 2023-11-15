@@ -60,7 +60,7 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
   const options: Highcharts.Options = {
     chart: {
       zoomType: "xy" as any,
-      height: 325,
+      height: 400,
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     credits: {

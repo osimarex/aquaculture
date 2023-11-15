@@ -104,7 +104,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
 
     return {
       chart: {
-        height: 620,
+        height: 580,
         backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
         options3d: {
           enabled: true,

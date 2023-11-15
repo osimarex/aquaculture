@@ -194,7 +194,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
 
   const biomasseData = {
     chart: {
-      height: 400,
+      height: 450,
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     title: {
@@ -315,149 +315,19 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
         darkMode ? "text-white" : "bg-white text-black"
       }`}
     >
-      <div className="absolute left-0 text-2xl font-normal ml-4 mt-8 z-10">
-        PRODUCTION NUMBERS
-      </div>
-      <div className="absolute left-0 ml-4 z-10">
-        <button
-          id="multiLevelDropdownButton"
-          data-dropdown-toggle="multi-dropdown"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          type="button"
-          onClick={selectBiomasseTonnData} // Add this line
-        >
-          Biomasse{" "}
-          <svg
-            className="w-2.5 h-2.5 ms-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 10 6"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 1 4 4 4-4"
-            />
-          </svg>
-        </button>
-      </div>
-      <div className="absolute left-[100px] ml-6 z-10">
-        <button
-          id="multiLevelDropdownButton"
-          onClick={selectForforbrukData}
-          data-dropdown-toggle="multi-dropdown"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          type="button"
-        >
-          Forforbruk{" "}
-          <svg
-            className="w-2.5 h-2.5 ms-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 10 6"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 1 4 4 4-4"
-            />
-          </svg>
-        </button>
-      </div>
-      <div className="absolute left-[200px] ml-10 z-10">
-        <button
-          id="multiLevelDropdownButton"
-          onClick={selectKvantumData}
-          data-dropdown-toggle="multi-dropdown"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          type="button"
-        >
-          Kvantum{" "}
-          <svg
-            className="w-2.5 h-2.5 ms-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 10 6"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 1 4 4 4-4"
-            />
-          </svg>
-        </button>
-      </div>
-      <div className="absolute left-[300px] ml-10 z-10">
-        <button
-          id="multiLevelDropdownButton"
-          onClick={selectVerdiData}
-          data-dropdown-toggle="multi-dropdown"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          type="button"
-        >
-          Verdi{" "}
-          <svg
-            className="w-2.5 h-2.5 ms-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 10 6"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 1 4 4 4-4"
-            />
-          </svg>
-        </button>
-      </div>
-      <div className="absolute left-[370px] ml-12 z-10">
-        <button
-          id="multiLevelDropdownButton"
-          onClick={selectUtsattFiskData}
-          data-dropdown-toggle="multi-dropdown"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          type="button"
-        >
-          Utsatt fisk{" "}
-          <svg
-            className="w-2.5 h-2.5 ms-3"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 10 6"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 1 4 4 4-4"
-            />
-          </svg>
-        </button>
-      </div>
-      <div className="absolute z-10 right-0">
-        <div className="">
+      <div className="mt-8">
+        <div className="absolute left-0 text-2xl font-normal ml-4 mt-14 z-10">
+          PRODUCTION NUMBERS
+        </div>
+        <div className="absolute left-0 ml-4 z-10">
           <button
             id="multiLevelDropdownButton"
-            onClick={toggleDropdown}
             data-dropdown-toggle="multi-dropdown"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             type="button"
+            onClick={selectBiomasseTonnData} // Add this line
           >
-            More{" "}
+            Biomasse{" "}
             <svg
               className="w-2.5 h-2.5 ms-3"
               aria-hidden="true"
@@ -474,351 +344,491 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
               />
             </svg>
           </button>
-          {/* <!-- Dropdown menu --> */}
-          <div
-            id="multi-dropdown"
-            className={`z-10 ${
-              isDropdownOpen ? "" : "hidden"
-            } bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700`}
-          >
-            <ul
-              className="py-2 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="multiLevelDropdownButton"
-            >
-              <li>
-                <button
-                  id="doubleDropdownButton"
-                  onClick={toggleBiomassDropdown}
-                  data-dropdown-toggle="doubleDropdown"
-                  data-dropdown-placement="right-start"
-                  type="button"
-                  className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  <svg
-                    className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 6 10"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m5 1 -4 4 4 4"
-                    />
-                  </svg>
-                  Biomasse
-                </button>
-                <div
-                  id="doubleDropdown"
-                  className={`z-10 ${
-                    isBiomassOpen ? "" : "hidden"
-                  } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
-                  style={{ top: "20%", right: "100%" }}
-                >
-                  <ul>
-                    {Object.keys(checkboxStates).map((year) => (
-                      <li
-                        key={year}
-                        onClick={() => toggleCheckbox("Biomasse_tonn", year)} // Pass both property key and year
-                      >
-                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                          <input
-                            id={year}
-                            type="checkbox"
-                            checked={selectedYears["Biomasse_tonn"].has(year)}
-                            onChange={() =>
-                              toggleCheckbox("Biomasse_tonn", year)
-                            }
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                          />
-                          <label
-                            htmlFor={year}
-                            className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                          >
-                            {year}
-                          </label>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <button
-                  id="doubleDropdownButton"
-                  onClick={toggleForforbrukDropdown}
-                  data-dropdown-toggle="doubleDropdown"
-                  data-dropdown-placement="right-start"
-                  type="button"
-                  className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  <svg
-                    className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 6 10"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m5 1 -4 4 4 4"
-                    />
-                  </svg>
-                  Forforbruk
-                </button>
-                <div
-                  id="doubleDropdown"
-                  className={`z-10 ${
-                    isForforbrukOpen ? "" : "hidden"
-                  } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
-                  style={{ top: "36%", right: "100%" }}
-                >
-                  <ul>
-                    {Object.keys(checkboxStates).map((year) => (
-                      <li
-                        key={year}
-                        onClick={() => toggleCheckbox("Fôrforbruk_tonn", year)} // Pass both property key and year
-                      >
-                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                          <input
-                            id={year}
-                            type="checkbox"
-                            checked={selectedYears["Fôrforbruk_tonn"].has(year)}
-                            onChange={() =>
-                              toggleCheckbox("Fôrforbruk_tonn", year)
-                            }
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                          />
-                          <label
-                            htmlFor={year}
-                            className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                          >
-                            {year}
-                          </label>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <button
-                  id="doubleDropdownButton"
-                  onClick={toggleKvantumDropdown}
-                  data-dropdown-toggle="doubleDropdown"
-                  data-dropdown-placement="right-start"
-                  type="button"
-                  className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  <svg
-                    className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 6 10"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m5 1 -4 4 4 4"
-                    />
-                  </svg>
-                  Eks. Kvantum
-                </button>
-                <div
-                  id="doubleDropdown"
-                  className={`z-10 ${
-                    isKvantumOpen ? "" : "hidden"
-                  } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
-                  style={{ top: "50%", right: "100%" }}
-                >
-                  <ul>
-                    {Object.keys(checkboxStates).map((year) => (
-                      <li
-                        key={year}
-                        onClick={() =>
-                          toggleCheckbox("Eksportert_kvantum_tonn", year)
-                        } // Pass both property key and year
-                      >
-                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                          <input
-                            id={year}
-                            type="checkbox"
-                            checked={selectedYears[
-                              "Eksportert_kvantum_tonn"
-                            ].has(year)}
-                            onChange={() =>
-                              toggleCheckbox("Eksportert_kvantum_tonn", year)
-                            }
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                          />
-                          <label
-                            htmlFor={year}
-                            className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                          >
-                            {year}
-                          </label>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <button
-                  id="doubleDropdownButton"
-                  onClick={toggleVerdiDropdown}
-                  data-dropdown-toggle="doubleDropdown"
-                  data-dropdown-placement="right-start"
-                  type="button"
-                  className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  <svg
-                    className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 6 10"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m5 1 -4 4 4 4"
-                    />
-                  </svg>
-                  Eks. verdi
-                </button>
-                <div
-                  id="doubleDropdown"
-                  className={`z-10 ${
-                    isVerdiOpen ? "" : "hidden"
-                  } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
-                  style={{ top: "66%", right: "100%" }}
-                >
-                  <ul>
-                    {Object.keys(checkboxStates).map((year) => (
-                      <li
-                        key={year}
-                        onClick={() =>
-                          toggleCheckbox("Eksportert_verdi_mill_kr", year)
-                        } // Pass both property key and year
-                      >
-                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                          <input
-                            id={year}
-                            type="checkbox"
-                            checked={selectedYears[
-                              "Eksportert_verdi_mill_kr"
-                            ].has(year)}
-                            onChange={() =>
-                              toggleCheckbox("Eksportert_verdi_mill_kr", year)
-                            }
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                          />
-                          <label
-                            htmlFor={year}
-                            className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                          >
-                            {year}
-                          </label>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
-              <li>
-                <button
-                  id="doubleDropdownButton"
-                  onClick={toggleUtsattFiskDropdown}
-                  data-dropdown-toggle="doubleDropdown"
-                  data-dropdown-placement="right-start"
-                  type="button"
-                  className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  <svg
-                    className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 6 10"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m5 1 -4 4 4 4"
-                    />
-                  </svg>
-                  Utsatt Fisk
-                </button>
-                <div
-                  id="doubleDropdown"
-                  className={`z-10 ${
-                    isUtsattFiskOpen ? "" : "hidden"
-                  } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
-                  style={{ top: "81%", right: "100%" }}
-                >
-                  <ul>
-                    {Object.keys(checkboxStates).map((year) => (
-                      <li
-                        key={year}
-                        onClick={() => toggleCheckbox("Utsatt_fisk_mill", year)} // Pass both property key and year
-                      >
-                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                          <input
-                            id={year}
-                            type="checkbox"
-                            checked={selectedYears["Utsatt_fisk_mill"].has(
-                              year
-                            )}
-                            onChange={() =>
-                              toggleCheckbox("Utsatt_fisk_mill", year)
-                            }
-                            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                          />
-                          <label
-                            htmlFor={year}
-                            className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                          >
-                            {year}
-                          </label>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
         </div>
-      </div>
-      {chartData ? (
-        <div className="flex flex-col items-start mt-4 ml-1">
-          <div className="relative w-full">
-            <div>
-              <HighchartsReact
-                highcharts={Highcharts}
-                constructorType={"stockChart"}
-                options={biomasseData}
+        <div className="absolute left-[100px] ml-6 z-10">
+          <button
+            id="multiLevelDropdownButton"
+            onClick={selectForforbrukData}
+            data-dropdown-toggle="multi-dropdown"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button"
+          >
+            Forforbruk{" "}
+            <svg
+              className="w-2.5 h-2.5 ms-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 10 6"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 4 4 4-4"
               />
+            </svg>
+          </button>
+        </div>
+        <div className="absolute left-[200px] ml-10 z-10">
+          <button
+            id="multiLevelDropdownButton"
+            onClick={selectKvantumData}
+            data-dropdown-toggle="multi-dropdown"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button"
+          >
+            Kvantum{" "}
+            <svg
+              className="w-2.5 h-2.5 ms-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 10 6"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 4 4 4-4"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="absolute left-[300px] ml-10 z-10">
+          <button
+            id="multiLevelDropdownButton"
+            onClick={selectVerdiData}
+            data-dropdown-toggle="multi-dropdown"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button"
+          >
+            Verdi{" "}
+            <svg
+              className="w-2.5 h-2.5 ms-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 10 6"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 4 4 4-4"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="absolute left-[370px] ml-12 z-10">
+          <button
+            id="multiLevelDropdownButton"
+            onClick={selectUtsattFiskData}
+            data-dropdown-toggle="multi-dropdown"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            type="button"
+          >
+            Utsatt fisk{" "}
+            <svg
+              className="w-2.5 h-2.5 ms-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 10 6"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 4 4 4-4"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="absolute z-10 right-0">
+          <div className="">
+            <button
+              id="multiLevelDropdownButton"
+              onClick={toggleDropdown}
+              data-dropdown-toggle="multi-dropdown"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              type="button"
+            >
+              More{" "}
+              <svg
+                className="w-2.5 h-2.5 ms-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 10 6"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m1 1 4 4 4-4"
+                />
+              </svg>
+            </button>
+            {/* <!-- Dropdown menu --> */}
+            <div
+              id="multi-dropdown"
+              className={`z-10 ${
+                isDropdownOpen ? "" : "hidden"
+              } bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700`}
+            >
+              <ul
+                className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="multiLevelDropdownButton"
+              >
+                <li>
+                  <button
+                    id="doubleDropdownButton"
+                    onClick={toggleBiomassDropdown}
+                    data-dropdown-toggle="doubleDropdown"
+                    data-dropdown-placement="right-start"
+                    type="button"
+                    className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    <svg
+                      className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 6 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m5 1 -4 4 4 4"
+                      />
+                    </svg>
+                    Biomasse
+                  </button>
+                  <div
+                    id="doubleDropdown"
+                    className={`z-10 ${
+                      isBiomassOpen ? "" : "hidden"
+                    } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
+                    style={{ top: "20%", right: "100%" }}
+                  >
+                    <ul>
+                      {Object.keys(checkboxStates).map((year) => (
+                        <li
+                          key={year}
+                          onClick={() => toggleCheckbox("Biomasse_tonn", year)} // Pass both property key and year
+                        >
+                          <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input
+                              id={year}
+                              type="checkbox"
+                              checked={selectedYears["Biomasse_tonn"].has(year)}
+                              onChange={() =>
+                                toggleCheckbox("Biomasse_tonn", year)
+                              }
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                            <label
+                              htmlFor={year}
+                              className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
+                            >
+                              {year}
+                            </label>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <button
+                    id="doubleDropdownButton"
+                    onClick={toggleForforbrukDropdown}
+                    data-dropdown-toggle="doubleDropdown"
+                    data-dropdown-placement="right-start"
+                    type="button"
+                    className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    <svg
+                      className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 6 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m5 1 -4 4 4 4"
+                      />
+                    </svg>
+                    Forforbruk
+                  </button>
+                  <div
+                    id="doubleDropdown"
+                    className={`z-10 ${
+                      isForforbrukOpen ? "" : "hidden"
+                    } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
+                    style={{ top: "36%", right: "100%" }}
+                  >
+                    <ul>
+                      {Object.keys(checkboxStates).map((year) => (
+                        <li
+                          key={year}
+                          onClick={() =>
+                            toggleCheckbox("Fôrforbruk_tonn", year)
+                          } // Pass both property key and year
+                        >
+                          <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input
+                              id={year}
+                              type="checkbox"
+                              checked={selectedYears["Fôrforbruk_tonn"].has(
+                                year
+                              )}
+                              onChange={() =>
+                                toggleCheckbox("Fôrforbruk_tonn", year)
+                              }
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                            <label
+                              htmlFor={year}
+                              className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
+                            >
+                              {year}
+                            </label>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <button
+                    id="doubleDropdownButton"
+                    onClick={toggleKvantumDropdown}
+                    data-dropdown-toggle="doubleDropdown"
+                    data-dropdown-placement="right-start"
+                    type="button"
+                    className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    <svg
+                      className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 6 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m5 1 -4 4 4 4"
+                      />
+                    </svg>
+                    Eks. Kvantum
+                  </button>
+                  <div
+                    id="doubleDropdown"
+                    className={`z-10 ${
+                      isKvantumOpen ? "" : "hidden"
+                    } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
+                    style={{ top: "50%", right: "100%" }}
+                  >
+                    <ul>
+                      {Object.keys(checkboxStates).map((year) => (
+                        <li
+                          key={year}
+                          onClick={() =>
+                            toggleCheckbox("Eksportert_kvantum_tonn", year)
+                          } // Pass both property key and year
+                        >
+                          <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input
+                              id={year}
+                              type="checkbox"
+                              checked={selectedYears[
+                                "Eksportert_kvantum_tonn"
+                              ].has(year)}
+                              onChange={() =>
+                                toggleCheckbox("Eksportert_kvantum_tonn", year)
+                              }
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                            <label
+                              htmlFor={year}
+                              className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
+                            >
+                              {year}
+                            </label>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <button
+                    id="doubleDropdownButton"
+                    onClick={toggleVerdiDropdown}
+                    data-dropdown-toggle="doubleDropdown"
+                    data-dropdown-placement="right-start"
+                    type="button"
+                    className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    <svg
+                      className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 6 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m5 1 -4 4 4 4"
+                      />
+                    </svg>
+                    Eks. verdi
+                  </button>
+                  <div
+                    id="doubleDropdown"
+                    className={`z-10 ${
+                      isVerdiOpen ? "" : "hidden"
+                    } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
+                    style={{ top: "66%", right: "100%" }}
+                  >
+                    <ul>
+                      {Object.keys(checkboxStates).map((year) => (
+                        <li
+                          key={year}
+                          onClick={() =>
+                            toggleCheckbox("Eksportert_verdi_mill_kr", year)
+                          } // Pass both property key and year
+                        >
+                          <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input
+                              id={year}
+                              type="checkbox"
+                              checked={selectedYears[
+                                "Eksportert_verdi_mill_kr"
+                              ].has(year)}
+                              onChange={() =>
+                                toggleCheckbox("Eksportert_verdi_mill_kr", year)
+                              }
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                            <label
+                              htmlFor={year}
+                              className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
+                            >
+                              {year}
+                            </label>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <button
+                    id="doubleDropdownButton"
+                    onClick={toggleUtsattFiskDropdown}
+                    data-dropdown-toggle="doubleDropdown"
+                    data-dropdown-placement="right-start"
+                    type="button"
+                    className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    <svg
+                      className="w-2.5 h-2.5 mr-2 rtl:rotate-180"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 6 10"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m5 1 -4 4 4 4"
+                      />
+                    </svg>
+                    Utsatt Fisk
+                  </button>
+                  <div
+                    id="doubleDropdown"
+                    className={`z-10 ${
+                      isUtsattFiskOpen ? "" : "hidden"
+                    } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute`}
+                    style={{ top: "81%", right: "100%" }}
+                  >
+                    <ul>
+                      {Object.keys(checkboxStates).map((year) => (
+                        <li
+                          key={year}
+                          onClick={() =>
+                            toggleCheckbox("Utsatt_fisk_mill", year)
+                          } // Pass both property key and year
+                        >
+                          <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <input
+                              id={year}
+                              type="checkbox"
+                              checked={selectedYears["Utsatt_fisk_mill"].has(
+                                year
+                              )}
+                              onChange={() =>
+                                toggleCheckbox("Utsatt_fisk_mill", year)
+                              }
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                            />
+                            <label
+                              htmlFor={year}
+                              className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
+                            >
+                              {year}
+                            </label>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-      ) : (
-        "Loading data..."
-      )}
+      </div>
+      <div>
+        {chartData ? (
+          <div className="flex flex-col items-start mt-4 ml-1">
+            <div className="relative w-full">
+              <div className="mt-20">
+                <HighchartsReact
+                  highcharts={Highcharts}
+                  constructorType={"stockChart"}
+                  options={biomasseData}
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          "Loading data..."
+        )}
+      </div>
     </div>
   );
 };
