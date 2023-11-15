@@ -915,7 +915,7 @@ export const areasGeoJson = {
         romming3: placesInSvenskegrensenCount2021,
         romming4: placesInBindalCount2020,
         romming5: placesInBindalCount2019,
-        biomasse: "10000 tonn",
+        biomasse: "5,465 tonn",
         temperatur: "10 ℃",
       },
       geometry: {
@@ -990,6 +990,8 @@ export const areasGeoJson = {
       properties: {
         name: "Ryfylke",
         romming: placesInRyfylkeCount,
+        biomasse: "46,276 tonn",
+        temperatur: "10 ℃",
       },
       geometry: {
         type: "Polygon",
@@ -1018,6 +1020,8 @@ export const areasGeoJson = {
       type: "Feature",
       properties: {
         name: "Karmøy til Sotra",
+        biomasse: "83,568 tonn",
+        temperatur: "10 ℃",
       },
       geometry: {
         type: "Polygon",
@@ -1066,7 +1070,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Nordhordaland til Stadt" },
+      properties: {
+        name: "Nordhordaland til Stadt",
+        biomasse: "61,951 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
@@ -1110,7 +1118,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Stadt til Hustadvika" },
+      properties: {
+        name: "Stadt til Hustadvika",
+        biomasse: "45,179 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
@@ -1135,7 +1147,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Nordmøre og Sør-Trøndelag" },
+      properties: {
+        name: "Nordmøre og Sør-Trøndelag",
+        biomasse: "148,769 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
@@ -1164,7 +1180,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Nord-Trøndelag med Bindal" },
+      properties: {
+        name: "Nord-Trøndelag med Bindal",
+        biomasse: "78,292 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "MultiPolygon",
         coordinates: [
@@ -1204,7 +1224,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Helgeland til Bodø" },
+      properties: {
+        name: "Helgeland til Bodø",
+        biomasse: "91,657 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
@@ -1237,7 +1261,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Vestfjorden og Vesterålen" },
+      properties: {
+        name: "Vestfjorden og Vesterålen",
+        biomasse: "84,276 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
@@ -1289,7 +1317,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Andøya til Senja" },
+      properties: {
+        name: "Andøya til Senja",
+        biomasse: "83,916 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
@@ -1327,7 +1359,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Kvaløya til Loppa" },
+      properties: {
+        name: "Kvaløya til Loppa",
+        biomasse: "52,431 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
@@ -1362,7 +1398,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Vest-Finnmark" },
+      properties: {
+        name: "Vest-Finnmark",
+        biomasse: "88,609 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
@@ -1395,7 +1435,11 @@ export const areasGeoJson = {
     },
     {
       type: "Feature",
-      properties: { name: "Øst-Finnmark" },
+      properties: {
+        name: "Øst-Finnmark",
+        biomasse: "6,892 tonn",
+        temperatur: "10 ℃",
+      },
       geometry: {
         type: "Polygon",
         coordinates: [
