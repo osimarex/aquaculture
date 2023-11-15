@@ -227,8 +227,9 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
                 (point as any).zoomTo(); // Type assertion if zoomTo is not recognized
                 setShowInfoCard(true);
                 setInfoCardContent(
-                  point.properties.name +
-                    "<hr /><br/><span className=text-black>2022: </span>" +
+                  "<div className=text-bold> Rømming:</div> <hr/>" +
+                    point.properties.name +
+                    "<hr /><br/><span className=text-white>2022: </span>" +
                     point.properties.romming2 +
                     "<hr /><br/><span className=text-black>2021: </span>" +
                     point.properties.romming3 +
