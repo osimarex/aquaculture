@@ -93,7 +93,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
 
   const optionsUSDNOK = {
     chart: {
-      height: 400,
+      height: 350,
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     title: {
@@ -169,7 +169,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         <div className="flex flex-col items-start mt-8 ml-1">
           <div className="relative w-full">
             <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-2xl">
-              SALMON PRICE
+              SALMON FORECAST
             </div>
             <div>
               <HighchartsReact

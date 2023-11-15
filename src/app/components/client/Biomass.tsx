@@ -194,7 +194,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
 
   const biomasseData = {
     chart: {
-      height: 450,
+      height: 440,
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     title: {
