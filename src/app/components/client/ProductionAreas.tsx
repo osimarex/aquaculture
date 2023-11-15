@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import Highcharts from "highcharts";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import Highcharts, { Chart } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import "jquery";
 import "highcharts/modules/map";
@@ -55,9 +55,19 @@ interface HighchartsPoint {
       name: string;
       biomasse: string;
       romming: string;
+      romming2: string;
+      romming3: string;
+      romming4: string;
+      romming5: string;
       temperatur: string;
     };
   };
+}
+
+declare module "highcharts" {
+  interface Chart {
+    selectedPoint?: Highcharts.Point; // Add selectedPoint as an optional property
+  }
 }
 
 const statusColors: { [key: string]: string } = {
@@ -86,6 +96,8 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
       setStatusData(data);
     })();
   }, []);
+
+  const chartRef = useRef<HighchartsReact.RefObject>(null);
 
   const options = useMemo(() => {
     if (!mapData) return null;
@@ -134,6 +146,10 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
           const areaName = this.point.properties.name;
           const biomasseAmount = this.point.properties.biomasse;
           const romming = this.point.properties.romming;
+          const romming2 = this.point.properties.romming2;
+          const romming3 = this.point.properties.romming3;
+          const romming4 = this.point.properties.romming4;
+          const romming5 = this.point.properties.romming5;
           const temperatur = this.point.properties.temperatur;
           const areaStatusEntry = statusData.find(
             (area) => area.attributes.name === areaName
@@ -190,29 +206,49 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
           },
           point: {
             events: {
-              click: function () {
-                const point: any = this;
-                console.log(point.properties.name);
-                const chart = point.series.chart;
+              click: function (this: Highcharts.Point) {
+                const point: Highcharts.Point = this;
 
-                // Deselect previously selected point if any
-                if (chart.selectedPoint && chart.selectedPoint !== point) {
-                  chart.selectedPoint.select(false);
+                if (chartInstance && chartInstance.selectedPoint) {
+                  if (chartInstance.selectedPoint !== point) {
+                    // Safely call select with optional chaining
+                    chartInstance.selectedPoint?.select(false);
+                  }
                 }
 
-                point.select(null, true); // Toggle selection of the clicked point
-                chart.selectedPoint = point; // Save the reference of the selected point
+                point.select(false, true);
 
-                point.zoomTo();
+                // Set the selected point on the chartInstance
+                if (chartInstance) {
+                  chartInstance.selectedPoint = point;
+                }
+
+                // Assuming zoomTo is a method on the point
+                (point as any).zoomTo(); // Type assertion if zoomTo is not recognized
                 setShowInfoCard(true);
-                setInfoCardContent(point.properties.name);
+                setInfoCardContent(
+                  point.properties.name +
+                    "<hr /><br/><span className=text-black>2022: </span>" +
+                    point.properties.romming2 +
+                    "<hr /><br/><span className=text-black>2021: </span>" +
+                    point.properties.romming3 +
+                    "<hr /><br/><span className=text-black>2020: </span>" +
+                    point.properties.romming4 +
+                    "<hr /><br/><span className=text-black>2019: </span>" +
+                    point.properties.romming5
+                );
               },
-              // Setting the hovered region name on mouse over
-              mouseOver: function (this: CustomHighchartsPoint) {
-                this.series.chart.setTitle({ text: this.properties.name });
+              mouseOver: function (this: Highcharts.Point) {
+                // Check if 'name' is defined and is a string or number. If so, convert it to a string.
+                const titleText =
+                  this.options.name !== undefined
+                    ? String(this.options.name)
+                    : undefined;
+
+                this.series.chart.setTitle({ text: titleText });
               },
-              // Reset the title to "AQUACULTURE" on mouse out
-              mouseOut: function (this: CustomHighchartsPoint) {
+
+              mouseOut: function (this: Highcharts.Point) {
                 this.series.chart.setTitle({ text: "PRODUCTION AREAS" });
               },
             },
@@ -230,26 +266,24 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
           highcharts={Highcharts}
           constructorType={"mapChart"}
           options={options}
-          callback={(chart: any) => {
-            setChartInstance(chart);
-          }}
+          ref={chartRef} // Assign the ref here
         />
       )}
-      {showInfoCard && (
+      {showInfoCard && infoCardContent && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-          {/* Modal overlay */}
           <div className="bg-white p-4 rounded-lg shadow-lg relative w-64">
-            {/* Modal content */}
             <div className="flex justify-between items-center">
-              <span className="text-black text-lg font-bold">
-                {infoCardContent}
-              </span>
+              {/* Ensure infoCardContent is not null before rendering */}
+              <span
+                className="text-md font-normal text-gray-800"
+                dangerouslySetInnerHTML={{ __html: infoCardContent }}
+              />
               <button
                 className="ml-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-700 focus:outline-none"
                 onClick={() => {
                   setShowInfoCard(false);
-                  if (chartInstance) {
-                    chartInstance.mapZoom(); // This zooms out
+                  if (chartRef.current && chartRef.current.chart) {
+                    chartRef.current.chart.mapZoom(); // or the appropriate method to reset zoom
                   }
                 }}
               >

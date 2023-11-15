@@ -797,21 +797,101 @@ async function fetchDataAndLogProperties() {
 
       areasGeoJson.features[0].properties.romming =
         placesInSvenskegrensenCount2023;
+      areasGeoJson.features[0].properties.romming2 =
+        placesInSvenskegrensenCount2022;
+      areasGeoJson.features[0].properties.romming3 =
+        placesInSvenskegrensenCount2021;
+      areasGeoJson.features[0].properties.romming4 =
+        placesInSvenskegrensenCount2020;
+      areasGeoJson.features[0].properties.romming5 =
+        placesInSvenskegrensenCount2019;
+
       areasGeoJson.features[1].properties.romming = placesInRyfylkeCount2023;
+      areasGeoJson.features[1].properties.romming2 = placesInRyfylkeCount2022;
+      areasGeoJson.features[1].properties.romming3 = placesInRyfylkeCount2021;
+      areasGeoJson.features[1].properties.romming4 = placesInRyfylkeCount2020;
+      areasGeoJson.features[1].properties.romming5 = placesInRyfylkeCount2019;
+
       areasGeoJson.features[2].properties.romming = placesInKarmoyCount2023;
+      areasGeoJson.features[2].properties.romming2 = placesInKarmoyCount2022;
+      areasGeoJson.features[2].properties.romming3 = placesInKarmoyCount2021;
+      areasGeoJson.features[2].properties.romming4 = placesInKarmoyCount2020;
+      areasGeoJson.features[2].properties.romming5 = placesInKarmoyCount2019;
+
       areasGeoJson.features[3].properties.romming = placesInNordhordaland2023;
+      areasGeoJson.features[3].properties.romming2 = placesInNordhordaland2022;
+      areasGeoJson.features[3].properties.romming3 = placesInNordhordaland2021;
+      areasGeoJson.features[3].properties.romming4 = placesInNordhordaland2020;
+      areasGeoJson.features[3].properties.romming5 = placesInNordhordaland2019;
+
       areasGeoJson.features[4].properties.romming = placesInStadtCount2023;
+      areasGeoJson.features[4].properties.romming2 = placesInStadtCount2022;
+      areasGeoJson.features[4].properties.romming3 = placesInStadtCount2021;
+      areasGeoJson.features[4].properties.romming4 = placesInStadtCount2020;
+      areasGeoJson.features[4].properties.romming5 = placesInStadtCount2019;
+
       areasGeoJson.features[5].properties.romming = placesInNordogSorCount2023;
+      areasGeoJson.features[5].properties.romming2 = placesInNordogSorCount2022;
+      areasGeoJson.features[5].properties.romming3 = placesInNordogSorCount2021;
+      areasGeoJson.features[5].properties.romming4 = placesInNordogSorCount2020;
+      areasGeoJson.features[5].properties.romming5 = placesInNordogSorCount2019;
+
       areasGeoJson.features[6].properties.romming = placesInBindalCount2023;
+      areasGeoJson.features[6].properties.romming2 = placesInBindalCount2022;
+      areasGeoJson.features[6].properties.romming3 = placesInBindalCount2021;
+      areasGeoJson.features[6].properties.romming4 = placesInBindalCount2020;
+      areasGeoJson.features[6].properties.romming5 = placesInBindalCount2019;
+
       areasGeoJson.features[7].properties.romming = placesInHelgelandCount2023;
+      areasGeoJson.features[7].properties.romming2 = placesInHelgelandCount2022;
+      areasGeoJson.features[7].properties.romming3 = placesInHelgelandCount2021;
+      areasGeoJson.features[7].properties.romming4 = placesInHelgelandCount2020;
+      areasGeoJson.features[7].properties.romming5 = placesInHelgelandCount2019;
+
       areasGeoJson.features[8].properties.romming =
         placesInVestfjordenCount2023;
+      areasGeoJson.features[8].properties.romming2 =
+        placesInVestfjordenCount2022;
+      areasGeoJson.features[8].properties.romming3 =
+        placesInVestfjordenCount2021;
+      areasGeoJson.features[8].properties.romming4 =
+        placesInVestfjordenCount2020;
+      areasGeoJson.features[8].properties.romming5 =
+        placesInVestfjordenCount2019;
+
       areasGeoJson.features[9].properties.romming = placesInSenjaCount2023;
+      areasGeoJson.features[9].properties.romming2 = placesInSenjaCount2022;
+      areasGeoJson.features[9].properties.romming3 = placesInSenjaCount2021;
+      areasGeoJson.features[9].properties.romming4 = placesInSenjaCount2020;
+      areasGeoJson.features[9].properties.romming5 = placesInSenjaCount2019;
+
       areasGeoJson.features[10].properties.romming = placesInLoppaCount2023;
+      areasGeoJson.features[10].properties.romming2 = placesInLoppaCount2022;
+      areasGeoJson.features[10].properties.romming3 = placesInLoppaCount2021;
+      areasGeoJson.features[10].properties.romming4 = placesInLoppaCount2020;
+      areasGeoJson.features[10].properties.romming5 = placesInLoppaCount2019;
+
       areasGeoJson.features[11].properties.romming =
         placesInVestFinnmarkCount2023;
+      areasGeoJson.features[11].properties.romming2 =
+        placesInVestFinnmarkCount2022;
+      areasGeoJson.features[11].properties.romming3 =
+        placesInVestFinnmarkCount2021;
+      areasGeoJson.features[11].properties.romming4 =
+        placesInVestFinnmarkCount2020;
+      areasGeoJson.features[11].properties.romming5 =
+        placesInVestFinnmarkCount2019;
+
       areasGeoJson.features[12].properties.romming =
         placesInOstFinnmarkCount2023;
+      areasGeoJson.features[12].properties.romming2 =
+        placesInOstFinnmarkCount2022;
+      areasGeoJson.features[12].properties.romming3 =
+        placesInOstFinnmarkCount2021;
+      areasGeoJson.features[12].properties.romming4 =
+        placesInOstFinnmarkCount2020;
+      areasGeoJson.features[12].properties.romming5 =
+        placesInOstFinnmarkCount2019;
     } else {
       console.error("No features found in the API response.");
     }
@@ -830,7 +910,11 @@ export const areasGeoJson = {
       type: "Feature",
       properties: {
         name: "Svenskegrensen til Jæren",
-        romming: placesInSvenskegrensenCount,
+        romming: placesInSvenskegrensenCount2023,
+        romming2: placesInSvenskegrensenCount2022,
+        romming3: placesInSvenskegrensenCount2021,
+        romming4: placesInBindalCount2020,
+        romming5: placesInBindalCount2019,
         biomasse: "10000 tonn",
         temperatur: "10 ℃",
       },
@@ -905,6 +989,7 @@ export const areasGeoJson = {
       type: "Feature",
       properties: {
         name: "Ryfylke",
+        romming: placesInRyfylkeCount,
       },
       geometry: {
         type: "Polygon",
