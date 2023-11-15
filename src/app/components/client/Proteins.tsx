@@ -10,11 +10,11 @@ interface CompetingProteins {
 
 const initialProteins: CompetingProteins[] = [
   { name: "Salmon", pricePerKg: 0, date: "10/11/23", currency: "NOK" },
-  { name: "Poultry", pricePerKg: 1.33, date: "10/11/23", currency: "USD" },
-  { name: "Pig", pricePerKg: 2.85, date: "10/11/23", currency: "USD" },
-  { name: "Bovine", pricePerKg: 8.93, date: "10/11/23", currency: "USD" },
-  { name: "Ovine", pricePerKg: 5.65, date: "10/11/23", currency: "AUD" },
-  { name: "White fish", pricePerKg: 19.66, date: "10/11/23", currency: "GBP" },
+  { name: "Poultry", pricePerKg: 1.261, date: "10/11/23", currency: "USD" },
+  { name: "Pig", pricePerKg: 2.783, date: "10/11/23", currency: "USD" },
+  { name: "Bovine", pricePerKg: 8.53, date: "10/11/23", currency: "USD" },
+  { name: "Ovine", pricePerKg: 5.91, date: "10/11/23", currency: "AUD" },
+  { name: "White fish", pricePerKg: 19.49, date: "10/11/23", currency: "GBP" },
 ];
 
 const Protein: React.FC = () => {

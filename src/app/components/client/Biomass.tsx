@@ -29,6 +29,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
   const seriesColors = ["#4895EF", "#FF5733", "#C70039", "#900C3F", "#581845"];
   //To check the entire <li>
   const [checkboxStates, setCheckboxStates] = useState<CheckboxStates>({
+    "2019": false,
     "2020": false,
     "2021": false,
     "2022": false,
@@ -91,6 +92,17 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
   };
 
   const toggleBiomassDropdown = () => {
+    setIsBiomassOpen((prevState) => {
+      togglePropertySelection("Biomasse_tonn", !prevState);
+      return !prevState;
+    });
+    setIsKvantumOpen(false);
+    setIsForforbrukOpen(false);
+    setIsVerdiOpen(false);
+    setIsUtsattFiskOpen(false);
+  };
+
+  const toggleBiomassYearDropdown = () => {
     setIsBiomassOpen((prevState) => {
       togglePropertySelection("Biomasse_tonn", !prevState);
       return !prevState;
@@ -263,6 +275,27 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
     setSelectedProperties(new Set(["Biomasse_tonn"]));
   };
 
+  const selectBiomasseEverythingData = () => {
+    // Update selected years specifically for Biomasse_tonn
+    setSelectedYears((prevYears) => ({
+      ...prevYears,
+      Biomasse_tonn: new Set([
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+      ]),
+    }));
+
+    // Update selected properties to include only Biomasse_tonn
+    setSelectedProperties(new Set(["Biomasse_tonn"]));
+  };
+
   const selectForforbrukData = () => {
     // Update selected years specifically for Biomasse_tonn
     setSelectedYears((prevYears) => ({
@@ -325,7 +358,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
             data-dropdown-toggle="multi-dropdown"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             type="button"
-            onClick={selectBiomasseTonnData} // Add this line
+            onClick={selectBiomasseTonnData}
           >
             Biomasse{" "}
             <svg
@@ -344,7 +377,32 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
               />
             </svg>
           </button>
+          {/* <div
+            id="multi-dropdown"
+            className={`z-10 ${
+              isDropdownOpen ? "" : "hidden"
+            } bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700`}
+          >
+            <ul
+              className="py-2 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="multiLevelDropdownButton"
+            >
+              <li>
+                <button
+                  id="doubleDropdownButton"
+                  onClick={selectBiomasseEverythingData}
+                  data-dropdown-toggle="doubleDropdown"
+                  data-dropdown-placement="right-start"
+                  type="button"
+                  className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Biomasse Year
+                </button>
+              </li>
+            </ul>
+          </div> */}
         </div>
+
         <div className="absolute left-[100px] ml-6 z-10">
           <button
             id="multiLevelDropdownButton"
@@ -449,6 +507,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
             </svg>
           </button>
         </div>
+
         <div className="absolute z-10 right-0">
           <div className="">
             <button
