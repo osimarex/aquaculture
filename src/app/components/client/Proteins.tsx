@@ -116,9 +116,9 @@ const Protein: React.FC = () => {
           proteins[0].pricePerKg,
           proteins[0].currency
         );
-        let result = 100 - (convertedPrice / salmonPrice) * 100;
+        let result = (convertedPrice / salmonPrice) * 100;
 
-        const isNegative = result < 0;
+        const isNegative = result > 100;
 
         // Set result to 100% for the "Salmon" protein
         if (protein.name === "Salmon") {
@@ -146,7 +146,7 @@ const Protein: React.FC = () => {
               ></div>
               {/* Result Text (conditionally displayed on hover) */}
               <div
-                className={`absolute top-3 opacity-100 hover:opacity-100 text-white transition-opacity duration-300 ease-in-out
+                className={`absolute top-3 opacity-100 hover:opacity-100 text-black transition-opacity duration-300 ease-in-out
                 }`}
               >
                 {result === 100 ? "100%" : `${result.toFixed(1)} %`}

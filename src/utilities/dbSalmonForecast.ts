@@ -25,8 +25,7 @@ async function getSalmonForecast(numPoints: string = "All"): Promise<any> {
     let pointsClause = numPoints === "All" ? "" : `TOP ${numPoints}`;
     let query = `
     SELECT ${pointsClause} *  
-    FROM ${process.env.DB_SF_TABLE} 
-    ORDER BY date ASC
+    FROM ${process.env.DB_SF_TABLE}
   `;
 
     // console.log(query); // Log the query string to the console

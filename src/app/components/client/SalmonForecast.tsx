@@ -11,12 +11,13 @@ interface Props {
 }
 
 const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
-  const [chartData, setChartData] = React.useState<ChartSeries | null>(null);
+  const [chartData, setChartData] = useState<ChartSeries | null>(null);
+  const [weekNumbers, setWeekNumbers] = useState<string[]>([]); // State to store week numbers as strings
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/dailyForecast");
+        const response = await fetch("/api/salmonForecast");
         const data = await response.json();
         processChartData(data);
       } catch (error) {
@@ -24,32 +25,25 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       }
     };
 
-    const processChartData = (data: any) => {
-      const usdNokData = data.find((item: any) => item.pair === "USDNOK");
-      const eurNokData = data.find((item: any) => item.pair === "EURNOK");
+    const processChartData = (data: any[]) => {
+      let weekCount = 0; // A continuous count of weeks
+      const weekLabels: React.SetStateAction<string[]> = []; // For x-axis labels
 
-      const usdNokSeries = Object.keys(usdNokData)
-        .filter((key) => key.startsWith("date_"))
-        .map((key, index) => {
-          return {
-            x: new Date(usdNokData[key]).getTime(),
-            y: usdNokData[`price_${index}`],
-          };
-        });
+      const seriesData = data.map((item) => {
+        const weekNumber = parseInt(item.week.trim(), 10);
+        const price = parseFloat(item.forecasted_price.trim());
 
-      const eurNokSeries = Object.keys(eurNokData)
-        .filter((key) => key.startsWith("date_"))
-        .map((key, index) => {
-          return {
-            x: new Date(eurNokData[key]).getTime(),
-            y: eurNokData[`price_${index}`],
-          };
-        });
+        weekCount++;
+        // Create a label for the x-axis
+        const weekLabel =
+          weekNumber <= 52 ? `Week ${weekNumber}` : `Week ${weekNumber - 52}`;
+        weekLabels.push(weekLabel);
 
-      setChartData([
-        { name: "USDNOK", data: usdNokSeries },
-        { name: "EURNOK", data: eurNokSeries },
-      ]);
+        return { x: weekCount, y: price }; // Keep x as a numerical value
+      });
+
+      setChartData([{ name: "Salmon Price", data: seriesData }]);
+      setWeekNumbers(weekLabels); // Set the week labels for the x-axis
     };
 
     fetchData();
@@ -58,18 +52,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   useEffect(() => {
     if (darkMode) {
       Highcharts.theme = {
-        colors: [
-          "#DDDF0D",
-          "#7798BF",
-          "#55BF3B",
-          "#DF5353",
-          "#aaeeee",
-          "#ff0066",
-          "#eeaaee",
-          "#55BF3B",
-          "#DF5353",
-          "#7798BF",
-        ],
+        colors: ["#DDDF0D"],
       };
     } else {
       Highcharts.theme = {
@@ -91,7 +74,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
     Highcharts.setOptions(Highcharts.theme);
   }, [darkMode]);
 
-  const optionsUSDNOK = {
+  const options = {
     chart: {
       height: 380,
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
@@ -111,8 +94,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     xAxis: {
-      type: "datetime",
-      text: "ff",
+      categories: weekNumbers, // Use week numbers as categories
       labels: {
         style: {
           color: darkMode ? "#ffffff" : "#000000",
@@ -120,14 +102,12 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     yAxis: {
-      gridLineColor: darkMode ? "" : "",
       title: {
         text: "",
         style: {
           color: darkMode ? "#ffffff" : "#000000",
         },
       },
-      range: 0.1,
       labels: {
         format: "{value:.2f}",
         style: {
@@ -139,24 +119,11 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       enabled: false,
     },
     series: chartData
-      ?.filter((series) => series.name === "USDNOK")
-      .map((series) => ({
-        ...series,
-        type: "spline",
-        color: darkMode ? "#40ca16" : "#40ca16",
-        marker: {
-          enabled: false,
-        },
-        zones: [
-          {
-            value: series.data[0]?.y - 0.001,
-            color: darkMode ? "#ff4545" : "#fd2b2b",
-          },
-          {
-            color: darkMode ? "#40ca16" : "#40ca16",
-          },
-        ],
-      })),
+      ? chartData.map((series) => ({
+          ...series,
+          type: "spline",
+        }))
+      : [],
   };
 
   const [isFirstChecked, setIsFirstChecked] = useState(false);
@@ -249,10 +216,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
                 SALMON FORECAST
               </div>
               <div>
-                <HighchartsReact
-                  highcharts={Highcharts}
-                  options={optionsUSDNOK}
-                />
+                <HighchartsReact highcharts={Highcharts} options={options} />
               </div>
             </div>
           </div>
