@@ -22,10 +22,14 @@ interface PriceData {
   ask: number;
 }
 
-interface SymbolProps extends PriceData {
+// Extending PriceData to include the signal property
+interface WebSocketPriceData extends PriceData {
+  signal: number | null;
+}
+
+interface SymbolProps extends WebSocketPriceData {
   prevBid: number | null;
   prevAsk: number | null;
-  signal: number | null;
 }
 
 const SymbolRow: React.FC<SymbolProps> = ({
@@ -105,14 +109,16 @@ const List: React.FC = () => {
   const [initialDataStored, setInitialDataStored] = useState(false);
 
   // Initialize prevData with stored data from local storage
-  const [prevData, setPrevData] = useState<{ [key: string]: PriceData }>(() => {
+  const [prevData, setPrevData] = useState<{
+    [key: string]: WebSocketPriceData;
+  }>(() => {
     const storedData = localStorage.getItem("forexData");
     return storedData ? JSON.parse(storedData) : {};
   });
 
   // Function to save data to local storage
   const saveDataToLocalStorage = (dataToStore: {
-    [key: string]: PriceData;
+    [key: string]: WebSocketPriceData;
   }) => {
     localStorage.setItem("forexData", JSON.stringify(dataToStore));
   };
@@ -120,9 +126,10 @@ const List: React.FC = () => {
   // Store initial data and set the flag
   useEffect(() => {
     if (data && !initialDataStored && data.USDNOK && data.EURNOK) {
-      // Check for valid data
-      setPrevData(data as unknown as { [key: string]: PriceData });
-      saveDataToLocalStorage(data as unknown as { [key: string]: PriceData });
+      setPrevData(data as unknown as { [key: string]: WebSocketPriceData });
+      saveDataToLocalStorage(
+        data as unknown as { [key: string]: WebSocketPriceData }
+      );
       setInitialDataStored(true);
     }
   }, [data, initialDataStored]);
@@ -138,7 +145,9 @@ const List: React.FC = () => {
             {...displayData.USDNOK}
             prevBid={prevData?.USDNOK?.bid || null}
             prevAsk={prevData?.USDNOK?.ask || null}
-            signal={displayData.USDNOK.signal || null}
+            signal={
+              "signal" in displayData.USDNOK ? displayData.USDNOK.signal : null
+            }
           />
         </div>
       )}
@@ -150,7 +159,9 @@ const List: React.FC = () => {
             {...displayData.EURNOK}
             prevBid={prevData?.EURNOK?.bid || null}
             prevAsk={prevData?.EURNOK?.ask || null}
-            signal={displayData.EURNOK.signal || null}
+            signal={
+              "signal" in displayData.EURNOK ? displayData.EURNOK.signal : null
+            }
           />
           <hr className="border-white mr-4 mt-2" />
         </div>
