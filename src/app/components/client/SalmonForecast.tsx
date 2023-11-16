@@ -122,6 +122,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       ? chartData.map((series) => ({
           ...series,
           type: "spline",
+          color: "#40ca16",
           marker: {
             enabled: false,
           },
