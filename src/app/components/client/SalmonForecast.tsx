@@ -12,7 +12,7 @@ interface Props {
 
 const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
-  const [weekNumbers, setWeekNumbers] = useState<string[]>([]); // State to store week numbers as strings
+  const [weekNumbers, setWeekNumbers] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,24 +26,35 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
     };
 
     const processChartData = (data: any[]) => {
-      let weekCount = 0; // A continuous count of weeks
-      const weekLabels: React.SetStateAction<string[]> = []; // For x-axis labels
+      const weekLabels: string[] = []; // For x-axis labels
 
-      const seriesData = data.map((item) => {
-        const weekNumber = parseInt(item.week.trim(), 10);
+      const currentWeek = getCurrentWeekNumber();
+
+      const seriesData = data.map((item, index) => {
+        let weekNumber = currentWeek + index;
+        if (weekNumber > 52) {
+          weekNumber = weekNumber % 52;
+        }
+
         const price = parseFloat(item.forecasted_price.trim());
 
-        weekCount++;
         // Create a label for the x-axis
-        const weekLabel =
-          weekNumber <= 52 ? `Week ${weekNumber}` : `Week ${weekNumber - 52}`;
+        const weekLabel = `${weekNumber === 0 ? 52 : weekNumber}`;
         weekLabels.push(weekLabel);
 
-        return { x: weekCount, y: price }; // Keep x as a numerical value
+        return { x: index, y: price };
       });
 
       setChartData([{ name: "Salmon Price", data: seriesData }]);
-      setWeekNumbers(weekLabels); // Set the week labels for the x-axis
+      setWeekNumbers(weekLabels);
+    };
+
+    // Example function to get the current week number - replace with your actual logic
+    const getCurrentWeekNumber = () => {
+      const now = new Date();
+      const startOfYear = new Date(now.getFullYear(), 0, 1);
+      const pastDaysOfYear = (now.getTime() - startOfYear.getTime()) / 86400000; // Convert to milliseconds
+      return Math.ceil((pastDaysOfYear + startOfYear.getDay() + 1) / 7);
     };
 
     fetchData();
@@ -155,16 +166,16 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         darkMode ? "text-white" : "bg-white text-black"
       }`}
     >
-      <div className="absolute z-20 left-0 mt-[-40px]">
+      <div className="absolute z-20 left-0 mt-[-50px]">
         <button
           id="multiLevelDropdownButton"
           onClick={toggleDropdown}
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           type="button"
         >
-          Contracts{" "}
+          Contracts
           <svg
-            className="w-2.5 h-2.5 ms-3"
+            className="w-2.5 h-2.5 ml-3"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -181,36 +192,29 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         </button>
 
         {isDropdownOpen && (
-          <>
-            <div
-              id="multi-dropdown"
-              className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded shadow-md mt-2 p-2"
-            >
-              <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  checked={isFirstChecked}
-                  onChange={handleFirstChange}
-                />
-                <span className="ml-2 text-sm font-medium">1st Month</span>
-              </label>
-            </div>
-            <div
-              id="multi-dropdown"
-              className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded shadow-md mt-2 p-2"
-            >
-              <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                  checked={isSecondChecked}
-                  onChange={handleSecondChange}
-                />
-                <span className="ml-2 text-sm font-medium">2nd Month</span>
-              </label>
-            </div>
-          </>
+          <div
+            id="multi-dropdown"
+            className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded shadow-md mt-2 p-2"
+          >
+            <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                checked={isFirstChecked}
+                onChange={handleFirstChange}
+              />
+              <span className="ml-2 text-sm font-medium">1st Month</span>
+            </label>
+            <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                checked={isSecondChecked}
+                onChange={handleSecondChange}
+              />
+              <span className="ml-2 text-sm font-medium">2nd Month</span>
+            </label>
+          </div>
         )}
       </div>
       <div className="mt-14">
