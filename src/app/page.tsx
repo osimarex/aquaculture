@@ -35,7 +35,7 @@ export default function Home() {
         />
         <hr className="border-cyan-500 border-2" />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 cs:grid-cols-4 gap-4">
         <div className="lg:ml-2 text-black dark:text-white h-fit w-full overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <List />
           <FXDailyForecast darkMode={darkMode} />
@@ -46,16 +46,16 @@ export default function Home() {
         <div className=" text-black dark:text-white h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <Paper darkMode={darkMode} />
         </div>
-        <div className=" h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+        <div className=" h-full w-full overflow-scroll border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <Smolt darkMode={darkMode} />
         </div>
         <div className="lg:ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
           <Proteins />
         </div>
-        <div className="col-span-2 lg:ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
+        <div className="cs:col-span-2 lg:ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
           <Biomass darkMode={darkMode} />
         </div>
-        <div className="lg:ml-2 text-white h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
+        <div className=" lg:ml-2 text-white h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
           <ProductionAreas darkMode={darkMode} />
         </div>
       </div>

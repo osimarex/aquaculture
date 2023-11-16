@@ -141,7 +141,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         darkMode ? "text-white" : "bg-white text-black"
       }`}
     >
-      <div>hey</div>
+      <div></div>
       {chartData ? (
         <div className="flex flex-col items-start mt-8 ml-1">
           <div className="relative w-full">

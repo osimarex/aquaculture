@@ -134,7 +134,7 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
           },
         },
         labels: {
-          format: "{value} mm",
+          // format: "{value} mm",
           style: {
             color: defaultColors[0],
           },
@@ -278,11 +278,11 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
 
   return (
     <figure
-      className={`highcharts-figure ${
+      className={`highcharts-figure w-fit ${
         darkMode ? "text-white" : "text-black bg-white"
       }`}
     >
-      <div className="min-w-[620px] max-w-[800px] mx-auto mt-8">
+      <div className="min-w-[620px] max-w-[800px] mx-auto mt-8 overflow-hidden">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </figure>
