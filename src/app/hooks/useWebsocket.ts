@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 type WebSocketData = {
+  signal: null;
   symbol: string;
   bid: number;
   ask: number;

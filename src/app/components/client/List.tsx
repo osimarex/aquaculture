@@ -100,68 +100,57 @@ const SymbolRow: React.FC<SymbolProps> = ({
 
 const List: React.FC = () => {
   const data = useWebSocket();
-  const [prevData, setPrevData] = useState<{ [key: string]: PriceData } | null>(
-    null
-  );
 
-  // Declare state variables for the signal values
-  const [usdNokSignal, setUsdNokSignal] = useState<number | null>(null);
-  const [eurNokSignal, setEurNokSignal] = useState<number | null>(null);
+  // State to track if the initial data has been stored
+  const [initialDataStored, setInitialDataStored] = useState(false);
 
+  // Initialize prevData with stored data from local storage
+  const [prevData, setPrevData] = useState<{ [key: string]: PriceData }>(() => {
+    const storedData = localStorage.getItem("forexData");
+    return storedData ? JSON.parse(storedData) : {};
+  });
+
+  // Function to save data to local storage
+  const saveDataToLocalStorage = (dataToStore: {
+    [key: string]: PriceData;
+  }) => {
+    localStorage.setItem("forexData", JSON.stringify(dataToStore));
+  };
+
+  // Store initial data and set the flag
   useEffect(() => {
-    if (data) {
+    if (data && !initialDataStored && data.USDNOK && data.EURNOK) {
+      // Check for valid data
       setPrevData(data as unknown as { [key: string]: PriceData });
+      saveDataToLocalStorage(data as unknown as { [key: string]: PriceData });
+      setInitialDataStored(true);
     }
-  }, [data]);
+  }, [data, initialDataStored]);
 
-  useEffect(() => {
-    const fetchSignalData = async () => {
-      try {
-        const response = await fetch("/api/dailyForecast");
-        const data = await response.json();
-        // Assume the signal data is structured similarly to your chart data
-        const usdNokSignalValue = data.find(
-          (item: any) => item.pair === "USDNOK"
-        ).signal_5;
-        const eurNokSignalValue = data.find(
-          (item: any) => item.pair === "EURNOK"
-        ).signal_5;
-
-        // Update the state with the fetched signal values
-        setUsdNokSignal(usdNokSignalValue);
-        setEurNokSignal(eurNokSignalValue);
-
-        // console.log("USDNOK Signal:", usdNokSignalValue);
-        // console.log("EURNOK Signal:", eurNokSignalValue);
-      } catch (error) {
-        console.error("Error fetching signal data:", error);
-      }
-    };
-
-    fetchSignalData();
-  }, []);
+  // Determine which data to display
+  const displayData = data && data.USDNOK && data.EURNOK ? data : prevData;
 
   return (
     <div className="w-full border-solid border-2 border-sky-800 shadow-lg rounded-xl pr-2">
-      {data.USDNOK && (
+      {displayData.USDNOK && (
         <div className="mb-2 ml-4 mt-4">
           <SymbolRow
-            {...data.USDNOK}
+            {...displayData.USDNOK}
             prevBid={prevData?.USDNOK?.bid || null}
             prevAsk={prevData?.USDNOK?.ask || null}
-            signal={usdNokSignal}
+            signal={displayData.USDNOK.signal || null}
           />
         </div>
       )}
 
-      {data.EURNOK && (
+      {displayData.EURNOK && (
         <div className="mb-2 ml-4">
           <hr className="border-gray-400 mr-4" />
           <SymbolRow
-            {...data.EURNOK}
+            {...displayData.EURNOK}
             prevBid={prevData?.EURNOK?.bid || null}
             prevAsk={prevData?.EURNOK?.ask || null}
-            signal={eurNokSignal}
+            signal={displayData.EURNOK.signal || null}
           />
           <hr className="border-white mr-4 mt-2" />
         </div>
