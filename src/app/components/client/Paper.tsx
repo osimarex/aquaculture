@@ -96,7 +96,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     yAxis: {
-      gridLineColor: darkMode ? "" : "",
+      gridLineColor: darkMode ? "#333333" : "#ededed",
       title: {
         text: "",
         style: {

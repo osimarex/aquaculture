@@ -236,7 +236,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
       },
     },
     yAxis: {
-      gridLineColor: darkMode ? "#333333" : "",
+      gridLineColor: darkMode ? "#333333" : "#ededed",
       labels: {
         style: {
           color: darkMode ? "#ffffff" : "#000000",

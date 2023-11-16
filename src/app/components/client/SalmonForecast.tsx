@@ -94,7 +94,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     xAxis: {
-      categories: weekNumbers, // Use week numbers as categories
+      categories: weekNumbers,
       labels: {
         style: {
           color: darkMode ? "#ffffff" : "#000000",
@@ -102,6 +102,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     yAxis: {
+      gridLineColor: darkMode ? "#333333" : "#ededed",
       title: {
         text: "",
         style: {
