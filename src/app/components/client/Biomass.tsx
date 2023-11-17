@@ -356,7 +356,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
           <button
             id="multiLevelDropdownButton"
             data-dropdown-toggle="multi-dropdown"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black"
             type="button"
             onClick={selectBiomasseTonnData}
           >
@@ -408,7 +408,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
             id="multiLevelDropdownButton"
             onClick={selectForforbrukData}
             data-dropdown-toggle="multi-dropdown"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black"
             type="button"
           >
             Forforbruk{" "}
@@ -434,7 +434,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
             id="multiLevelDropdownButton"
             onClick={selectKvantumData}
             data-dropdown-toggle="multi-dropdown"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black"
             type="button"
           >
             Kvantum{" "}
@@ -460,7 +460,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
             id="multiLevelDropdownButton"
             onClick={selectVerdiData}
             data-dropdown-toggle="multi-dropdown"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black"
             type="button"
           >
             Verdi{" "}
@@ -486,7 +486,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
             id="multiLevelDropdownButton"
             onClick={selectUtsattFiskData}
             data-dropdown-toggle="multi-dropdown"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className="text-white font-medium rounded-lg text-sm px-2 py-1 text-center inline-flex items-center text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black"
             type="button"
           >
             Utsatt fisk{" "}
@@ -514,7 +514,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
               id="multiLevelDropdownButton"
               onClick={toggleDropdown}
               data-dropdown-toggle="multi-dropdown"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center "
               type="button"
             >
               More{" "}
@@ -539,7 +539,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
               id="multi-dropdown"
               className={`z-10 ${
                 isDropdownOpen ? "" : "hidden"
-              } bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700`}
+              } bg-white divide-y rounded shadow w-44 dark:bg-gray-700`}
             >
               <ul
                 className="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -595,7 +595,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                               onChange={() =>
                                 toggleCheckbox("Biomasse_tonn", year)
                               }
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded  dark:ring-offset-gray-700 dark:bg-gray-600 dark:border-gray-500"
                             />
                             <label
                               htmlFor={year}
@@ -660,7 +660,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                               onChange={() =>
                                 toggleCheckbox("Fôrforbruk_tonn", year)
                               }
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded  dark:ring-offset-gray-700  dark:bg-gray-600 dark:border-gray-500"
                             />
                             <label
                               htmlFor={year}
@@ -725,7 +725,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                               onChange={() =>
                                 toggleCheckbox("Eksportert_kvantum_tonn", year)
                               }
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded  dark:ring-offset-gray-700  dark:bg-gray-600 dark:border-gray-500"
                             />
                             <label
                               htmlFor={year}
@@ -790,7 +790,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                               onChange={() =>
                                 toggleCheckbox("Eksportert_verdi_mill_kr", year)
                               }
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded  dark:ring-offset-gray-700  dark:bg-gray-600 dark:border-gray-500"
                             />
                             <label
                               htmlFor={year}
@@ -855,7 +855,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                               onChange={() =>
                                 toggleCheckbox("Utsatt_fisk_mill", year)
                               }
-                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700  dark:bg-gray-600 dark:border-gray-500"
                             />
                             <label
                               htmlFor={year}

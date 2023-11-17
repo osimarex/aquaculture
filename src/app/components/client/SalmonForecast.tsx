@@ -279,7 +279,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         <button
           id="multiLevelDropdownButton"
           onClick={toggleDropdown}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
           type="button"
         >
           Contracts
@@ -302,7 +302,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         {selectedContractTypes.map((type, index) => (
           <span
             key={index}
-            className="bg-indigo-600 rounded-xl text-white p-2 text-sm ml-2 mb-2 inline-flex items-center"
+            className="bg-[#38B6FF] rounded-xl text-white p-2 text-sm ml-2 mb-2 inline-flex items-center"
           >
             {type}
             <button
@@ -333,12 +333,12 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
           <div
             id="multi-dropdown"
             ref={dropdownRef}
-            className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded shadow-md mt-2 p-2"
+            className="bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded shadow-md mt-2 p-2"
           >
             <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-600 dark:border-gray-500"
                 checked={selectedContractTypes.includes("1st Month")}
                 onChange={() =>
                   handleCheckboxChange("isFirstChecked", "0", "1st Month")
@@ -349,7 +349,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-600 dark:border-gray-500"
                 checked={selectedContractTypes.includes("2nd Month")}
                 onChange={() =>
                   handleCheckboxChange("isSecondChecked", "1", "2nd Month")
@@ -360,7 +360,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-600 dark:border-gray-500"
                 checked={selectedContractTypes.includes("3rd Month")}
                 onChange={() =>
                   handleCheckboxChange("isThirdChecked", "2", "3rd Month")
@@ -371,7 +371,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-600 dark:border-gray-500"
                 checked={selectedContractTypes.includes("4th Month")}
                 onChange={() =>
                   handleCheckboxChange("isFourthChecked", "3", "4th Month")
@@ -382,7 +382,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-600 dark:border-gray-500"
                 checked={selectedContractTypes.includes("Q1")}
                 onChange={() => handleCheckboxChange("isQ1Checked", "4", "Q1")}
               />
@@ -391,7 +391,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-600 dark:border-gray-500"
                 checked={selectedContractTypes.includes("Q2")}
                 onChange={() => handleCheckboxChange("isQ2Checked", "5", "Q2")}
               />
@@ -400,7 +400,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-600 dark:border-gray-500"
                 checked={selectedContractTypes.includes("Q3")}
                 onChange={() => handleCheckboxChange("isQ3Checked", "6", "Q3")}
               />
@@ -409,7 +409,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:bg-gray-600 dark:border-gray-500"
                 checked={selectedContractTypes.includes("Q4")}
                 onChange={() => handleCheckboxChange("isQ4Checked", "12", "Q4")}
               />

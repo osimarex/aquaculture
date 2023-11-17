@@ -43,17 +43,17 @@ const SymbolRow: React.FC<SymbolProps> = ({
   const bidClass =
     prevBid !== null
       ? prevBid < bid
-        ? "bg-green-500" // Green for increase
+        ? "text-green-500" // Green text for increase
         : prevBid > bid
-        ? "bg-red-500" // Red for decrease
+        ? "text-red-500" // Red text for decrease
         : ""
       : "";
   const askClass =
     prevAsk !== null
       ? prevAsk < ask
-        ? "bg-green-500" // Green for increase
+        ? "text-green-500" // Green text for increase
         : prevAsk > ask
-        ? "bg-red-500" // Red for decrease
+        ? "text-red-500" // Red text for decrease
         : ""
       : "";
   const [currency1, currency2] = [symbol.slice(0, 3), symbol.slice(3, 6)];
@@ -94,7 +94,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
         {bid}
       </span>
       <span
-        className={` ${askClass} hover:text-blue-500 transition duration-200`}
+        className={`${askClass} hover:text-blue-500 transition duration-200`}
         title="Ask"
       >
         {ask}
