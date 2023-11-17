@@ -14,6 +14,72 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
   const [weekNumbers, setWeekNumbers] = useState<string[]>([]);
 
+  const [currentMonthPrice, setCurrentMonthPrice] = useState<number | null>(
+    null
+  );
+  // const [chartData, setChartData] = useState<ChartSeries>([]);
+
+  useEffect(() => {
+    const fetchForwardPrices = async () => {
+      try {
+        const response = await fetch("/api/historicFuturePrices");
+        const prices = await response.json();
+        const latestPriceData = prices[prices.length - 1];
+        setCurrentMonthPrice(latestPriceData["0"]);
+      } catch (error) {
+        console.error("Error fetching forward prices:", error);
+      }
+    };
+
+    fetchForwardPrices();
+  }, []);
+
+  const handleFirstChange = () => {
+    // Toggle the checkbox state
+    setIsFirstChecked((prevIsFirstChecked) => {
+      // If we are now checking the box, add the series
+      if (!prevIsFirstChecked && currentMonthPrice !== null) {
+        setChartData((prevChartData) => {
+          if (prevChartData) {
+            const currentMonthSeries = {
+              name: "Current Month Price",
+              data: weekNumbers.map((_, index) => ({
+                x: index,
+                y: currentMonthPrice,
+              })),
+              type: "line",
+              dashStyle: "Dash",
+              color: "#ff0000",
+            };
+            // Ensure we don't add the series again if it already exists
+            if (
+              !prevChartData.some(
+                (series) => series.name === "Current Month Price"
+              )
+            ) {
+              return [...prevChartData, currentMonthSeries];
+            }
+          }
+          return prevChartData;
+        });
+      }
+
+      // If we are now unchecking the box, remove the series
+      if (prevIsFirstChecked) {
+        setChartData((prevChartData) => {
+          // Check if prevChartData is not null and filter
+          return prevChartData
+            ? prevChartData.filter(
+                (series) => series.name !== "Current Month Price"
+              )
+            : prevChartData;
+        });
+      }
+
+      return !prevIsFirstChecked;
+    });
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -144,10 +210,6 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
 
   const [isFirstChecked, setIsFirstChecked] = useState(false);
 
-  const handleFirstChange = () => {
-    setIsFirstChecked(!isFirstChecked);
-  };
-
   const [isSecondChecked, setIsSecondChecked] = useState(false);
 
   const handleSecondChange = () => {
@@ -213,6 +275,51 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
                 onChange={handleSecondChange}
               />
               <span className="ml-2 text-sm font-medium">2nd Month</span>
+            </label>
+            <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                checked={isSecondChecked}
+                onChange={handleSecondChange}
+              />
+              <span className="ml-2 text-sm font-medium">3rd Month</span>
+            </label>
+            <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                checked={isSecondChecked}
+                onChange={handleSecondChange}
+              />
+              <span className="ml-2 text-sm font-medium">4th Month</span>
+            </label>
+            <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                checked={isSecondChecked}
+                onChange={handleSecondChange}
+              />
+              <span className="ml-2 text-sm font-medium">Q1</span>
+            </label>
+            <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                checked={isSecondChecked}
+                onChange={handleSecondChange}
+              />
+              <span className="ml-2 text-sm font-medium">Q2</span>
+            </label>
+            <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                checked={isSecondChecked}
+                onChange={handleSecondChange}
+              />
+              <span className="ml-2 text-sm font-medium">Q3</span>
             </label>
           </div>
         )}

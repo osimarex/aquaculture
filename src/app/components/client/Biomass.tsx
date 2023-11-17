@@ -585,6 +585,9 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                           onClick={() => toggleCheckbox("Biomasse_tonn", year)} // Pass both property key and year
                         >
                           <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                            {/*Console log issue: 25 Duplicate form field in the same form: 
+                          input id="year"
+                         */}
                             <input
                               id={year}
                               type="checkbox"

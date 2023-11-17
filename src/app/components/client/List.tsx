@@ -59,7 +59,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
   const [currency1, currency2] = [symbol.slice(0, 3), symbol.slice(3, 6)];
 
   const circleColor = Number(signal) === 1 ? "bg-green-500" : "bg-red-500";
-  console.log("signal", signal);
+  // console.log("signal", signal);
 
   return (
     <div className="flex items-center mt-2">
@@ -127,8 +127,8 @@ const List: React.FC = () => {
   // Declare state variables for the signal values
   const [usdNokSignal, setUsdNokSignal] = useState<number | null>(null);
   const [eurNokSignal, setEurNokSignal] = useState<number | null>(null);
-  console.log("usdNokSignal", usdNokSignal);
-  console.log("eurNokSignal", eurNokSignal);
+  // console.log("usdNokSignal", usdNokSignal);
+  // console.log("eurNokSignal", eurNokSignal);
 
   useEffect(() => {
     // Fetch signal data
