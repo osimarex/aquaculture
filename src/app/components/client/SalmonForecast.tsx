@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
@@ -24,9 +24,12 @@ type CheckedStatesType = {
 const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
   const [weekNumbers, setWeekNumbers] = useState<string[]>([]);
-
-  // Assuming prices are fetched and stored in this state
+  const [selectedContractTypes, setSelectedContractTypes] = useState<string[]>(
+    []
+  );
   const [prices, setPrices] = useState<{ [key: string]: number }>({});
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [checkedStates, setCheckedStates] = useState<CheckedStatesType>({
     isFirstChecked: false,
@@ -56,7 +59,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   // Add the logic for handleCheckboxChange function
   const handleCheckboxChange = (
     checkboxName: keyof CheckedStatesType,
-    priceKey: string
+    priceKey: string,
+    contractText: string
   ) => {
     setCheckedStates((prevStates) => {
       const isChecked = !prevStates[checkboxName];
@@ -69,7 +73,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             if (isChecked) {
               // Add series
               const newSeries = {
-                name: `${priceKey} Price`,
+                name: `${contractText} Price`,
                 data: weekNumbers.map((_, index) => ({ x: index, y: price })),
                 type: "line",
                 dashStyle: "Dash",
@@ -79,24 +83,39 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             } else {
               // Remove series
               return prevChartData.filter(
-                (series) => series.name !== `${priceKey} Price`
+                (series) => series.name !== `${contractText} Price`
               );
             }
+          } else {
+            // If prevChartData is null, initialize it with the new series if checked, or return an empty array if unchecked
+            return isChecked
+              ? [
+                  {
+                    name: `${contractText} Price`,
+                    data: weekNumbers.map((_, index) => ({
+                      x: index,
+                      y: price,
+                    })),
+                    type: "line",
+                    dashStyle: "Dash",
+                    color: "#ff0000",
+                  },
+                ]
+              : [];
           }
-          // If prevChartData is null, initialize it with the new series if checked, or return an empty array if unchecked
-          return isChecked
-            ? [
-                {
-                  name: `${priceKey} Price`,
-                  data: weekNumbers.map((_, index) => ({ x: index, y: price })),
-                  type: "line",
-                  dashStyle: "Dash",
-                  color: "#ff0000",
-                },
-              ]
-            : [];
         });
       }
+
+      // Update selected contract type
+      setSelectedContractTypes((prev) => {
+        if (isChecked) {
+          // Add the contract type only if it's not already in the array
+          return prev.includes(contractText) ? prev : [...prev, contractText];
+        } else {
+          // Remove the contract type
+          return prev.filter((type) => type !== contractText);
+        }
+      });
 
       return newState;
     });
@@ -226,8 +245,29 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const dropdownButton = document.getElementById(
+        "multiLevelDropdownButton"
+      );
+
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        (!dropdownButton || !dropdownButton.contains(event.target as Node))
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div
@@ -259,18 +299,50 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
             />
           </svg>
         </button>
+        {selectedContractTypes.map((type, index) => (
+          <span
+            key={index}
+            className="bg-indigo-600 rounded-xl text-white p-2 text-sm ml-2 mb-2 inline-flex items-center"
+          >
+            {type}
+            <button
+              className="ml-2"
+              onClick={() => {
+                // Remove the contract type from the selectedContractTypes
+                setSelectedContractTypes((prev) =>
+                  prev.filter((t) => t !== type)
+                );
+
+                // Also, update the chartData to remove the series related to this contract type
+                setChartData((prevChartData) => {
+                  if (prevChartData) {
+                    return prevChartData.filter(
+                      (series) => series.name !== `${type} Price`
+                    );
+                  }
+                  return [];
+                });
+              }}
+            >
+              x
+            </button>
+          </span>
+        ))}
 
         {isDropdownOpen && (
           <div
             id="multi-dropdown"
+            ref={dropdownRef}
             className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded shadow-md mt-2 p-2"
           >
             <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={checkedStates.isFirstChecked}
-                onChange={() => handleCheckboxChange("isFirstChecked", "0")}
+                checked={selectedContractTypes.includes("1st Month")}
+                onChange={() =>
+                  handleCheckboxChange("isFirstChecked", "0", "1st Month")
+                }
               />
               <span className="ml-2 text-sm font-medium">1st Month</span>
             </label>
@@ -278,8 +350,10 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={checkedStates.isSecondChecked}
-                onChange={() => handleCheckboxChange("isSecondChecked", "1")}
+                checked={selectedContractTypes.includes("2nd Month")}
+                onChange={() =>
+                  handleCheckboxChange("isSecondChecked", "1", "2nd Month")
+                }
               />
               <span className="ml-2 text-sm font-medium">2nd Month</span>
             </label>
@@ -287,8 +361,10 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={checkedStates.isThirdChecked}
-                onChange={() => handleCheckboxChange("isThirdChecked", "2")}
+                checked={selectedContractTypes.includes("3rd Month")}
+                onChange={() =>
+                  handleCheckboxChange("isThirdChecked", "2", "3rd Month")
+                }
               />
               <span className="ml-2 text-sm font-medium">3rd Month</span>
             </label>
@@ -296,8 +372,10 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={checkedStates.isFourthChecked}
-                onChange={() => handleCheckboxChange("isFourthChecked", "3")}
+                checked={selectedContractTypes.includes("4th Month")}
+                onChange={() =>
+                  handleCheckboxChange("isFourthChecked", "3", "4th Month")
+                }
               />
               <span className="ml-2 text-sm font-medium">4th Month</span>
             </label>
@@ -305,8 +383,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={checkedStates.isQ1Checked}
-                onChange={() => handleCheckboxChange("isQ1Checked", "4")}
+                checked={selectedContractTypes.includes("Q1")}
+                onChange={() => handleCheckboxChange("isQ1Checked", "4", "Q1")}
               />
               <span className="ml-2 text-sm font-medium">Q1</span>
             </label>
@@ -314,8 +392,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={checkedStates.isQ2Checked}
-                onChange={() => handleCheckboxChange("isQ2Checked", "5")}
+                checked={selectedContractTypes.includes("Q2")}
+                onChange={() => handleCheckboxChange("isQ2Checked", "5", "Q2")}
               />
               <span className="ml-2 text-sm font-medium">Q2</span>
             </label>
@@ -323,8 +401,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={checkedStates.isQ3Checked}
-                onChange={() => handleCheckboxChange("isQ3Checked", "6")}
+                checked={selectedContractTypes.includes("Q3")}
+                onChange={() => handleCheckboxChange("isQ3Checked", "6", "Q3")}
               />
               <span className="ml-2 text-sm font-medium">Q3</span>
             </label>
@@ -332,8 +410,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={checkedStates.isQ4Checked}
-                onChange={() => handleCheckboxChange("isQ4Checked", "12")}
+                checked={selectedContractTypes.includes("Q4")}
+                onChange={() => handleCheckboxChange("isQ4Checked", "12", "Q4")}
               />
               <span className="ml-2 text-sm font-medium">Q4</span>
             </label>
@@ -361,30 +439,3 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
 };
 
 export default SalmonForecast;
-
-function setPrices(latestPriceData: any) {
-  throw new Error("Function not implemented.");
-}
-// setSecondMonthPrice(latestPriceData["1"]);
-// setThirdMonthPrice(latestPriceData["2"]);
-// setFourthMonthPrice(latestPriceData["3"]);
-// setFirstQuarterPrice(latestPriceData["4"]);
-// setSecondQuarterPrice(latestPriceData["5"]);
-// setThirdQuarterPrice(latestPriceData["6"]);
-// setFourthQuarterPrice(latestPriceData["12"]);
-
-// const [secondMonthPrice, setSecondMonthPrice] = useState<number | null>(null);
-// const [thirdMonthPrice, setThirdMonthPrice] = useState<number | null>(null);
-// const [fourthMonthPrice, setFourthMonthPrice] = useState<number | null>(null);
-// const [firstQuarterPrice, setFirstQuarterPrice] = useState<number | null>(
-//   null
-// );
-// const [secondQuarterPrice, setSecondQuarterPrice] = useState<number | null>(
-//   null
-// );
-// const [thirdQuarterPrice, setThirdQuarterPrice] = useState<number | null>(
-//   null
-// );
-// const [fourthQuarterPrice, setFourthQuarterPrice] = useState<number | null>(
-//   null
-// );
