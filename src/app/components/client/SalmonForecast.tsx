@@ -335,7 +335,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
                 checked={checkedStates.isQ4Checked}
                 onChange={() => handleCheckboxChange("isQ4Checked", "12")}
               />
-              <span className="ml-2 text-sm font-medium">Q3</span>
+              <span className="ml-2 text-sm font-medium">Q4</span>
             </label>
           </div>
         )}
