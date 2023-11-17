@@ -10,73 +10,95 @@ interface Props {
   darkMode: boolean;
 }
 
+type CheckedStatesType = {
+  isFirstChecked: boolean;
+  isSecondChecked: boolean;
+  isThirdChecked: boolean;
+  isFourthChecked: boolean;
+  isQ1Checked: boolean;
+  isQ2Checked: boolean;
+  isQ3Checked: boolean;
+  isQ4Checked: boolean;
+};
+
 const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
   const [weekNumbers, setWeekNumbers] = useState<string[]>([]);
 
-  const [currentMonthPrice, setCurrentMonthPrice] = useState<number | null>(
-    null
-  );
-  // const [chartData, setChartData] = useState<ChartSeries>([]);
+  // Assuming prices are fetched and stored in this state
+  const [prices, setPrices] = useState<{ [key: string]: number }>({});
+
+  const [checkedStates, setCheckedStates] = useState<CheckedStatesType>({
+    isFirstChecked: false,
+    isSecondChecked: false,
+    isThirdChecked: false,
+    isFourthChecked: false,
+    isQ1Checked: false,
+    isQ2Checked: false,
+    isQ3Checked: false,
+    isQ4Checked: false,
+  });
 
   useEffect(() => {
     const fetchForwardPrices = async () => {
       try {
         const response = await fetch("/api/historicFuturePrices");
-        const prices = await response.json();
-        const latestPriceData = prices[prices.length - 1];
-        setCurrentMonthPrice(latestPriceData["0"]);
+        const priceData = await response.json();
+        const latestPriceData = priceData[priceData.length - 1];
+        setPrices(latestPriceData); // Store the latest prices
       } catch (error) {
         console.error("Error fetching forward prices:", error);
       }
     };
-
     fetchForwardPrices();
   }, []);
 
-  const handleFirstChange = () => {
-    // Toggle the checkbox state
-    setIsFirstChecked((prevIsFirstChecked) => {
-      // If we are now checking the box, add the series
-      if (!prevIsFirstChecked && currentMonthPrice !== null) {
+  // Add the logic for handleCheckboxChange function
+  const handleCheckboxChange = (
+    checkboxName: keyof CheckedStatesType,
+    priceKey: string
+  ) => {
+    setCheckedStates((prevStates) => {
+      const isChecked = !prevStates[checkboxName];
+      const newState = { ...prevStates, [checkboxName]: isChecked };
+
+      const price = prices[priceKey];
+      if (price !== null) {
         setChartData((prevChartData) => {
           if (prevChartData) {
-            const currentMonthSeries = {
-              name: "Current Month Price",
-              data: weekNumbers.map((_, index) => ({
-                x: index,
-                y: currentMonthPrice,
-              })),
-              type: "line",
-              dashStyle: "Dash",
-              color: "#ff0000",
-            };
-            // Ensure we don't add the series again if it already exists
-            if (
-              !prevChartData.some(
-                (series) => series.name === "Current Month Price"
-              )
-            ) {
-              return [...prevChartData, currentMonthSeries];
+            if (isChecked) {
+              // Add series
+              const newSeries = {
+                name: `${priceKey} Price`,
+                data: weekNumbers.map((_, index) => ({ x: index, y: price })),
+                type: "line",
+                dashStyle: "Dash",
+                color: "#ff0000",
+              };
+              return [...prevChartData, newSeries];
+            } else {
+              // Remove series
+              return prevChartData.filter(
+                (series) => series.name !== `${priceKey} Price`
+              );
             }
           }
-          return prevChartData;
+          // If prevChartData is null, initialize it with the new series if checked, or return an empty array if unchecked
+          return isChecked
+            ? [
+                {
+                  name: `${priceKey} Price`,
+                  data: weekNumbers.map((_, index) => ({ x: index, y: price })),
+                  type: "line",
+                  dashStyle: "Dash",
+                  color: "#ff0000",
+                },
+              ]
+            : [];
         });
       }
 
-      // If we are now unchecking the box, remove the series
-      if (prevIsFirstChecked) {
-        setChartData((prevChartData) => {
-          // Check if prevChartData is not null and filter
-          return prevChartData
-            ? prevChartData.filter(
-                (series) => series.name !== "Current Month Price"
-              )
-            : prevChartData;
-        });
-      }
-
-      return !prevIsFirstChecked;
+      return newState;
     });
   };
 
@@ -92,25 +114,18 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
     };
 
     const processChartData = (data: any[]) => {
-      const weekLabels: string[] = []; // For x-axis labels
-
+      const weekLabels: string[] = [];
       const currentWeek = getCurrentWeekNumber();
-
       const seriesData = data.map((item, index) => {
         let weekNumber = currentWeek + index;
         if (weekNumber > 52) {
-          weekNumber = weekNumber % 52;
+          weekNumber %= 52;
         }
-
         const price = parseFloat(item.forecasted_price.trim());
-
-        // Create a label for the x-axis
         const weekLabel = `${weekNumber === 0 ? 52 : weekNumber}`;
         weekLabels.push(weekLabel);
-
         return { x: index, y: price };
       });
-
       setChartData([{ name: "Salmon Price", data: seriesData }]);
       setWeekNumbers(weekLabels);
     };
@@ -208,14 +223,6 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       : [],
   };
 
-  const [isFirstChecked, setIsFirstChecked] = useState(false);
-
-  const [isSecondChecked, setIsSecondChecked] = useState(false);
-
-  const handleSecondChange = () => {
-    setIsSecondChecked(!isSecondChecked);
-  };
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -262,8 +269,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={isFirstChecked}
-                onChange={handleFirstChange}
+                checked={checkedStates.isFirstChecked}
+                onChange={() => handleCheckboxChange("isFirstChecked", "0")}
               />
               <span className="ml-2 text-sm font-medium">1st Month</span>
             </label>
@@ -271,8 +278,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={isSecondChecked}
-                onChange={handleSecondChange}
+                checked={checkedStates.isSecondChecked}
+                onChange={() => handleCheckboxChange("isSecondChecked", "1")}
               />
               <span className="ml-2 text-sm font-medium">2nd Month</span>
             </label>
@@ -280,8 +287,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={isSecondChecked}
-                onChange={handleSecondChange}
+                checked={checkedStates.isThirdChecked}
+                onChange={() => handleCheckboxChange("isThirdChecked", "2")}
               />
               <span className="ml-2 text-sm font-medium">3rd Month</span>
             </label>
@@ -289,8 +296,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={isSecondChecked}
-                onChange={handleSecondChange}
+                checked={checkedStates.isFourthChecked}
+                onChange={() => handleCheckboxChange("isFourthChecked", "3")}
               />
               <span className="ml-2 text-sm font-medium">4th Month</span>
             </label>
@@ -298,8 +305,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={isSecondChecked}
-                onChange={handleSecondChange}
+                checked={checkedStates.isQ1Checked}
+                onChange={() => handleCheckboxChange("isQ1Checked", "4")}
               />
               <span className="ml-2 text-sm font-medium">Q1</span>
             </label>
@@ -307,8 +314,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={isSecondChecked}
-                onChange={handleSecondChange}
+                checked={checkedStates.isQ2Checked}
+                onChange={() => handleCheckboxChange("isQ2Checked", "5")}
               />
               <span className="ml-2 text-sm font-medium">Q2</span>
             </label>
@@ -316,8 +323,17 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-                checked={isSecondChecked}
-                onChange={handleSecondChange}
+                checked={checkedStates.isQ3Checked}
+                onChange={() => handleCheckboxChange("isQ3Checked", "6")}
+              />
+              <span className="ml-2 text-sm font-medium">Q3</span>
+            </label>
+            <label className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                checked={checkedStates.isQ4Checked}
+                onChange={() => handleCheckboxChange("isQ4Checked", "12")}
               />
               <span className="ml-2 text-sm font-medium">Q3</span>
             </label>
@@ -345,3 +361,30 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
 };
 
 export default SalmonForecast;
+
+function setPrices(latestPriceData: any) {
+  throw new Error("Function not implemented.");
+}
+// setSecondMonthPrice(latestPriceData["1"]);
+// setThirdMonthPrice(latestPriceData["2"]);
+// setFourthMonthPrice(latestPriceData["3"]);
+// setFirstQuarterPrice(latestPriceData["4"]);
+// setSecondQuarterPrice(latestPriceData["5"]);
+// setThirdQuarterPrice(latestPriceData["6"]);
+// setFourthQuarterPrice(latestPriceData["12"]);
+
+// const [secondMonthPrice, setSecondMonthPrice] = useState<number | null>(null);
+// const [thirdMonthPrice, setThirdMonthPrice] = useState<number | null>(null);
+// const [fourthMonthPrice, setFourthMonthPrice] = useState<number | null>(null);
+// const [firstQuarterPrice, setFirstQuarterPrice] = useState<number | null>(
+//   null
+// );
+// const [secondQuarterPrice, setSecondQuarterPrice] = useState<number | null>(
+//   null
+// );
+// const [thirdQuarterPrice, setThirdQuarterPrice] = useState<number | null>(
+//   null
+// );
+// const [fourthQuarterPrice, setFourthQuarterPrice] = useState<number | null>(
+//   null
+// );
