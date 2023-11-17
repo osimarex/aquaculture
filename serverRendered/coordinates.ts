@@ -420,20 +420,20 @@ async function fetchDataAndLogProperties() {
           }
           // Check if the coordinates are within the "Svenskegrensen til Jæren" area
           if (isPointInPolygon([lon, lat], polygonCoordinatesSvenskegrensen)) {
-            console.log(
-              "selskapsnavn (Svenskegrensen):",
-              attributes.selskapsnavn
-            );
-            console.log(
-              "antatt_romt (Svenskegrensen):",
-              attributes.antall_romt
-            );
+            // console.log(
+            //   "selskapsnavn (Svenskegrensen):",
+            //   attributes.selskapsnavn
+            // );
+            // console.log(
+            //   "antatt_romt (Svenskegrensen):",
+            //   attributes.antall_romt
+            // );
 
-            console.log(
-              "Rømmingdato (Svenskegrensen):",
-              rommingDate.toUTCString()
-            );
-            console.log("Beskrivelse:", attributes.beskrivelse);
+            // console.log(
+            //   "Rømmingdato (Svenskegrensen):",
+            //   rommingDate.toUTCString()
+            // );
+            // console.log("Beskrivelse:", attributes.beskrivelse);
 
             placesInSvenskegrensenCount += attributes.antall_romt; // Add to the total
           }
@@ -463,11 +463,11 @@ async function fetchDataAndLogProperties() {
           }
           // Check if the coordinates are within the "Ryfylke" area
           if (isPointInPolygon([lon, lat], polygonCoordinatesRyfylke)) {
-            console.log("selskapsnavn (Ryfylke):", attributes.selskapsnavn);
-            console.log("antatt_romt (Ryfylke):", attributes.antall_romt);
+            // console.log("selskapsnavn (Ryfylke):", attributes.selskapsnavn);
+            // console.log("antatt_romt (Ryfylke):", attributes.antall_romt);
 
-            console.log("Rømmingdato (Ryfylke):", rommingDate.toUTCString());
-            console.log("Beskrivelse:", attributes.beskrivelse);
+            // console.log("Rømmingdato (Ryfylke):", rommingDate.toUTCString());
+            // console.log("Beskrivelse:", attributes.beskrivelse);
 
             placesInRyfylkeCount += attributes.antall_romt; // Add to the total
           }

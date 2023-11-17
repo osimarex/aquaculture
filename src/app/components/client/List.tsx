@@ -59,6 +59,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
   const [currency1, currency2] = [symbol.slice(0, 3), symbol.slice(3, 6)];
 
   const circleColor = Number(signal) === 1 ? "bg-green-500" : "bg-red-500";
+  console.log("signal", signal);
 
   return (
     <div className="flex items-center mt-2">
@@ -123,6 +124,31 @@ const List: React.FC = () => {
     localStorage.setItem("forexData", JSON.stringify(dataToStore));
   };
 
+  // Declare state variables for the signal values
+  const [usdNokSignal, setUsdNokSignal] = useState<number | null>(null);
+  const [eurNokSignal, setEurNokSignal] = useState<number | null>(null);
+  console.log("usdNokSignal", usdNokSignal);
+  console.log("eurNokSignal", eurNokSignal);
+
+  useEffect(() => {
+    // Fetch signal data
+    const fetchSignalData = async () => {
+      try {
+        const response = await fetch("/api/dailyForecast");
+        const fetchedData = await response.json();
+        setUsdNokSignal(
+          fetchedData.find((item: any) => item.pair === "USDNOK").signal_5
+        );
+        setEurNokSignal(
+          fetchedData.find((item: any) => item.pair === "EURNOK").signal_5
+        );
+      } catch (error) {
+        console.error("Error fetching signal data:", error);
+      }
+    };
+    fetchSignalData();
+  }, []);
+
   // Store initial data and set the flag
   useEffect(() => {
     if (data && !initialDataStored && data.USDNOK && data.EURNOK) {
@@ -145,9 +171,7 @@ const List: React.FC = () => {
             {...displayData.USDNOK}
             prevBid={prevData?.USDNOK?.bid || null}
             prevAsk={prevData?.USDNOK?.ask || null}
-            signal={
-              "signal" in displayData.USDNOK ? displayData.USDNOK.signal : null
-            }
+            signal={usdNokSignal || null}
           />
         </div>
       )}
@@ -159,9 +183,7 @@ const List: React.FC = () => {
             {...displayData.EURNOK}
             prevBid={prevData?.EURNOK?.bid || null}
             prevAsk={prevData?.EURNOK?.ask || null}
-            signal={
-              "signal" in displayData.EURNOK ? displayData.EURNOK.signal : null
-            }
+            signal={eurNokSignal || null}
           />
           <hr className="border-white mr-4 mt-2" />
         </div>
@@ -290,6 +312,8 @@ export default List;
 //   // Declare state variables for the signal values
 //   const [usdNokSignal, setUsdNokSignal] = useState<number | null>(null);
 //   const [eurNokSignal, setEurNokSignal] = useState<number | null>(null);
+//   console.log("usdNokSignal", usdNokSignal);
+//   console.log("eurNokSignal", eurNokSignal);
 
 //   useEffect(() => {
 //     // Fetch signal data
