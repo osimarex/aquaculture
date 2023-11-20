@@ -105,54 +105,22 @@ const SymbolRow: React.FC<SymbolProps> = ({
 
 const List: React.FC = () => {
   const data = useWebSocket();
-
-  // State to track if the initial data has been stored
   const [initialDataStored, setInitialDataStored] = useState(false);
-
-  // Initialize prevData with stored data from local storage
-  const [prevData, setPrevData] = useState<{
-    [key: string]: WebSocketPriceData;
-  }>(() => {
-    if (typeof window !== "undefined") {
-      const storedData = localStorage.getItem("forexData");
-      return storedData ? JSON.parse(storedData) : {};
-    }
-    return {};
-  });
-
-  // Function to save data to local storage
-  const saveDataToLocalStorage = (dataToStore: {
-    [key: string]: WebSocketPriceData;
-  }) => {
-    localStorage.setItem("forexData", JSON.stringify(dataToStore));
-  };
-
-  // Declare state variables for the signal values
   const [usdNokSignal, setUsdNokSignal] = useState<number | null>(null);
   const [eurNokSignal, setEurNokSignal] = useState<number | null>(null);
-  // console.log("usdNokSignal", usdNokSignal);
-  // console.log("eurNokSignal", eurNokSignal);
+  const [prevData, setPrevData] = useState<{
+    [key: string]: WebSocketPriceData;
+  }>({});
 
   useEffect(() => {
-    // Fetch signal data
-    const fetchSignalData = async () => {
-      try {
-        const response = await fetch("/api/dailyForecast");
-        const fetchedData = await response.json();
-        setUsdNokSignal(
-          fetchedData.find((item: any) => item.pair === "USDNOK").signal_5
-        );
-        setEurNokSignal(
-          fetchedData.find((item: any) => item.pair === "EURNOK").signal_5
-        );
-      } catch (error) {
-        console.error("Error fetching signal data:", error);
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("forexData");
+      if (storedData) {
+        setPrevData(JSON.parse(storedData));
       }
-    };
-    fetchSignalData();
+    }
   }, []);
 
-  // Store initial data and set the flag
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -162,14 +130,16 @@ const List: React.FC = () => {
       data.EURNOK
     ) {
       setPrevData(data as unknown as { [key: string]: WebSocketPriceData });
-      saveDataToLocalStorage(
-        data as unknown as { [key: string]: WebSocketPriceData }
-      );
+      localStorage.setItem("forexData", JSON.stringify(data));
       setInitialDataStored(true);
     }
   }, [data, initialDataStored]);
 
-  // Determine which data to display
+  // Placeholder content condition
+  if (Object.keys(prevData).length === 0) {
+    return <div>Loading...</div>;
+  }
+
   const displayData = data && data.USDNOK && data.EURNOK ? data : prevData;
 
   return (
