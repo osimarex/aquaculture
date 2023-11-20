@@ -380,30 +380,6 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
               />
             </svg>
           </button>
-          {/* <div
-            id="multi-dropdown"
-            className={`z-10 ${
-              isDropdownOpen ? "" : "hidden"
-            } bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700`}
-          >
-            <ul
-              className="py-2 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="multiLevelDropdownButton"
-            >
-              <li>
-                <button
-                  id="doubleDropdownButton"
-                  onClick={selectBiomasseEverythingData}
-                  data-dropdown-toggle="doubleDropdown"
-                  data-dropdown-placement="right-start"
-                  type="button"
-                  className="flex items-center w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Biomasse Year
-                </button>
-              </li>
-            </ul>
-          </div> */}
         </div>
 
         <div className="absolute left-[100px] ml-6 z-10">
