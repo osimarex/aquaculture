@@ -89,7 +89,8 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
                 data: weekNumbers.map((_, index) => ({ x: index, y: price })),
                 type: "line",
                 dashStyle: "Dash",
-                color: "#38B6FF",
+                color: "#38B6FF", // Default color for contract series
+                isContractSeries: true, // Custom property to identify contract series
               };
               return [...prevChartData, newSeries];
             }
@@ -208,16 +209,18 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         },
       },
     },
+    legend: {
+      itemStyle: {
+        color: darkMode ? "#ffffff" : "#000000",
+      },
+    },
     yAxis: {
       gridLineColor: darkMode ? "#333333" : "#ededed",
       title: {
         text: "",
         style: {
-          color: darkMode ? "#ffffff" : "#000000",
+          text: darkMode ? "#ffffff" : "#000000",
         },
-      },
-      legend: {
-        enabled: true,
       },
       labels: {
         format: "{value:.2f}",
@@ -227,14 +230,29 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     series: chartData
-      ? chartData.map((series) => ({
-          ...series,
-          type: "spline",
-          color: series.name.endsWith("Price") ? "#38B6FF" : series.color,
-          marker: {
-            enabled: false,
-          },
-        }))
+      ? chartData.map((series) => {
+          // Check if the series is for Salmon Price or a contract
+          if (series.name === "Salmon Price") {
+            return {
+              ...series,
+              type: "spline",
+              color: "#40ca16", // Green color for the forecast line
+              marker: {
+                enabled: false,
+              },
+            };
+          } else {
+            return {
+              ...series,
+              type: "spline",
+              color: "#38B6FF", // Blue color for contract lines
+              dashStyle: "Dash",
+              marker: {
+                enabled: false,
+              },
+            };
+          }
+        })
       : [],
   };
 

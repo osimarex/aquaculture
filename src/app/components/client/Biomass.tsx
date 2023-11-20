@@ -251,6 +251,9 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
     },
     legend: {
       enabled: true,
+      itemStyle: {
+        color: darkMode ? "#ffffff" : "#000000",
+      },
     },
     series: chartData
       ? chartData.map((seriesItem: any, index: any) => ({

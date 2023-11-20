@@ -111,12 +111,6 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
     yAxis: [
       {
         gridLineColor: darkMode ? "#333333" : "",
-        labels: {
-          format: "{value}°C",
-          style: {
-            color: defaultColors[2],
-          },
-        },
         title: {
           text: "Temperature",
           style: {

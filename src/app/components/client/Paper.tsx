@@ -112,7 +112,9 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       },
     },
     legend: {
-      enabled: true,
+      itemStyle: {
+        color: darkMode ? "#ffffff" : "#000000",
+      },
     },
     series: chartData
       ?.filter((series) => series.name === "USDNOK")
