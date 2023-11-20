@@ -66,7 +66,7 @@ interface HighchartsPoint {
 
 declare module "highcharts" {
   interface Chart {
-    selectedPoint?: Highcharts.Point; // Add selectedPoint as an optional property
+    selectedPoint?: Highcharts.Point;
   }
 }
 
@@ -115,24 +115,24 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
         },
         style: {
           fontFamily: "Arial",
-          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+          color: darkMode ? "#ffffff" : "#000000",
         },
       },
       credits: {
         enabled: false,
         style: {
-          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+          color: darkMode ? "#ffffff" : "#000000",
         },
       },
       title: {
         text: "PRODUCTION AREAS",
         style: {
-          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+          color: darkMode ? "#ffffff" : "#000000",
         },
       },
       legend: {
         itemStyle: {
-          color: darkMode ? "#ffffff" : "#000000", // Font color based on dark mode
+          color: darkMode ? "#ffffff" : "#000000",
         },
       },
       tooltip: {
@@ -142,7 +142,6 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
           opacity: 0.6,
         },
         formatter(this: HighchartsPoint) {
-          // Explicitly typed 'this'
           const areaName = this.point.properties.name;
           const biomasseAmount = this.point.properties.biomasse;
           const romming = this.point.properties.romming;
@@ -223,8 +222,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
                   chartInstance.selectedPoint = point;
                 }
 
-                // Assuming zoomTo is a method on the point
-                (point as any).zoomTo(); // Type assertion if zoomTo is not recognized
+                (point as any).zoomTo();
                 setShowInfoCard(true);
                 setInfoCardContent(
                   "<div className=text-bold> Rømming:</div> <hr/>" +
@@ -267,7 +265,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
           highcharts={Highcharts}
           constructorType={"mapChart"}
           options={options}
-          ref={chartRef} // Assign the ref here
+          ref={chartRef}
         />
       )}
       {showInfoCard && infoCardContent && (
@@ -284,7 +282,7 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
                 onClick={() => {
                   setShowInfoCard(false);
                   if (chartRef.current && chartRef.current.chart) {
-                    chartRef.current.chart.mapZoom(); // or the appropriate method to reset zoom
+                    chartRef.current.chart.mapZoom();
                   }
                 }}
               >

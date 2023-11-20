@@ -4,7 +4,11 @@ import React, { useEffect, useRef, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-type ChartSeries = { name: string; data: { x: number; y: number }[] }[];
+type ChartSeries = {
+  [x: string]: any;
+  name: string;
+  data: { x: number; y: number }[];
+}[];
 
 interface Props {
   darkMode: boolean;
@@ -56,7 +60,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
     fetchForwardPrices();
   }, []);
 
-  // Add the logic for handleCheckboxChange function
+  // The logic for handleCheckboxChange function
   const handleCheckboxChange = (
     checkboxName: keyof CheckedStatesType,
     priceKey: string,
@@ -66,53 +70,45 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       const isChecked = !prevStates[checkboxName];
       const newState = { ...prevStates, [checkboxName]: isChecked };
 
-      const price = prices[priceKey];
-      if (price !== null) {
-        setChartData((prevChartData) => {
-          if (prevChartData) {
-            if (isChecked) {
-              // Add series
+      setChartData((prevChartData) => {
+        if (!prevChartData) {
+          prevChartData = [];
+        }
+
+        const existingIndex = prevChartData.findIndex(
+          (series) => series.name === `${contractText} Price`
+        );
+
+        if (isChecked) {
+          if (existingIndex === -1) {
+            // Add series if it doesn't already exist
+            const price = prices[priceKey];
+            if (price !== null) {
               const newSeries = {
                 name: `${contractText} Price`,
                 data: weekNumbers.map((_, index) => ({ x: index, y: price })),
                 type: "line",
                 dashStyle: "Dash",
-                color: "#ff0000",
+                color: "#38B6FF",
               };
               return [...prevChartData, newSeries];
-            } else {
-              // Remove series
-              return prevChartData.filter(
-                (series) => series.name !== `${contractText} Price`
-              );
             }
-          } else {
-            // If prevChartData is null, initialize it with the new series if checked, or return an empty array if unchecked
-            return isChecked
-              ? [
-                  {
-                    name: `${contractText} Price`,
-                    data: weekNumbers.map((_, index) => ({
-                      x: index,
-                      y: price,
-                    })),
-                    type: "line",
-                    dashStyle: "Dash",
-                    color: "#ff0000",
-                  },
-                ]
-              : [];
           }
-        });
-      }
+        } else {
+          // Remove series if it exists
+          if (existingIndex !== -1) {
+            return prevChartData.filter((_, index) => index !== existingIndex);
+          }
+        }
 
-      // Update selected contract type
+        return prevChartData;
+      });
+
+      // Update selected contract types
       setSelectedContractTypes((prev) => {
         if (isChecked) {
-          // Add the contract type only if it's not already in the array
           return prev.includes(contractText) ? prev : [...prev, contractText];
         } else {
-          // Remove the contract type
           return prev.filter((type) => type !== contractText);
         }
       });
@@ -220,6 +216,9 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
           color: darkMode ? "#ffffff" : "#000000",
         },
       },
+      legend: {
+        enabled: true,
+      },
       labels: {
         format: "{value:.2f}",
         style: {
@@ -227,14 +226,11 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         },
       },
     },
-    legend: {
-      enabled: false,
-    },
     series: chartData
       ? chartData.map((series) => ({
           ...series,
           type: "spline",
-          color: "#40ca16",
+          color: series.name.endsWith("Price") ? "#38B6FF" : series.color,
           marker: {
             enabled: false,
           },
