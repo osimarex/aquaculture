@@ -135,7 +135,26 @@ const List: React.FC = () => {
     }
   }, [data, initialDataStored]);
 
-  // Placeholder content condition
+  useEffect(() => {
+    const fetchSignalData = async () => {
+      try {
+        const response = await fetch("/api/dailyForecast");
+        const fetchedData = await response.json();
+        setUsdNokSignal(
+          fetchedData.find((item: any) => item.pair === "USDNOK")?.signal_5 ||
+            null
+        );
+        setEurNokSignal(
+          fetchedData.find((item: any) => item.pair === "EURNOK")?.signal_5 ||
+            null
+        );
+      } catch (error) {
+        console.error("Error fetching signal data:", error);
+      }
+    };
+    fetchSignalData();
+  }, []);
+
   if (Object.keys(prevData).length === 0) {
     return <div>Loading...</div>;
   }

@@ -130,20 +130,19 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
     };
 
     const processChartData = (data: any[]) => {
-      const weekLabels: string[] = [];
-      const currentWeek = getCurrentWeekNumber();
-      const seriesData = data.map((item, index) => {
-        let weekNumber = currentWeek + index;
-        if (weekNumber > 52) {
-          weekNumber %= 52;
-        }
+      // Extract week numbers and remove duplicates
+      const weekNumbers = data.map((item) => item.week.trim());
+      const uniqueWeekNumbers = Array.from(new Set(weekNumbers)); // Convert Set to Array
+
+      const seriesData = data.map((item) => {
+        const weekNumber = item.week.trim();
+        const weekIndex = uniqueWeekNumbers.indexOf(weekNumber); // Find the index of the week number
         const price = parseFloat(item.forecasted_price.trim());
-        const weekLabel = `${weekNumber === 0 ? 52 : weekNumber}`;
-        weekLabels.push(weekLabel);
-        return { x: index, y: price };
+        return { x: weekIndex, y: price }; // Use the index as the x value
       });
+
       setChartData([{ name: "Salmon Price", data: seriesData }]);
-      setWeekNumbers(weekLabels);
+      setWeekNumbers(uniqueWeekNumbers); // Use this for the x-axis categories
     };
 
     // Example function to get the current week number - replace with your actual logic
