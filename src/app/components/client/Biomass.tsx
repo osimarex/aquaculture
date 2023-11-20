@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
@@ -208,8 +208,17 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
     },
     xAxis: {
       type: "datetime",
-      text: "ff",
       labels: {
+        formatter: function (
+          this: Highcharts.AxisLabelsFormatterContextObject
+        ): string {
+          // Check if the value is a string and convert it to a number if needed. Removes year from axis.
+          const value =
+            typeof this.value === "string"
+              ? Date.parse(this.value)
+              : this.value;
+          return Highcharts.dateFormat("%b", value); // Format as 'Jan', 'Feb', etc.
+        },
         style: {
           color: darkMode ? "#ffffff" : "#000000",
         },
@@ -267,6 +276,21 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                 type="button"
               >
                 {formatDropdownLabel("Biomasse", "Biomasse_tonn")}
+                <svg
+                  className="w-2.5 h-2.5 ms-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
               </button>
               <div
                 className={`z-30 ${
@@ -305,7 +329,22 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                 className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
                 type="button"
               >
-                Forforbruk ({getSelectedCount("Fôrforbruk_tonn")})
+                {formatDropdownLabel("Forforbruk", "Fôrforbruk_tonn")}
+                <svg
+                  className="w-2.5 h-2.5 ms-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
               </button>
               <div
                 className={`z-30 ${
@@ -346,7 +385,22 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                 className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
                 type="button"
               >
-                Kvantum ({getSelectedCount("Eksportert_kvantum_tonn")})
+                {formatDropdownLabel("Kvantum", "Eksportert_kvantum_tonn")}
+                <svg
+                  className="w-2.5 h-2.5 ms-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
               </button>
               <div
                 className={`z-30 ${
@@ -391,7 +445,22 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                 className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
                 type="button"
               >
-                Verdi ({getSelectedCount("Eksportert_verdi_mill_kr")})
+                {formatDropdownLabel("Verdi", "Eksportert_verdi_mill_kr")}
+                <svg
+                  className="w-2.5 h-2.5 ms-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
               </button>
               <div
                 className={`z-30 ${
@@ -436,7 +505,22 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                 className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
                 type="button"
               >
-                Utsatt Fisk ({getSelectedCount("Utsatt_fisk_mill")})
+                {formatDropdownLabel("Utsatt Fisk", "Utsatt_fisk_mill")}
+                <svg
+                  className="w-2.5 h-2.5 ms-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
               </button>
               <div
                 className={`z-30 ${
