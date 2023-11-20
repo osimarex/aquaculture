@@ -113,8 +113,11 @@ const List: React.FC = () => {
   const [prevData, setPrevData] = useState<{
     [key: string]: WebSocketPriceData;
   }>(() => {
-    const storedData = localStorage.getItem("forexData");
-    return storedData ? JSON.parse(storedData) : {};
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("forexData");
+      return storedData ? JSON.parse(storedData) : {};
+    }
+    return {};
   });
 
   // Function to save data to local storage
@@ -151,7 +154,13 @@ const List: React.FC = () => {
 
   // Store initial data and set the flag
   useEffect(() => {
-    if (data && !initialDataStored && data.USDNOK && data.EURNOK) {
+    if (
+      typeof window !== "undefined" &&
+      data &&
+      !initialDataStored &&
+      data.USDNOK &&
+      data.EURNOK
+    ) {
       setPrevData(data as unknown as { [key: string]: WebSocketPriceData });
       saveDataToLocalStorage(
         data as unknown as { [key: string]: WebSocketPriceData }
