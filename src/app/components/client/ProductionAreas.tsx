@@ -238,15 +238,9 @@ const ProductionAreas: React.FC<MapProps> = ({ darkMode }) => {
                 );
               },
               mouseOver: function (this: Highcharts.Point) {
-                // Check if 'name' is defined and is a string or number. If so, convert it to a string.
-                const titleText =
-                  this.options.name !== undefined
-                    ? String(this.options.name)
-                    : undefined;
-
-                this.series.chart.setTitle({ text: titleText });
+                const areaName = this.properties.name;
+                this.series.chart.setTitle({ text: areaName });
               },
-
               mouseOut: function (this: Highcharts.Point) {
                 this.series.chart.setTitle({ text: "PRODUCTION AREAS" });
               },
