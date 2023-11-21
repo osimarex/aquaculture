@@ -14,11 +14,8 @@ interface BiomassProps {
   darkMode: boolean;
 }
 
-// Define a type for the API data items
 type ApiDataItem = {
   Biomasse_tonn: number;
-  Eksportert_kvantum_tonn: number;
-  Eksportert_verdi_mill_kr: number;
   Utsatt_fisk_mill: number;
   Fôrforbruk_tonn: number;
   Date: string;
@@ -53,18 +50,14 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
 
   // State to manage dropdown visibility
   const [isBiomassOpen, setIsBiomassOpen] = useState(false);
-  const [isKvantumOpen, setIsKvantumOpen] = useState(false);
   const [isForforbrukOpen, setIsForforbrukOpen] = useState(false);
-  const [isVerdiOpen, setIsVerdiOpen] = useState(false);
   const [isUtsattFiskOpen, setIsUtsattFiskOpen] = useState(false);
 
   // State for managing selected years for each property
   const [selectedYears, setSelectedYears] = useState({
     Biomasse_tonn: new Set(["2021", "2022", "2023"]), // Directly initializing with desired years
-    Eksportert_kvantum_tonn: new Set<string>(),
-    Eksportert_verdi_mill_kr: new Set<string>(),
-    Utsatt_fisk_mill: new Set<string>(),
     Fôrforbruk_tonn: new Set<string>(),
+    Utsatt_fisk_mill: new Set<string>(),
   });
 
   // Initialize selected properties with Biomasse_tonn
@@ -81,7 +74,6 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
       if (newYears.has(year)) {
         newYears.delete(year);
         if (newYears.size === 0) {
-          // Remove the property from selectedProperties if no years are selected
           setSelectedProperties((prevProps) => {
             const newProps = new Set(prevProps);
             newProps.delete(propertyKey);
@@ -90,7 +82,6 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
         }
       } else {
         newYears.add(year);
-        // Add the property to selectedProperties
         setSelectedProperties((prevProps) =>
           new Set(prevProps).add(propertyKey)
         );
@@ -101,42 +92,20 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
 
   const toggleBiomassDropdown = () => {
     toggleDropdown(setIsBiomassOpen);
-    setIsKvantumOpen(false);
     setIsForforbrukOpen(false);
-    setIsVerdiOpen(false);
-    setIsUtsattFiskOpen(false);
-  };
-
-  const toggleKvantumDropdown = () => {
-    toggleDropdown(setIsKvantumOpen);
-    setIsBiomassOpen(false);
-    setIsForforbrukOpen(false);
-    setIsVerdiOpen(false);
     setIsUtsattFiskOpen(false);
   };
 
   const toggleForforbrukDropdown = () => {
     toggleDropdown(setIsForforbrukOpen);
     setIsBiomassOpen(false);
-    setIsKvantumOpen(false);
-    setIsVerdiOpen(false);
-    setIsUtsattFiskOpen(false);
-  };
-
-  const toggleVerdiDropdown = () => {
-    toggleDropdown(setIsVerdiOpen);
-    setIsBiomassOpen(false);
-    setIsKvantumOpen(false);
-    setIsForforbrukOpen(false);
     setIsUtsattFiskOpen(false);
   };
 
   const toggleUtsattFiskDropdown = () => {
     toggleDropdown(setIsUtsattFiskOpen);
     setIsBiomassOpen(false);
-    setIsKvantumOpen(false);
     setIsForforbrukOpen(false);
-    setIsVerdiOpen(false);
   };
 
   // Function to update chart data
@@ -268,7 +237,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
         </div>
         <div className="absolute left-0 ml-4 z-10">
           <ul className="flex list-none">
-            {/* Dropdowns for Biomasse, Forforbruk, Kvantum, Verdi, Utsatt Fisk */}
+            {/* Dropdowns for Biomasse, Forforbruk, Utsatt Fisk */}
             <li>
               <button
                 onClick={toggleBiomassDropdown}
@@ -363,126 +332,6 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                           checked={selectedYears["Fôrforbruk_tonn"].has(year)}
                           onChange={() =>
                             toggleCheckbox("Fôrforbruk_tonn", year)
-                          }
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor={year}
-                          className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          {year}
-                        </label>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-
-            <li className="ml-4">
-              <button
-                onClick={toggleKvantumDropdown}
-                className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-                type="button"
-              >
-                {formatDropdownLabel("Kvantum", "Eksportert_kvantum_tonn")}
-                <svg
-                  className="w-2.5 h-2.5 ms-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-              <div
-                className={`z-30 ${
-                  isKvantumOpen ? "" : "hidden"
-                } bg-white divide-y divide-gray-100 rounded-lg shadow w-30 dark:bg-gray-700 relative`}
-              >
-                <ul>
-                  {Object.keys(checkboxStates).map((year) => (
-                    <li
-                      key={year}
-                      onClick={() =>
-                        toggleCheckbox("Eksportert_kvantum_tonn", year)
-                      }
-                    >
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          type="checkbox"
-                          checked={selectedYears["Eksportert_kvantum_tonn"].has(
-                            year
-                          )}
-                          onChange={() =>
-                            toggleCheckbox("Eksportert_kvantum_tonn", year)
-                          }
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700 dark:bg-gray-600 dark:border-gray-500"
-                        />
-                        <label
-                          htmlFor={year}
-                          className="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300"
-                        >
-                          {year}
-                        </label>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </li>
-
-            <li className="ml-4">
-              <button
-                onClick={toggleVerdiDropdown}
-                className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
-                type="button"
-              >
-                {formatDropdownLabel("Verdi", "Eksportert_verdi_mill_kr")}
-                <svg
-                  className="w-2.5 h-2.5 ms-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-              <div
-                className={`z-30 ${
-                  isVerdiOpen ? "" : "hidden"
-                } bg-white divide-y divide-gray-100 rounded-lg shadow w-30 dark:bg-gray-700 relative`}
-              >
-                <ul>
-                  {Object.keys(checkboxStates).map((year) => (
-                    <li
-                      key={year}
-                      onClick={() =>
-                        toggleCheckbox("Eksportert_verdi_mill_kr", year)
-                      }
-                    >
-                      <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input
-                          type="checkbox"
-                          checked={selectedYears[
-                            "Eksportert_verdi_mill_kr"
-                          ].has(year)}
-                          onChange={() =>
-                            toggleCheckbox("Eksportert_verdi_mill_kr", year)
                           }
                           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700 dark:bg-gray-600 dark:border-gray-500"
                         />
