@@ -18,11 +18,6 @@ import "@radix-ui/themes/styles.css";
 import { Slot, Theme } from "@radix-ui/themes";
 import { RemoveScroll } from "react-remove-scroll";
 
-// const Proteins = dynamic(() => import("./components/client/Proteins"), {
-//   ssr: false, // This will disable Server Side Rendering for this component
-//   loading: () => <p>Loading...</p>, // This will display a loading text while the component is being loaded
-// });
-
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false); // Manage darkMode state here
 

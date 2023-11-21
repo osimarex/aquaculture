@@ -248,7 +248,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
               <li>
                 <button
                   onClick={toggleBiomassDropdown}
-                  className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+                  className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black  rounded-lg text-sm px-2 py-1 text-center inline-flex items-center"
                   type="button"
                 >
                   {formatDropdownLabel("Biomasse", "Biomasse_tonn")}
@@ -279,7 +279,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                         key={year}
                         onClick={() => toggleCheckbox("Biomasse_tonn", year)}
                       >
-                        <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <div className="flex items-center text-sm p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
                           <input
                             type="checkbox"
                             checked={selectedYears["Biomasse_tonn"].has(year)}
@@ -304,7 +304,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
               <li className="ml-4">
                 <button
                   onClick={toggleForforbrukDropdown}
-                  className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+                  className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black  rounded-lg text-sm px-2 py-1 text-center inline-flex items-center"
                   type="button"
                 >
                   {formatDropdownLabel("Forforbruk", "Fôrforbruk_tonn")}
@@ -360,7 +360,7 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
               <li className="ml-4">
                 <button
                   onClick={toggleUtsattFiskDropdown}
-                  className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+                  className="text-white bg-[#02273B] hover:bg-black dark:bg-[#ffff] dark:hover:bg-slate-300 dark:text-black  rounded-lg text-sm px-2 py-1 text-center inline-flex items-center"
                   type="button"
                 >
                   {formatDropdownLabel("Utsatt Fisk", "Utsatt_fisk_mill")}
@@ -419,23 +419,56 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       <Button variant="soft" size="2">
-                        Options
+                        Production Areas
                         <CaretDownIcon width="16" height="16" />
                       </Button>
                     </DropdownMenu.Trigger>
-                    <DropdownMenu.Content size="2">
-                      <DropdownMenu.Item shortcut="⌘ E">Edit</DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="⌘ D">
-                        Duplicate
+                    <DropdownMenu.Content
+                      size="2"
+                      style={{ maxHeight: "300px", overflowY: "auto" }}
+                    >
+                      <DropdownMenu.Item shortcut="# ∑" color="blue">
+                        Total
                       </DropdownMenu.Item>
                       <DropdownMenu.Separator />
-                      <DropdownMenu.Item shortcut="⌘ N">
-                        Archive
+                      <DropdownMenu.Item shortcut="# 1" color="green">
+                        Svenskegrensen til Jæren
                       </DropdownMenu.Item>
-
-                      <DropdownMenu.Separator />
-                      <DropdownMenu.Item shortcut="⌘ ⌫" color="red">
-                        Delete
+                      <DropdownMenu.Item shortcut="# 2" color="yellow">
+                        Ryfylke
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 3" color="red">
+                        Karmøy til Sotra
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 4" color="red">
+                        Nordhordaland til Stadt
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 5" color="yellow">
+                        Stadt til Hustadvika
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 6" color="green">
+                        Nordmøre og Sør-Trøndelag
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 7" color="yellow">
+                        Nord-Trøndelag med Bindal
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 8" color="green">
+                        Helgeland til Bodø
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 9" color="green">
+                        Vestfjorden til Vesterålen
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 10" color="green">
+                        Andøya til Senja
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 11" color="green">
+                        Kvaløy til Loppa
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 12" color="green">
+                        Vest-Finnmark
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item shortcut="# 13" color="green">
+                        Øst-Finnmark
                       </DropdownMenu.Item>
                     </DropdownMenu.Content>
                   </DropdownMenu.Root>
