@@ -87,6 +87,11 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         },
       },
     },
+    legend: {
+      itemStyle: {
+        color: darkMode ? "#ffffff" : "#000000",
+      },
+    },
     yAxis: {
       gridLineColor: darkMode ? "#333333" : "#ededed",
       title: {
@@ -95,6 +100,10 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
           color: darkMode ? "#ffffff" : "#000000",
         },
       },
+    },
+
+    credits: {
+      enabled: false,
     },
     series: chartData,
   };
@@ -110,7 +119,7 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
           <div className="flex flex-col items-start mt-8 ml-1">
             <div className="relative w-full">
               <div className="absolute top-2 left-16 transform[-50%,-50%] z-10 text-2xl">
-                SALMON FORECAST
+                FORWARD PRICE
               </div>
               <div>
                 <HighchartsReact highcharts={Highcharts} options={options} />
