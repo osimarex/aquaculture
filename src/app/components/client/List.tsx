@@ -72,6 +72,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
           alt={`${currency1} flag`}
           width={32}
           height={24}
+          priority={true}
           className="object-cover w-full h-full min-w-[32px]"
         />
       </div>
@@ -84,6 +85,7 @@ const SymbolRow: React.FC<SymbolProps> = ({
           alt={`${currency2} flag`}
           width={32}
           height={24}
+          priority={true}
           className="object-cover w-full h-full min-w-[32px]"
         />
       </div>
