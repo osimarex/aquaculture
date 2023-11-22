@@ -41,26 +41,26 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         return { x: weekIndex, y: price };
       });
 
-      // Constructing additional data points
-      const additionalSeriesData = [
-        { startWeek: 46, endWeek: 48, price: 77.75 },
-        { startWeek: 48, endWeek: 1, price: 85.375 },
-        { startWeek: 1, endWeek: 6, price: 106.225 },
-        { startWeek: 6, endWeek: 11, price: 109.925 },
-        { startWeek: 11, endWeek: 16, price: 111.525 },
-        { startWeek: 16, endWeek: 22, price: 114.925 },
-      ].flatMap((item) => {
+      const additionalSeries = [
+        { startWeek: 48, endWeek: 1, price: 77.75, name: "1st Month" },
+        { startWeek: 1, endWeek: 5, price: 85.375, name: "2nd Month" },
+        { startWeek: 1, endWeek: 14, price: 109.925, name: "Q1" },
+        { startWeek: 14, endWeek: 22, price: 112.3, name: "Q2" },
+      ].map((item) => {
         const startIndex = uniqueWeekNumbers.indexOf(item.startWeek);
         const endIndex = uniqueWeekNumbers.indexOf(item.endWeek);
-        return [
-          { x: startIndex, y: item.price },
-          { x: endIndex, y: item.price },
-        ];
+        return {
+          name: item.name,
+          data: [
+            { x: startIndex, y: item.price },
+            { x: endIndex, y: item.price },
+          ],
+        };
       });
 
       setChartData([
         { name: "Salmon Price", data: seriesData },
-        { name: "Additional Data", data: additionalSeriesData },
+        ...additionalSeries,
       ]);
       setWeekNumbers(uniqueWeekNumbers.map(String));
     };
