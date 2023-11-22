@@ -16,21 +16,6 @@ interface Props {
 const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
   const [weekNumbers, setWeekNumbers] = useState<string[]>([]);
-  const [prices, setPrices] = useState<{ [key: string]: number }>({});
-
-  useEffect(() => {
-    const fetchForwardPrices = async () => {
-      try {
-        const response = await fetch("/api/historicFuturePrices");
-        const priceData = await response.json();
-        const latestPriceData = priceData[priceData.length - 1];
-        setPrices(latestPriceData); // Store the latest prices
-      } catch (error) {
-        console.error("Error fetching forward prices:", error);
-      }
-    };
-    fetchForwardPrices();
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +29,6 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
     };
 
     const processChartData = (data: any[]) => {
-      // Extract week numbers and remove duplicates
       const weekNumbers: number[] = data.map((item) =>
         parseInt(item.week.trim(), 10)
       );
@@ -57,140 +41,32 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         return { x: weekIndex, y: price };
       });
 
-      setChartData([{ name: "Salmon Price", data: seriesData }]);
-      setWeekNumbers(uniqueWeekNumbers.map(String)); // Use this for the x-axis categories
-      addContractSeries(uniqueWeekNumbers);
-    };
-
-    type DataPoint = { x: number; y: number };
-
-    const addContractSeries = (uniqueWeekNumbers: any[]) => {
-      const currentDate = new Date();
-      const endDate29Weeks = addWeeks(currentDate, 29);
-      const currentYear = currentDate.getFullYear();
-      const nextMonth = currentDate.getMonth() + 1;
-
-      // Helper function to get the last day of a month
-      const lastDayOfMonth = (year: number, month: number) => {
-        return new Date(year, month + 1, 0);
-      };
-
-      // Helper function to calculate the end of a quarter
-      const getQuarterEndMonth = (quarter: number) => {
-        return quarter * 3;
-      };
-
-      // Expected contract keys
-      const expectedKeys = ["0", "1", "2", "3", "4", "5", "6", "12"];
-
-      // Adjusted single series for all contracts
-      let combinedContractSeries: {
-        name: string;
-        data: DataPoint[];
-        type: string;
-        dashStyle: string;
-        color: string;
-      } = {
-        name: "Combined Contracts",
-        data: [],
-        type: "line",
-        dashStyle: "Solid",
-        color: "#38B6FF",
-      };
-
-      // Helper function to calculate week number from a date
-      const getWeekNumber = (date: Date) => {
-        const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-        const daysSinceYearStart =
-          (date.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000);
-        return Math.ceil(
-          (daysSinceYearStart + firstDayOfYear.getDay() + 1) / 7
-        );
-      };
-
-      let lastContractEndDate = currentDate; // Start from the current date
-
-      // Loop through each key in the prices object
-      Object.keys(prices).forEach((key) => {
-        // Skip if the key is not expected or the price is not a number
-        if (!expectedKeys.includes(key) || isNaN(prices[key])) {
-          return;
-        }
-
-        const contractPrice = prices[key];
-        let contractEndDate;
-
-        if (key === "0" || key === "1" || key === "2" || key === "3") {
-          // Monthly contracts
-          const monthOffset = parseInt(key, 10);
-          contractEndDate = lastDayOfMonth(
-            currentYear,
-            nextMonth + monthOffset
-          );
-        } else {
-          // Quarterly contracts
-          const quarter = parseInt(key, 10) / 3;
-          const quarterEndMonth = getQuarterEndMonth(quarter);
-          contractEndDate = lastDayOfMonth(
-            currentYear + 1,
-            quarterEndMonth - 1
-          );
-        }
-
-        // Check if the contract end date is within the 29-week range
-        const isWithinRange = contractEndDate <= endDate29Weeks;
-
-        if (isWithinRange) {
-          const startWeekNumber = getWeekNumber(lastContractEndDate);
-          const endWeekNumber = getWeekNumber(contractEndDate);
-
-          // Map these week numbers to x-axis indices
-          let startIndex = uniqueWeekNumbers.indexOf(startWeekNumber);
-          let endIndex = uniqueWeekNumbers.indexOf(endWeekNumber);
-
-          // Log for debugging
-          console.log(
-            `Contract ${key}: Start Week: ${startWeekNumber}, End Week: ${endWeekNumber}`
-          );
-          console.log(
-            `Indices: Start Index: ${startIndex}, End Index: ${endIndex}`
-          );
-
-          // Create data points for this contract
-          for (let i = startIndex; i <= endIndex; i++) {
-            combinedContractSeries.data.push({ x: i, y: contractPrice });
-          }
-
-          // Update lastContractEndDate
-          lastContractEndDate = contractEndDate;
-        }
+      // Constructing additional data points
+      const additionalSeriesData = [
+        { startWeek: 46, endWeek: 48, price: 77.75 },
+        { startWeek: 48, endWeek: 1, price: 85.375 },
+        { startWeek: 1, endWeek: 6, price: 106.225 },
+        { startWeek: 6, endWeek: 11, price: 109.925 },
+        { startWeek: 11, endWeek: 16, price: 111.525 },
+        { startWeek: 16, endWeek: 22, price: 114.925 },
+      ].flatMap((item) => {
+        const startIndex = uniqueWeekNumbers.indexOf(item.startWeek);
+        const endIndex = uniqueWeekNumbers.indexOf(item.endWeek);
+        return [
+          { x: startIndex, y: item.price },
+          { x: endIndex, y: item.price },
+        ];
       });
 
-      // Add the combined series to the chart data
-      setChartData((prevChartData) =>
-        prevChartData
-          ? [...prevChartData, combinedContractSeries]
-          : [combinedContractSeries]
-      );
+      setChartData([
+        { name: "Salmon Price", data: seriesData },
+        { name: "Additional Data", data: additionalSeriesData },
+      ]);
+      setWeekNumbers(uniqueWeekNumbers.map(String));
     };
 
     fetchData();
-  }, [prices]);
-
-  // Helper function to calculate the week number of a date
-  const getWeekNumber = (date: Date) => {
-    const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-    const pastDaysOfYear =
-      (date.getTime() - firstDayOfYear.getTime()) / 86400000;
-    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
-  };
-
-  // Helper function to add weeks to a date
-  const addWeeks = (date: Date, weeks: number) => {
-    const newDate = new Date(date.getTime());
-    newDate.setDate(newDate.getDate() + weeks * 7);
-    return newDate;
-  };
+  }, []);
 
   const options = {
     chart: {
