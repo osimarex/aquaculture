@@ -1,10 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-module.exports = nextConfig;
-
-module.exports = {
+const nextConfig = {
   images: {
-    domains: ["https://imarexdevapp-staging.azurewebsites.net/"],
+    domains: ["imarexdevapp-test.azurewebsites.net"],
   },
 };
+
+module.exports = nextConfig;
