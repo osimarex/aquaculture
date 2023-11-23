@@ -17,6 +17,7 @@ import Image from "next/image";
 import "@radix-ui/themes/styles.css";
 import { Slot, Theme } from "@radix-ui/themes";
 import { RemoveScroll } from "react-remove-scroll";
+import BiomassProdArea from "./components/client/BiomassProdArea";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false); // Manage darkMode state here
@@ -53,7 +54,8 @@ export default function Home() {
             <Proteins />
           </div>
           <div className="cs:col-span-2 lg:ml-2 h-full w-full overflow-hidden border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:text-white dark:border-transparent">
-            <Biomass darkMode={darkMode} />
+            {/* <Biomass darkMode={darkMode} /> */}
+            <BiomassProdArea darkMode={darkMode} />
           </div>
           <div className=" lg:ml-2 text-white h-full w-full border-solid border-2 border-slate-200 rounded-xl bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
             <ProductionAreas darkMode={darkMode} />

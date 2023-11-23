@@ -42,9 +42,9 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       });
 
       const additionalSeries = [
-        { startWeek: 48, endWeek: 1, price: 77.75, name: "1st Month" },
-        { startWeek: 1, endWeek: 5, price: 85.375, name: "2nd Month" },
-        { startWeek: 1, endWeek: 14, price: 109.925, name: "Q1" },
+        { startWeek: 48, endWeek: 1, price: 85.5, name: "1st Month" },
+        { startWeek: 1, endWeek: 5, price: 106.1, name: "2nd Month" },
+        { startWeek: 1, endWeek: 14, price: 109.1, name: "Q1" },
         { startWeek: 14, endWeek: 22, price: 112.3, name: "Q2" },
       ].map((item) => {
         const startIndex = uniqueWeekNumbers.indexOf(item.startWeek);
@@ -59,8 +59,11 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
       });
 
       setChartData([
-        { name: "Salmon Price", data: seriesData },
-        ...additionalSeries,
+        { name: "Salmon Price", data: seriesData, color: "#40ca16" },
+        ...additionalSeries.map((series, index) => ({
+          ...series,
+          color: "#5C5CFF",
+        })),
       ]);
       setWeekNumbers(uniqueWeekNumbers.map(String));
     };

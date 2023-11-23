@@ -414,66 +414,6 @@ const Biomass: React.FC<BiomassProps> = ({ darkMode }) => {
                   </ul>
                 </div>
               </li>
-              <div className="ml-4">
-                <Flex gap="3" align="center">
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger>
-                      <Button variant="soft" size="2">
-                        Production Areas
-                        <CaretDownIcon width="16" height="16" />
-                      </Button>
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content
-                      size="2"
-                      style={{ maxHeight: "300px", overflowY: "auto" }}
-                    >
-                      <DropdownMenu.Item shortcut="# ∑" color="blue">
-                        Total
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Separator />
-                      <DropdownMenu.Item shortcut="# 1" color="green">
-                        Svenskegrensen til Jæren
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 2" color="yellow">
-                        Ryfylke
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 3" color="red">
-                        Karmøy til Sotra
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 4" color="red">
-                        Nordhordaland til Stadt
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 5" color="yellow">
-                        Stadt til Hustadvika
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 6" color="green">
-                        Nordmøre og Sør-Trøndelag
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 7" color="yellow">
-                        Nord-Trøndelag med Bindal
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 8" color="green">
-                        Helgeland til Bodø
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 9" color="green">
-                        Vestfjorden til Vesterålen
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 10" color="green">
-                        Andøya til Senja
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 11" color="green">
-                        Kvaløy til Loppa
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 12" color="green">
-                        Vest-Finnmark
-                      </DropdownMenu.Item>
-                      <DropdownMenu.Item shortcut="# 13" color="green">
-                        Øst-Finnmark
-                      </DropdownMenu.Item>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
-                </Flex>
-              </div>
             </ul>
           </div>
         </div>
