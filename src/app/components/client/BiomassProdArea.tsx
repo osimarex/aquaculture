@@ -6,18 +6,9 @@ import HighchartsReact from "highcharts-react-official";
 
 type ChartSeries = { name: string; data: { x: number; y: number | null }[] }[];
 
-type CheckboxStates = {
-  [key: string]: boolean;
-};
-
 interface BiomassProps {
   darkMode: boolean;
 }
-
-type ApiDataItem = {
-  Biomasse_tonn: number;
-  Date: string;
-};
 
 const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
@@ -25,16 +16,15 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
 
   const [selectedAreas, setSelectedAreas] = useState(new Set<string>());
 
-  const toggleDropdown = (
-    setter: React.Dispatch<React.SetStateAction<boolean>>
-  ) => {
-    setter((prevState) => !prevState);
-  };
-
   const [isProdAreasOpen, setIsProdAreasOpen] = useState(false);
+  const [isProdAreasAntallOpen, setIsProdAreasAntallOpen] = useState(false);
 
   const toggleProdAreasDropdown = () => {
     setIsProdAreasOpen((prevState) => !prevState);
+  };
+
+  const toggleProdAreasAntallDropdown = () => {
+    setIsProdAreasAntallOpen((prevState) => !prevState);
   };
 
   const toggleAreaCheckbox = (area: string) => {
@@ -86,6 +76,22 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     }
   }, [selectedAreas]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/bioAntallProdAreas");
+        const data = await response.json();
+        updateChartData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (selectedAreas.size > 0) {
+      fetchData();
+    }
+  }, [selectedAreas]);
+
   const areas = [
     "Område 1: Svenskegrensen til Jæren",
     "Område 2: Ryfylke",
@@ -101,6 +107,25 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     "Område 12: Vest-Finnmark",
     "Område 13: Øst-Finnmark",
     "Stamfisk, forskning og undervisning",
+    "Totalt",
+  ];
+
+  const areasAntall = [
+    "Område 1: Svenskegrensen til Jæren",
+    "Område 2: Ryfylke",
+    "Område 3: Karmøy til Sotra",
+    "Område 4: Nordhordland til Stadt",
+    "Område 5: Stadt til Hustadvika",
+    "Område 6: Nordmøre og Sør-Trøndelag",
+    "Område 7: Nord-Trøndelag med Bindal",
+    "Område 8: Helgeland til Bodø",
+    "Område 9: Vestfjorden og Vesterålen",
+    "Område 10: Andøya til Senja",
+    "Område 11: Kvaløy til Loppa",
+    "Område 12: Vest-Finnmark",
+    "Område 13: Øst-Finnmark",
+    "Stamfisk, forskning og undervisning",
+    "Totalt",
   ];
 
   const biomasseData = {
@@ -193,10 +218,72 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                 className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 onClick={toggleProdAreasDropdown}
               >
-                Prod.Areas
-                {/* SVG Icon here */}
+                Prod.Areas in tonn
+                <svg
+                  className="w-2.5 h-2.5 ml-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
               </button>
               {isProdAreasOpen && (
+                <div
+                  id="doubleDropdown"
+                  className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 overflow-y-auto"
+                  style={{ maxHeight: "300px" }} // Set a maximum height and enable scrolling
+                >
+                  <ul
+                    className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="doubleDropdownButton"
+                  >
+                    {areas.map((area) => (
+                      <li
+                        key={area}
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        onClick={() => toggleAreaCheckbox(area)}
+                      >
+                        {area}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </li>
+
+            <li>
+              <button
+                id="doubleDropdownButton"
+                type="button"
+                className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                onClick={toggleProdAreasAntallDropdown}
+              >
+                Prod.Areas antall
+                <svg
+                  className="w-2.5 h-2.5 ml-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
+              {isProdAreasAntallOpen && (
                 <div
                   id="doubleDropdown"
                   className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 overflow-y-auto"

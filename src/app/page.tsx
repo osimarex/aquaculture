@@ -15,15 +15,13 @@ import ProductionAreas from "./components/client/ProductionAreas";
 import Proteins from "./components/client/Proteins";
 import Image from "next/image";
 import "@radix-ui/themes/styles.css";
-import { Slot, Theme } from "@radix-ui/themes";
-import { RemoveScroll } from "react-remove-scroll";
 import BiomassProdArea from "./components/client/BiomassProdArea";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false); // Manage darkMode state here
 
   return (
-    <Theme>
+    <div>
       {/* <RemoveScroll as={Slot} allowPinchZoom enabled> */}
       <main className={darkMode ? "dark" : ""}>
         <div className="">
@@ -66,6 +64,6 @@ export default function Home() {
         </div>
       </main>
       {/* </RemoveScroll> */}
-    </Theme>
+    </div>
   );
 }
