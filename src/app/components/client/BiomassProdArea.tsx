@@ -209,6 +209,9 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
         <div className="absolute left-0 text-2xl font-normal ml-4 mt-14 z-10">
           PRODUCTION NUMBERS
         </div>
+        <div className="absolute right-0 text-md font-normal ml-4 z-10">
+          <button>hey</button>
+        </div>
         <div className="absolute left-0 ml-4 z-10">
           <ul className="flex list-none">
             <li>

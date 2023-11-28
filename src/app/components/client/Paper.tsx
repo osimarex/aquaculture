@@ -90,6 +90,11 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
         },
       },
     },
+    plotOptions: {
+      series: {
+        lineWidth: 3,
+      },
+    },
     legend: {
       itemStyle: {
         color: darkMode ? "#ffffff" : "#000000",
@@ -108,7 +113,13 @@ const SalmonForecast: React.FC<Props> = ({ darkMode }) => {
     credits: {
       enabled: false,
     },
-    series: chartData,
+    series: chartData?.map((series) => ({
+      ...series,
+      type: "spline",
+      marker: {
+        enabled: false,
+      },
+    })),
   };
 
   return (
