@@ -16,7 +16,13 @@ const useWebSocket = () => {
   });
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3000");
+    // const ws = new WebSocket("ws://localhost:3000");
+    const wsUrl =
+      window.location.hostname === "localhost"
+        ? "ws://localhost:3000"
+        : "wss://imarexdevapp-staging.azurewebsites.net";
+
+    const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
       console.log("WebSocket connection opened");
