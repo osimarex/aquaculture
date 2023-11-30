@@ -62,6 +62,11 @@ const useWebSocket = () => {
 
     ws.onerror = (error) => {
       console.error("WebSocket Error:", error);
+      // Additional logging
+      if (error instanceof Event) {
+        console.error("Error event type:", error.type);
+        console.error("Error target:", error.target);
+      }
     };
 
     ws.onclose = () => {
