@@ -60,7 +60,7 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
   const options: Highcharts.Options = {
     chart: {
       zoomType: "xy" as any,
-      height: 325,
+      height: 400,
       backgroundColor: darkMode ? "rgb(31 41 55)" : "#ffffff",
     },
     credits: {
@@ -111,12 +111,6 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
     yAxis: [
       {
         gridLineColor: darkMode ? "#333333" : "",
-        labels: {
-          format: "{value}°C",
-          style: {
-            color: defaultColors[2],
-          },
-        },
         title: {
           text: "Temperature",
           style: {
@@ -134,7 +128,7 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
           },
         },
         labels: {
-          format: "{value} mm",
+          // format: "{value} mm",
           style: {
             color: defaultColors[0],
           },
@@ -278,11 +272,11 @@ const ChartComponent: React.FC<Props> = ({ darkMode }) => {
 
   return (
     <figure
-      className={`highcharts-figure ${
+      className={`highcharts-figure w-fit ${
         darkMode ? "text-white" : "text-black bg-white"
       }`}
     >
-      <div className="min-w-[310px] max-w-[800px] mx-auto mt-8">
+      <div className="min-w-[620px] max-w-[800px] mx-auto mt-8 overflow-hidden">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </figure>
