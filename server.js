@@ -16,7 +16,8 @@ server.on("error", (error) => {
 });
 
 // Create a WebSocket server attached to the HTTP server
-const wss = new WebSocket.Server({ server });
+// const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server, perMessageDeflate: false });
 
 // Handle errors on the WebSocket server
 wss.on("error", (error) => {

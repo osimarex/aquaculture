@@ -10,16 +10,39 @@ interface BiomassProps {
   darkMode: boolean;
 }
 
+type ApiDataType = {
+  Date: string;
+  [key: string]: string | number;
+};
+
 const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
   const seriesColors = ["#4895EF", "#FF5733", "#C70039", "#900C3F", "#581845"];
 
-  const [selectedAreas, setSelectedAreas] = useState(new Set<string>());
+  const [selectedTonnAreas, setSelectedTonnAreas] = useState(new Set<string>());
+  const [selectedAntallAreas, setSelectedAntallAreas] = useState(
+    new Set<string>()
+  );
+
+  const [tonnData, setTonnData] = useState<ApiDataType[]>([]);
+  const [antallData, setAntallData] = useState<ApiDataType[]>([]);
 
   const [isProdAreasOpen, setIsProdAreasOpen] = useState(false);
   const [isProdAreasAntallOpen, setIsProdAreasAntallOpen] = useState(false);
 
-  const toggleProdAreasDropdown = () => {
+  const removeTonnArea = (area: string) => {
+    setSelectedTonnAreas(
+      (prevAreas) => new Set([...prevAreas].filter((x) => x !== area))
+    );
+  };
+
+  const removeAntallArea = (area: string) => {
+    setSelectedAntallAreas(
+      (prevAreas) => new Set([...prevAreas].filter((x) => x !== area))
+    );
+  };
+
+  const toggleProdAreasTonnDropdown = () => {
     setIsProdAreasOpen((prevState) => !prevState);
   };
 
@@ -27,8 +50,9 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     setIsProdAreasAntallOpen((prevState) => !prevState);
   };
 
-  const toggleAreaCheckbox = (area: string) => {
-    setSelectedAreas((prevAreas) => {
+  // Modified toggle functions for each dropdown
+  const toggleTonnAreaCheckbox = (area: string) => {
+    setSelectedTonnAreas((prevAreas) => {
       const newAreas = new Set(prevAreas);
       if (newAreas.has(area)) {
         newAreas.delete(area);
@@ -39,58 +63,92 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     });
   };
 
-  const updateChartData = (data: any[]) => {
+  const toggleAntallAreaCheckbox = (area: string) => {
+    setSelectedAntallAreas((prevAreas) => {
+      const newAreas = new Set(prevAreas);
+      if (newAreas.has(area)) {
+        newAreas.delete(area);
+      } else {
+        newAreas.add(area);
+      }
+      return newAreas;
+    });
+  };
+
+  const updateChartData = () => {
     const chartSeries: ChartSeries = [];
 
-    selectedAreas.forEach((area) => {
-      const areaData = data.map((d) => {
-        const date = new Date(d.Date);
+    selectedTonnAreas.forEach((area) => {
+      const areaName = area.split(": ")[1] || area;
+      const areaTonnData = tonnData.map((d) => {
+        const yValue = parseFloat(d[area] as string);
         return {
-          x: date.getTime(),
-          y: d[area] ?? null,
+          x: new Date(d.Date).getTime(),
+          y: isNaN(yValue) ? null : yValue, // Convert to number or null
         };
       });
-
       chartSeries.push({
-        name: area,
-        data: areaData,
+        name: `${areaName} (Tonn)`,
+        data: areaTonnData,
+      });
+    });
+
+    selectedAntallAreas.forEach((area) => {
+      const areaName = area.split(": ")[1] || area;
+      const areaAntallData = antallData.map((d) => {
+        const yValue = parseFloat(d[area] as string);
+        return {
+          x: new Date(d.Date).getTime(),
+          y: isNaN(yValue) ? null : yValue, // Convert to number or null
+        };
+      });
+      chartSeries.push({
+        name: `${areaName} (Antall)`,
+        data: areaAntallData,
       });
     });
 
     setChartData(chartSeries);
   };
 
+  // Fetch and set tonnData
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch("/api/bioTonnProdAreas");
-        const data = await response.json();
-        updateChartData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      if (selectedTonnAreas.size > 0) {
+        try {
+          const response = await fetch("/api/bioTonnProdAreas");
+          const data = await response.json();
+          setTonnData(data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
       }
     };
+    fetchData();
+  }, [selectedTonnAreas]);
 
-    if (selectedAreas.size > 0) {
-      fetchData();
-    }
-  }, [selectedAreas]);
-
+  // Fetch and set antallData
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch("/api/bioAntallProdAreas");
-        const data = await response.json();
-        updateChartData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      if (selectedAntallAreas.size > 0) {
+        try {
+          const response = await fetch("/api/bioAntallProdAreas");
+          const data = await response.json();
+          setAntallData(data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
       }
     };
+    fetchData();
+  }, [selectedAntallAreas]);
 
-    if (selectedAreas.size > 0) {
-      fetchData();
+  // Update chart data when tonnData or antallData changes
+  useEffect(() => {
+    if (tonnData.length > 0 || antallData.length > 0) {
+      updateChartData();
     }
-  }, [selectedAreas]);
+  }, [selectedTonnAreas, selectedAntallAreas, tonnData, antallData]);
 
   const areas = [
     "Område 1: Svenskegrensen til Jæren",
@@ -210,8 +268,26 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
           PRODUCTION NUMBERS
         </div>
         <div className="absolute right-0 text-md font-normal ml-4 z-10">
-          <button>hey</button>
+          {Array.from(selectedTonnAreas).map((area) => {
+            const areaName = area.split(": ")[1] || area; // Extract the part after ': '
+            return (
+              <button key={area} className="mr-2">
+                {areaName} (Tonn){" "}
+                <span onClick={() => removeTonnArea(area)}>x</span>
+              </button>
+            );
+          })}
+          {Array.from(selectedAntallAreas).map((area) => {
+            const areaName = area.split(": ")[1] || area; // Extract the part after ': '
+            return (
+              <button key={area} className="mr-2">
+                {areaName} (Antall){" "}
+                <span onClick={() => removeAntallArea(area)}>x</span>
+              </button>
+            );
+          })}
         </div>
+
         <div className="absolute left-0 ml-4 z-10">
           <ul className="flex list-none">
             <li>
@@ -219,7 +295,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                 id="doubleDropdownButton"
                 type="button"
                 className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                onClick={toggleProdAreasDropdown}
+                onClick={toggleProdAreasTonnDropdown}
               >
                 Prod.Areas in tonn
                 <svg
@@ -248,15 +324,18 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                     className="py-2 text-sm text-gray-700 dark:text-gray-200"
                     aria-labelledby="doubleDropdownButton"
                   >
-                    {areas.map((area) => (
-                      <li
-                        key={area}
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        onClick={() => toggleAreaCheckbox(area)}
-                      >
-                        {area}
-                      </li>
-                    ))}
+                    {areas.map((area) => {
+                      const areaName = area.split(": ")[1] || area; // Extract the part after ': '
+                      return (
+                        <li
+                          key={area}
+                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          onClick={() => toggleTonnAreaCheckbox(area)}
+                        >
+                          {areaName}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}
@@ -296,15 +375,18 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                     className="py-2 text-sm text-gray-700 dark:text-gray-200"
                     aria-labelledby="doubleDropdownButton"
                   >
-                    {areas.map((area) => (
-                      <li
-                        key={area}
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        onClick={() => toggleAreaCheckbox(area)}
-                      >
-                        {area}
-                      </li>
-                    ))}
+                    {areasAntall.map((area) => {
+                      const areaName = area.split(": ")[1] || area; // Extract the part after ': '
+                      return (
+                        <li
+                          key={area}
+                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          onClick={() => toggleAntallAreaCheckbox(area)}
+                        >
+                          {areaName}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}

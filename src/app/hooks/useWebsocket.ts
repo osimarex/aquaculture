@@ -36,7 +36,7 @@ const useWebSocket = () => {
     };
 
     ws.onmessage = (event) => {
-      console.log("Received message:", event.data);
+      // console.log("Received message:", event.data);
 
       if (typeof event.data === "string") {
         // Handle JSON data
