@@ -15,6 +15,10 @@ type ApiDataType = {
   [key: string]: string | number;
 };
 
+type TabName = "Tonn" | "Antall" | "Year";
+
+type TabClickCountType = Record<string, number>;
+
 const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
   const seriesColors = ["#4895EF", "#FF5733", "#C70039", "#900C3F", "#581845"];
@@ -29,6 +33,48 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
 
   const [isProdAreasOpen, setIsProdAreasOpen] = useState(false);
   const [isProdAreasAntallOpen, setIsProdAreasAntallOpen] = useState(false);
+
+  const [isTonnTabOpen, setIsTonnTabOpen] = useState(false);
+  const [isAntallTabOpen, setIsAntallTabOpen] = useState(false);
+  const [isYearTabOpen, setIsYearTabOpen] = useState(false);
+
+  const toggleTonnTab = () => {
+    setIsTonnTabOpen(!isTonnTabOpen);
+  };
+
+  const toggleAntallTab = () => {
+    setIsAntallTabOpen(!isAntallTabOpen);
+  };
+
+  const toggleYearTab = () => {
+    setIsYearTabOpen(!isYearTabOpen);
+  };
+
+  const [activeTab, setActiveTab] = useState(null);
+
+  const [tabClickCount, setTabClickCount] = useState<TabClickCountType>({
+    Tonn: 0,
+    Antall: 0,
+    Year: 0,
+  });
+
+  const handleTabClick = (tabName: keyof TabClickCountType) => {
+    setTabClickCount((prevCount) => ({
+      ...prevCount,
+      [tabName]: prevCount[tabName] + 1,
+    }));
+
+    // Console log tab status
+    console.log(
+      `Tab pressed: ${tabName} = ${
+        tabClickCount[tabName] % 2 === 0 ? "Open" : "Close"
+      }`
+    );
+  };
+
+  const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
+
+  const [selectedYears, setSelectedYears] = useState<number[]>([]);
 
   const removeTonnArea = (area: string) => {
     setSelectedTonnAreas(
@@ -48,6 +94,10 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
 
   const toggleProdAreasAntallDropdown = () => {
     setIsProdAreasAntallOpen((prevState) => !prevState);
+  };
+
+  const toggleYearDropdown = () => {
+    setIsYearDropdownOpen((prevState) => !prevState);
   };
 
   // Modified toggle functions for each dropdown
@@ -75,36 +125,73 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     });
   };
 
+  const extractYears = (data: ApiDataType[]): number[] => {
+    const years = new Set<number>();
+    data.forEach((item) => {
+      const year = new Date(item.Date).getFullYear();
+      years.add(year);
+    });
+    return Array.from(years).sort((a, b) => a - b);
+  };
+
+  // Call this function after fetching the data to set the years
+  const [years, setYears] = useState<number[]>([]);
+  const baseYear = 2000; // Example base year
+
   const updateChartData = () => {
     const chartSeries: ChartSeries = [];
 
     selectedTonnAreas.forEach((area) => {
-      const areaName = area.split(": ")[1] || area;
-      const areaTonnData = tonnData.map((d) => {
-        const yValue = parseFloat(d[area] as string);
-        return {
-          x: new Date(d.Date).getTime(),
-          y: isNaN(yValue) ? null : yValue, // Convert to number or null
-        };
-      });
-      chartSeries.push({
-        name: `${areaName} (Tonn)`,
-        data: areaTonnData,
+      selectedYears.forEach((year) => {
+        const areaName = area.split(": ")[1] || area;
+        const areaYearData = [];
+
+        for (let month = 0; month < 12; month++) {
+          const date = new Date(year, month, 1);
+          const normalizedDate = new Date(baseYear, month, 1); // Normalize to a base year
+          const dataPoint = tonnData.find(
+            (d) =>
+              new Date(d.Date).getFullYear() === year &&
+              new Date(d.Date).getMonth() === month
+          );
+
+          areaYearData.push({
+            x: normalizedDate.getTime(),
+            y: dataPoint ? parseFloat(dataPoint[area] as string) || null : null,
+          });
+        }
+
+        chartSeries.push({
+          name: `${areaName} (Tonn) - ${year}`,
+          data: areaYearData,
+        });
       });
     });
 
     selectedAntallAreas.forEach((area) => {
-      const areaName = area.split(": ")[1] || area;
-      const areaAntallData = antallData.map((d) => {
-        const yValue = parseFloat(d[area] as string);
-        return {
-          x: new Date(d.Date).getTime(),
-          y: isNaN(yValue) ? null : yValue, // Convert to number or null
-        };
-      });
-      chartSeries.push({
-        name: `${areaName} (Antall)`,
-        data: areaAntallData,
+      selectedYears.forEach((year) => {
+        const areaName = area.split(": ")[1] || area;
+        const areaYearData = [];
+
+        for (let month = 0; month < 12; month++) {
+          const date = new Date(year, month, 1);
+          const normalizedDate = new Date(baseYear, month, 1); // Normalize to a base year
+          const dataPoint = antallData.find(
+            (d) =>
+              new Date(d.Date).getFullYear() === year &&
+              new Date(d.Date).getMonth() === month
+          );
+
+          areaYearData.push({
+            x: normalizedDate.getTime(),
+            y: dataPoint ? parseFloat(dataPoint[area] as string) || null : null,
+          });
+        }
+
+        chartSeries.push({
+          name: `${areaName} (Antall) - ${year}`,
+          data: areaYearData,
+        });
       });
     });
 
@@ -119,13 +206,15 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
           const response = await fetch("/api/bioTonnProdAreas");
           const data = await response.json();
           setTonnData(data);
+          const combinedData = [...tonnData, ...antallData];
+          setYears(extractYears(combinedData));
         } catch (error) {
           console.error("Error fetching data:", error);
         }
       }
     };
     fetchData();
-  }, [selectedTonnAreas]);
+  }, [selectedTonnAreas, tonnData, antallData]);
 
   // Fetch and set antallData
   useEffect(() => {
@@ -135,20 +224,43 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
           const response = await fetch("/api/bioAntallProdAreas");
           const data = await response.json();
           setAntallData(data);
+          const combinedData = [...tonnData, ...antallData];
+          setYears(extractYears(combinedData));
         } catch (error) {
           console.error("Error fetching data:", error);
         }
       }
     };
     fetchData();
-  }, [selectedAntallAreas]);
+  }, [selectedAntallAreas, tonnData, antallData]);
 
   // Update chart data when tonnData or antallData changes
   useEffect(() => {
     if (tonnData.length > 0 || antallData.length > 0) {
       updateChartData();
     }
-  }, [selectedTonnAreas, selectedAntallAreas, tonnData, antallData]);
+  }, [
+    selectedTonnAreas,
+    selectedAntallAreas,
+    tonnData,
+    antallData,
+    selectedYears,
+  ]);
+
+  useEffect(() => {
+    const combinedData = [...tonnData, ...antallData];
+    setYears(extractYears(combinedData));
+  }, [tonnData, antallData]);
+
+  const handleYearSelection = (year: number) => {
+    setSelectedYears((prevYears) => {
+      if (prevYears.includes(year)) {
+        return prevYears.filter((y) => y !== year); // Deselect the year
+      } else {
+        return [...prevYears, year]; // Select the year
+      }
+    });
+  };
 
   const areas = [
     "Område 1: Svenskegrensen til Jæren",
@@ -210,6 +322,10 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     },
     xAxis: {
       type: "datetime",
+      // min: selectedYears ? new Date(selectedYears, 0, 1).getTime() : undefined,
+      // max: selectedYears
+      //   ? new Date(selectedYears, 11, 31, 23, 59, 59).getTime()
+      //   : undefined,
       labels: {
         formatter: function (
           this: Highcharts.AxisLabelsFormatterContextObject
@@ -269,19 +385,19 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
         </div>
         <div className="absolute right-0 text-md font-normal ml-4 z-10">
           {Array.from(selectedTonnAreas).map((area) => {
-            const areaName = area.split(": ")[1] || area; // Extract the part after ': '
+            const areaName = area.split(": ")[1] || area;
             return (
               <button key={area} className="mr-2">
-                {areaName} (Tonn){" "}
+                {areaName} (Tonn)
                 <span onClick={() => removeTonnArea(area)}>x</span>
               </button>
             );
           })}
           {Array.from(selectedAntallAreas).map((area) => {
-            const areaName = area.split(": ")[1] || area; // Extract the part after ': '
+            const areaName = area.split(": ")[1] || area;
             return (
               <button key={area} className="mr-2">
-                {areaName} (Antall){" "}
+                {areaName} (Antall)
                 <span onClick={() => removeAntallArea(area)}>x</span>
               </button>
             );
@@ -289,109 +405,96 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
         </div>
 
         <div className="absolute left-0 ml-4 z-10">
-          <ul className="flex list-none">
-            <li>
-              <button
-                id="doubleDropdownButton"
-                type="button"
-                className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                onClick={toggleProdAreasTonnDropdown}
+          <div role="tablist" className="tabs tabs-lifted">
+            {/* Tonn Tab */}
+            <input
+              type="radio"
+              name="my_tabs_2"
+              role="tab"
+              className="tab"
+              aria-label="Tab Tonn"
+              onClick={() => handleTabClick("Tonn")}
+            />
+            {tabClickCount["Tonn"] % 2 !== 0 && (
+              <div
+                role="tabpanel"
+                className="tab-content bg-base-100 border-base-300 rounded-box p-6"
               >
-                Prod.Areas in tonn
-                <svg
-                  className="w-2.5 h-2.5 ml-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-              {isProdAreasOpen && (
-                <div
-                  id="doubleDropdown"
-                  className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 overflow-y-auto"
-                  style={{ maxHeight: "300px" }} // Set a maximum height and enable scrolling
-                >
-                  <ul
-                    className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                    aria-labelledby="doubleDropdownButton"
-                  >
-                    {areas.map((area) => {
-                      const areaName = area.split(": ")[1] || area; // Extract the part after ': '
-                      return (
-                        <li
-                          key={area}
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => toggleTonnAreaCheckbox(area)}
-                        >
-                          {areaName}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-            </li>
+                <ul className="flex flex-col">
+                  {areas.map((area) => {
+                    const areaName = area.split(": ")[1] || area;
+                    return (
+                      <li
+                        key={area}
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        onClick={() => toggleTonnAreaCheckbox(area)}
+                      >
+                        {areaName}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
 
-            <li>
-              <button
-                id="doubleDropdownButton"
-                type="button"
-                className="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                onClick={toggleProdAreasAntallDropdown}
+            {/* Antall Tab */}
+            <input
+              type="radio"
+              name="my_tabs_2"
+              role="tab"
+              className="tab"
+              aria-label="Tab Antall"
+              onClick={() => handleTabClick("Antall")}
+            />
+            {tabClickCount["Antall"] % 2 !== 0 && (
+              <div
+                role="tabpanel"
+                className="tab-content bg-base-100 border-base-300 rounded-box p-6"
               >
-                Prod.Areas antall
-                <svg
-                  className="w-2.5 h-2.5 ml-3"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-              {isProdAreasAntallOpen && (
-                <div
-                  id="doubleDropdown"
-                  className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 overflow-y-auto"
-                  style={{ maxHeight: "300px" }} // Set a maximum height and enable scrolling
-                >
-                  <ul
-                    className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                    aria-labelledby="doubleDropdownButton"
-                  >
-                    {areasAntall.map((area) => {
-                      const areaName = area.split(": ")[1] || area; // Extract the part after ': '
-                      return (
-                        <li
-                          key={area}
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => toggleAntallAreaCheckbox(area)}
-                        >
-                          {areaName}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-            </li>
-          </ul>
+                <ul className="flex flex-col">
+                  {areasAntall.map((area) => {
+                    const areaName = area.split(": ")[1] || area;
+                    return (
+                      <li
+                        key={area}
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        onClick={() => toggleAntallAreaCheckbox(area)}
+                      >
+                        {areaName}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+            {/* Year Tab */}
+            <input
+              type="radio"
+              name="my_tabs_2"
+              role="tab"
+              className="tab"
+              aria-label="Tab Year"
+              onClick={() => handleTabClick("Year")}
+            />
+            {tabClickCount["Year"] % 2 !== 0 && (
+              <div
+                role="tabpanel"
+                className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+              >
+                <ul className="flex flex-col">
+                  {years.map((year) => (
+                    <li
+                      key={year}
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      onClick={() => handleYearSelection(year)}
+                    >
+                      {year}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div>
