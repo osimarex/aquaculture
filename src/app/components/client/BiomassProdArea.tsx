@@ -31,12 +31,6 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   const [tonnData, setTonnData] = useState<ApiDataType[]>([]);
   const [antallData, setAntallData] = useState<ApiDataType[]>([]);
 
-  const [tabClickCount, setTabClickCount] = useState<TabClickCountType>({
-    Tonn: 0,
-    Antall: 0,
-    Year: 0,
-  });
-
   const handleTabClick = (tabName: keyof TabClickCountType) => {
     setOpenTab((prevOpenTab) => (prevOpenTab === tabName ? null : tabName));
   };
@@ -48,7 +42,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   //   );
   // };
 
-  const [selectedYears, setSelectedYears] = useState<number[]>([]);
+  const [selectedYears, setSelectedYears] = useState<(number | string)[]>([]);
 
   const removeTonnArea = (area: string) => {
     setSelectedTonnAreas(
@@ -102,60 +96,96 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
 
   const updateChartData = () => {
     const chartSeries: ChartSeries = [];
+    const isTotalSelected = selectedYears.includes("Total");
+    const numericYears = selectedYears.filter(
+      (y) => typeof y === "number"
+    ) as number[];
 
-    selectedTonnAreas.forEach((area) => {
-      selectedYears.forEach((year) => {
+    const yearsToUse = isTotalSelected ? years : numericYears;
+
+    if (isTotalSelected) {
+      // Aggregate data for 'Total' across all years
+      const aggregateData = (dataSet: ApiDataType[], area: string) => {
+        const areaYearData: { x: number; y: number | null }[] = [];
+
+        dataSet.forEach((dataPoint) => {
+          const date = new Date(dataPoint.Date);
+          const timeStamp = date.getTime();
+
+          let value = dataPoint[area];
+          let yValue: number | null = null;
+
+          // Check if value is a number or a string that can be converted to a number
+          if (typeof value === "number") {
+            yValue = value;
+          } else if (typeof value === "string") {
+            let parsedNumber = parseFloat(value);
+            yValue = isNaN(parsedNumber) ? null : parsedNumber;
+          }
+
+          areaYearData.push({
+            x: timeStamp,
+            y: yValue,
+          });
+        });
+
+        return areaYearData;
+      };
+
+      selectedTonnAreas.forEach((area) => {
         const areaName = area.split(": ")[1] || area;
-        const areaYearData = [];
+        chartSeries.push({
+          name: `${areaName} (Tonn) - Total`,
+          data: aggregateData(tonnData, area),
+        });
+      });
 
+      selectedAntallAreas.forEach((area) => {
+        const areaName = area.split(": ")[1] || area;
+        chartSeries.push({
+          name: `${areaName} (Antall) - Total`,
+          data: aggregateData(antallData, area),
+        });
+      });
+    } else {
+      // Handle individual years
+      const processData = (dataSet: any[], area: string, year: number) => {
+        const areaYearData = [];
         for (let month = 0; month < 12; month++) {
-          const date = new Date(year, month, 1);
-          const normalizedDate = new Date(baseYear, month, 1); // Normalize to a base year
-          const dataPoint = tonnData.find(
+          const normalizedDate = new Date(baseYear, month, 1);
+          const dataPoint = dataSet.find(
             (d) =>
               new Date(d.Date).getFullYear() === year &&
               new Date(d.Date).getMonth() === month
           );
-
           areaYearData.push({
             x: normalizedDate.getTime(),
             y: dataPoint ? parseFloat(dataPoint[area] as string) || null : null,
           });
         }
+        return areaYearData;
+      };
 
-        chartSeries.push({
-          name: `${areaName} (Tonn) - ${year}`,
-          data: areaYearData,
-        });
-      });
-    });
-
-    selectedAntallAreas.forEach((area) => {
-      selectedYears.forEach((year) => {
-        const areaName = area.split(": ")[1] || area;
-        const areaYearData = [];
-
-        for (let month = 0; month < 12; month++) {
-          const date = new Date(year, month, 1);
-          const normalizedDate = new Date(baseYear, month, 1); // Normalize to a base year
-          const dataPoint = antallData.find(
-            (d) =>
-              new Date(d.Date).getFullYear() === year &&
-              new Date(d.Date).getMonth() === month
-          );
-
-          areaYearData.push({
-            x: normalizedDate.getTime(),
-            y: dataPoint ? parseFloat(dataPoint[area] as string) || null : null,
+      selectedTonnAreas.forEach((area) => {
+        yearsToUse.forEach((year) => {
+          const areaName = area.split(": ")[1] || area;
+          chartSeries.push({
+            name: `${areaName} (Tonn) - ${year}`,
+            data: processData(tonnData, area, year),
           });
-        }
-
-        chartSeries.push({
-          name: `${areaName} (Antall) - ${year}`,
-          data: areaYearData,
         });
       });
-    });
+
+      selectedAntallAreas.forEach((area) => {
+        yearsToUse.forEach((year) => {
+          const areaName = area.split(": ")[1] || area;
+          chartSeries.push({
+            name: `${areaName} (Antall) - ${year}`,
+            data: processData(antallData, area, year),
+          });
+        });
+      });
+    }
 
     setChartData(chartSeries);
   };
@@ -214,12 +244,25 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     setYears(extractYears(combinedData));
   }, [tonnData, antallData]);
 
-  const handleYearSelection = (year: number) => {
+  const handleYearSelection = (year: number | string) => {
     setSelectedYears((prevYears) => {
-      if (prevYears.includes(year)) {
-        return prevYears.filter((y) => y !== year); // Deselect the year
+      if (year === "Total") {
+        // Toggle "Total" selection
+        return prevYears.includes("Total") ? [] : ["Total"];
       } else {
-        return [...prevYears, year]; // Select the year
+        const numericYear = year as number;
+        if (prevYears.includes("Total")) {
+          // If "Total" is selected, deselect it and select the new year
+          return [numericYear];
+        } else {
+          // If "Total" is not selected, toggle the specific year
+          const yearIndex = prevYears.indexOf(numericYear);
+          if (yearIndex >= 0) {
+            return prevYears.filter((y) => y !== numericYear);
+          } else {
+            return [...prevYears, numericYear];
+          }
+        }
       }
     });
   };
@@ -444,6 +487,12 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                 className="tab-content bg-base-100 border-base-300 rounded-box p-6"
               >
                 <ul className="flex flex-col">
+                  <li
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    onClick={() => handleYearSelection("Total")}
+                  >
+                    Total
+                  </li>
                   {years.map((year) => (
                     <li
                       key={year}
