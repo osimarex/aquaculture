@@ -57,11 +57,10 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     setTabState((prevState) => {
       const newTabState = { ...prevState };
 
-      // Toggle the state of the clicked tab
+      // Toggle the isOpen state of the clicked tab
+      // isSelected remains true if it was already selected
       newTabState[tabName] = {
-        isOpen: prevState[tabName].isSelected
-          ? !prevState[tabName].isOpen
-          : true,
+        isOpen: !prevState[tabName].isOpen,
         isSelected: true,
       };
 
@@ -183,7 +182,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
       selectedTonnAreas.forEach((area) => {
         const areaName = area.split(": ")[1] || area;
         chartSeries.push({
-          name: `${areaName} (Tonn) - Total`,
+          name: `${areaName} (Ton) - Total`,
           data: aggregateData(tonnData, area),
         });
       });
@@ -191,7 +190,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
       selectedAntallAreas.forEach((area) => {
         const areaName = area.split(": ")[1] || area;
         chartSeries.push({
-          name: `${areaName} (Antall) - Total`,
+          name: `${areaName} (Amount) - Total`,
           data: aggregateData(antallData, area),
         });
       });
@@ -218,7 +217,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
         yearsToUse.forEach((year) => {
           const areaName = area.split(": ")[1] || area;
           chartSeries.push({
-            name: `${areaName} (Tonn) - ${year}`,
+            name: `${areaName} (Ton) - ${year}`,
             data: processData(tonnData, area, year),
           });
         });
@@ -228,7 +227,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
         yearsToUse.forEach((year) => {
           const areaName = area.split(": ")[1] || area;
           chartSeries.push({
-            name: `${areaName} (Antall) - ${year}`,
+            name: `${areaName} (Amount) - ${year}`,
             data: processData(antallData, area, year),
           });
         });
@@ -445,7 +444,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                 key={area}
                 className="mr-2 bg-[#38B6FF] rounded-xl text-white p-2 text-sm ml-2 mb-2 inline-flex items-center cursor-default"
               >
-                <span className="mr-1">{areaName} (Tonn)</span>
+                <span className="mr-1">{areaName} (Ton)</span>
                 <span
                   className="cursor-pointer text-black bold"
                   onClick={() => removeTonnArea(area)}
@@ -459,9 +458,17 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
           {Array.from(selectedAntallAreas).map((area) => {
             const areaName = area.split(": ")[1] || area;
             return (
-              <button key={area} className="mr-2">
-                {areaName} (Antall)
-                <span onClick={() => removeAntallArea(area)}>x</span>
+              <button
+                key={area}
+                className="mr-2 bg-[#38B6FF] rounded-xl text-white p-2 text-sm ml-2 mb-2 inline-flex items-center cursor-default"
+              >
+                <span className="mr-1">{areaName} (Amount)</span>
+                <span
+                  className="cursor-pointer text-black bold"
+                  onClick={() => removeAntallArea(area)}
+                >
+                  x
+                </span>
               </button>
             );
           })}
@@ -481,7 +488,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                     : "bg-green-100"
                   : "bg-blue-100"
               } ${darkMode ? "text-black" : "text-black"}`}
-              aria-label="Tonn"
+              aria-label="Biomass"
               onClick={() => handleTabClick("Tonn")}
             />
             {openTab === "Tonn" && (
@@ -493,13 +500,37 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                 <ul className="flex flex-col">
                   {areas.map((area) => {
                     const areaName = area.split(": ")[1] || area;
+                    const isSelected = selectedTonnAreas.has(area);
                     return (
                       <li
                         key={area}
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white dark:text-black"
+                        className={`block px-4 py-2 hover:bg-zinc-300 dark:hover:bg-blue-400 ${
+                          isSelected
+                            ? "bg-[#38B6FF] text-white hover:text-black flex justify-between items-center"
+                            : "dark:text-black"
+                        }`}
                         onClick={() => toggleTonnAreaCheckbox(area)}
                       >
                         {areaName}
+                        {isSelected && (
+                          <svg
+                            height="20px"
+                            width="20px"
+                            viewBox="0 0 32 32"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g id="Check_Square">
+                              <path
+                                d="M30,0H2C0.895,0,0,0.895,0,2v28c0,1.105,0.895,2,2,2h28c1.104,0,2-0.895,2-2V2C32,0.895,31.104,0,30,0z M30,30H2V2h28V30z"
+                                fill="#121313"
+                              />
+                              <path
+                                d="M12.301,22.607c0.382,0.379,1.044,0.384,1.429,0l10.999-10.899c0.394-0.39,0.394-1.024,0-1.414c-0.394-0.391-1.034-0.391-1.428,0L13.011,20.488l-4.281-4.196c-0.394-0.391-1.034-0.391-1.428,0c-0.395,0.391-0.395,1.024,0,1.414L12.301,22.607z"
+                                fill="#121313"
+                              />
+                            </g>
+                          </svg>
+                        )}
                       </li>
                     );
                   })}
@@ -519,7 +550,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                     : "bg-green-100"
                   : "bg-blue-100"
               } ${darkMode ? "text-black" : "text-black"}`}
-              aria-label="Antall"
+              aria-label="Amount"
               onClick={() => handleTabClick("Antall")}
             />
             {openTab === "Antall" && (
@@ -529,15 +560,39 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                 style={{ maxHeight: "400px", overflowY: "scroll" }}
               >
                 <ul className="flex flex-col">
-                  {areasAntall.map((area) => {
+                  {areas.map((area) => {
                     const areaName = area.split(": ")[1] || area;
+                    const isSelected = selectedAntallAreas.has(area);
                     return (
                       <li
                         key={area}
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white dark:text-black"
+                        className={`block px-4 py-2 hover:bg-zinc-300 dark:hover:bg-blue-400 ${
+                          isSelected
+                            ? "bg-[#38B6FF] text-white hover:text-black flex justify-between items-center"
+                            : "dark:text-black"
+                        }`}
                         onClick={() => toggleAntallAreaCheckbox(area)}
                       >
                         {areaName}
+                        {isSelected && (
+                          <svg
+                            height="20px"
+                            width="20px"
+                            viewBox="0 0 32 32"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g id="Check_Square">
+                              <path
+                                d="M30,0H2C0.895,0,0,0.895,0,2v28c0,1.105,0.895,2,2,2h28c1.104,0,2-0.895,2-2V2C32,0.895,31.104,0,30,0z M30,30H2V2h28V30z"
+                                fill="#121313"
+                              />
+                              <path
+                                d="M12.301,22.607c0.382,0.379,1.044,0.384,1.429,0l10.999-10.899c0.394-0.39,0.394-1.024,0-1.414c-0.394-0.391-1.034-0.391-1.428,0L13.011,20.488l-4.281-4.196c-0.394-0.391-1.034-0.391-1.428,0c-0.395,0.391-0.395,1.024,0,1.414L12.301,22.607z"
+                                fill="#121313"
+                              />
+                            </g>
+                          </svg>
+                        )}
                       </li>
                     );
                   })}
@@ -556,7 +611,9 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                     : "bg-green-100"
                   : "bg-blue-100"
               } ${darkMode ? "text-black" : "text-black"}`}
-              aria-label="Year"
+              aria-label={`Year${
+                selectedYears.length > 0 ? ` (${selectedYears.length})` : ""
+              }`}
               onClick={() => handleTabClick("Year")}
             />
             {openTab === "Year" && (
@@ -566,21 +623,41 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                 style={{ maxHeight: "400px", overflowY: "scroll" }}
               >
                 <ul className="flex flex-col">
-                  <li
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white dark:text-black"
-                    onClick={() => handleYearSelection("Total")}
-                  >
-                    Total
-                  </li>
-                  {years.map((year) => (
-                    <li
-                      key={year}
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white dark:text-black"
-                      onClick={() => handleYearSelection(year)}
-                    >
-                      {year}
-                    </li>
-                  ))}
+                  {years.map((year) => {
+                    const isSelected = selectedYears.includes(year);
+                    return (
+                      <li
+                        key={year}
+                        className={`block px-4 py-2 hover:bg-zinc-300 dark:hover:bg-blue-400 ${
+                          isSelected
+                            ? "bg-[#38B6FF] text-white hover:text-black flex justify-between items-center"
+                            : "dark:text-black"
+                        }`}
+                        onClick={() => handleYearSelection(year)}
+                      >
+                        {year}
+                        {isSelected && (
+                          <svg
+                            height="20px"
+                            width="20px"
+                            viewBox="0 0 32 32"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g id="Check_Square">
+                              <path
+                                d="M30,0H2C0.895,0,0,0.895,0,2v28c0,1.105,0.895,2,2,2h28c1.104,0,2-0.895,2-2V2C32,0.895,31.104,0,30,0z M30,30H2V2h28V30z"
+                                fill="#121313"
+                              />
+                              <path
+                                d="M12.301,22.607c0.382,0.379,1.044,0.384,1.429,0l10.999-10.899c0.394-0.39,0.394-1.024,0-1.414c-0.394-0.391-1.034-0.391-1.428,0L13.011,20.488l-4.281-4.196c-0.394-0.391-1.034-0.391-1.428,0c-0.395,0.391-0.395,1.024,0,1.414L12.301,22.607z"
+                                fill="#121313"
+                              />
+                            </g>
+                          </svg>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             )}
