@@ -26,6 +26,8 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     new Set<string>()
   );
 
+  const [openTab, setOpenTab] = useState<keyof TabClickCountType | null>(null);
+
   const [tonnData, setTonnData] = useState<ApiDataType[]>([]);
   const [antallData, setAntallData] = useState<ApiDataType[]>([]);
 
@@ -36,17 +38,15 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   });
 
   const handleTabClick = (tabName: keyof TabClickCountType) => {
-    setTabClickCount((prevCount) => ({
-      ...prevCount,
-      [tabName]: prevCount[tabName] + 1,
-    }));
-
-    console.log(
-      `Tab pressed: ${tabName} = ${
-        tabClickCount[tabName] % 2 === 0 ? "Open" : "Close"
-      }`
-    );
+    setOpenTab((prevOpenTab) => (prevOpenTab === tabName ? null : tabName));
   };
+
+  //   console.log(
+  //     `Tab pressed: ${tabName} = ${
+  //       tabClickCount[tabName] % 2 === 0 ? "Open" : "Close"
+  //     }`
+  //   );
+  // };
 
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
 
@@ -377,7 +377,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               aria-label="Tab Tonn"
               onClick={() => handleTabClick("Tonn")}
             />
-            {tabClickCount["Tonn"] % 2 !== 0 && (
+            {openTab === "Tonn" && (
               <div
                 role="tabpanel"
                 className="tab-content bg-base-100 border-base-300 rounded-box p-6"
@@ -408,7 +408,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               aria-label="Tab Antall"
               onClick={() => handleTabClick("Antall")}
             />
-            {tabClickCount["Antall"] % 2 !== 0 && (
+            {openTab === "Antall" && (
               <div
                 role="tabpanel"
                 className="tab-content bg-base-100 border-base-300 rounded-box p-6"
@@ -438,7 +438,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               aria-label="Tab Year"
               onClick={() => handleTabClick("Year")}
             />
-            {tabClickCount["Year"] % 2 !== 0 && (
+            {openTab === "Year" && (
               <div
                 role="tabpanel"
                 className="tab-content bg-base-100 border-base-300 rounded-box p-6"
