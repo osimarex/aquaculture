@@ -17,16 +17,34 @@ type ApiDataType = {
 
 type TabClickCountType = Record<string, number>;
 
+type TabState = {
+  Tonn: { isOpen: boolean; isSelected: boolean };
+  Antall: { isOpen: boolean; isSelected: boolean };
+  Year: { isOpen: boolean; isSelected: boolean };
+};
+
 const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
   const seriesColors = ["#4895EF", "#FF5733", "#C70039", "#900C3F", "#581845"];
 
   const [selectedTonnAreas, setSelectedTonnAreas] = useState(
-    new Set<string>(["Total"])
+    new Set<string>(["Totalt"])
   );
+
+  useEffect(() => {
+    console.log("Initial selectedTonnAreas:", selectedTonnAreas);
+    console.log("Initial selectedYears:", selectedYears);
+  }, []);
+
   const [selectedAntallAreas, setSelectedAntallAreas] = useState(
     new Set<string>()
   );
+
+  const [tabState, setTabState] = useState({
+    Tonn: { isOpen: false, isSelected: false },
+    Antall: { isOpen: false, isSelected: false },
+    Year: { isOpen: false, isSelected: false },
+  });
 
   const [openTab, setOpenTab] = useState<keyof TabClickCountType | null>(
     "Tonn"
@@ -35,7 +53,28 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   const [tonnData, setTonnData] = useState<ApiDataType[]>([]);
   const [antallData, setAntallData] = useState<ApiDataType[]>([]);
 
-  const handleTabClick = (tabName: keyof TabClickCountType) => {
+  const handleTabClick = (tabName: keyof TabState) => {
+    setTabState((prevState) => {
+      const newTabState = { ...prevState };
+
+      // Toggle the state of the clicked tab
+      newTabState[tabName] = {
+        isOpen: prevState[tabName].isSelected
+          ? !prevState[tabName].isOpen
+          : true,
+        isSelected: true,
+      };
+
+      // Set isSelected to false for other tabs
+      Object.keys(newTabState).forEach((key) => {
+        if (key !== tabName) {
+          newTabState[key as keyof TabState].isSelected = false;
+        }
+      });
+
+      return newTabState;
+    });
+
     setOpenTab((prevOpenTab) => (prevOpenTab === tabName ? null : tabName));
   };
 
@@ -66,6 +105,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
 
   // Modified toggle functions for each dropdown
   const toggleTonnAreaCheckbox = (area: string) => {
+    console.log("toggleTonnAreaCheckbox called with area:", area);
     setSelectedTonnAreas((prevAreas) => {
       const newAreas = new Set(prevAreas);
       if (newAreas.has(area)) {
@@ -253,6 +293,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   }, [tonnData, antallData]);
 
   const handleYearSelection = (year: number | string) => {
+    console.log("handleYearSelection called with year:", year);
     setSelectedYears((prevYears) => {
       if (year === "Total") {
         // Toggle "Total" selection
@@ -400,9 +441,17 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
           {Array.from(selectedTonnAreas).map((area) => {
             const areaName = area.split(": ")[1] || area;
             return (
-              <button key={area} className="mr-2">
-                {areaName} (Tonn)
-                <span onClick={() => removeTonnArea(area)}>x</span>
+              <button
+                key={area}
+                className="mr-2 bg-[#38B6FF] rounded-xl text-white p-2 text-sm ml-2 mb-2 inline-flex items-center cursor-default"
+              >
+                <span className="mr-1">{areaName} (Tonn)</span>
+                <span
+                  className="cursor-pointer text-black bold"
+                  onClick={() => removeTonnArea(area)}
+                >
+                  x
+                </span>
               </button>
             );
           })}
@@ -425,14 +474,20 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               type="radio"
               name="my_tabs_2"
               role="tab"
-              className="tab"
-              aria-label="Tab Tonn"
+              className={`tab ${
+                tabState.Tonn.isSelected
+                  ? tabState.Tonn.isOpen
+                    ? "bg-red-100"
+                    : "bg-green-100"
+                  : "bg-blue-100"
+              } ${darkMode ? "text-black" : "text-black"}`}
+              aria-label="Tonn"
               onClick={() => handleTabClick("Tonn")}
             />
             {openTab === "Tonn" && (
               <div
                 role="tabpanel"
-                className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+                className="tab-content bg-base-100 border-base-300 rounded-box p-3"
                 style={{ maxHeight: "400px", overflowY: "scroll" }}
               >
                 <ul className="flex flex-col">
@@ -441,7 +496,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                     return (
                       <li
                         key={area}
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white dark:text-black"
                         onClick={() => toggleTonnAreaCheckbox(area)}
                       >
                         {areaName}
@@ -457,14 +512,20 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               type="radio"
               name="my_tabs_2"
               role="tab"
-              className="tab"
-              aria-label="Tab Antall"
+              className={`tab ${
+                tabState.Antall.isSelected
+                  ? tabState.Antall.isOpen
+                    ? "bg-red-100"
+                    : "bg-green-100"
+                  : "bg-blue-100"
+              } ${darkMode ? "text-black" : "text-black"}`}
+              aria-label="Antall"
               onClick={() => handleTabClick("Antall")}
             />
             {openTab === "Antall" && (
               <div
                 role="tabpanel"
-                className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+                className="tab-content bg-base-100 border-base-300 rounded-box p-3"
                 style={{ maxHeight: "400px", overflowY: "scroll" }}
               >
                 <ul className="flex flex-col">
@@ -473,7 +534,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                     return (
                       <li
                         key={area}
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white dark:text-black"
                         onClick={() => toggleAntallAreaCheckbox(area)}
                       >
                         {areaName}
@@ -488,19 +549,25 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               type="radio"
               name="my_tabs_2"
               role="tab"
-              className="tab"
-              aria-label="Tab Year"
+              className={`tab ${
+                tabState.Year.isSelected
+                  ? tabState.Year.isOpen
+                    ? "bg-red-100"
+                    : "bg-green-100"
+                  : "bg-blue-100"
+              } ${darkMode ? "text-black" : "text-black"}`}
+              aria-label="Year"
               onClick={() => handleTabClick("Year")}
             />
             {openTab === "Year" && (
               <div
                 role="tabpanel"
-                className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+                className="tab-content bg-base-100 border-base-300 rounded-box p-3"
                 style={{ maxHeight: "400px", overflowY: "scroll" }}
               >
                 <ul className="flex flex-col">
                   <li
-                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white dark:text-black"
                     onClick={() => handleYearSelection("Total")}
                   >
                     Total
@@ -508,7 +575,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
                   {years.map((year) => (
                     <li
                       key={year}
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white dark:text-black"
                       onClick={() => handleYearSelection(year)}
                     >
                       {year}
