@@ -21,12 +21,16 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   const [chartData, setChartData] = useState<ChartSeries | null>(null);
   const seriesColors = ["#4895EF", "#FF5733", "#C70039", "#900C3F", "#581845"];
 
-  const [selectedTonnAreas, setSelectedTonnAreas] = useState(new Set<string>());
+  const [selectedTonnAreas, setSelectedTonnAreas] = useState(
+    new Set<string>(["Total"])
+  );
   const [selectedAntallAreas, setSelectedAntallAreas] = useState(
     new Set<string>()
   );
 
-  const [openTab, setOpenTab] = useState<keyof TabClickCountType | null>(null);
+  const [openTab, setOpenTab] = useState<keyof TabClickCountType | null>(
+    "Tonn"
+  );
 
   const [tonnData, setTonnData] = useState<ApiDataType[]>([]);
   const [antallData, setAntallData] = useState<ApiDataType[]>([]);
@@ -42,12 +46,16 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   //   );
   // };
 
-  const [selectedYears, setSelectedYears] = useState<(number | string)[]>([]);
+  const [selectedYears, setSelectedYears] = useState<(number | string)[]>([
+    2021, 2022, 2023,
+  ]);
 
   const removeTonnArea = (area: string) => {
-    setSelectedTonnAreas(
-      (prevAreas) => new Set([...prevAreas].filter((x) => x !== area))
-    );
+    setSelectedTonnAreas((prevAreas) => {
+      const newAreas = new Set(prevAreas);
+      newAreas.delete(area);
+      return newAreas;
+    });
   };
 
   const removeAntallArea = (area: string) => {
@@ -398,6 +406,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               </button>
             );
           })}
+
           {Array.from(selectedAntallAreas).map((area) => {
             const areaName = area.split(": ")[1] || area;
             return (
@@ -424,6 +433,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               <div
                 role="tabpanel"
                 className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+                style={{ maxHeight: "400px", overflowY: "scroll" }}
               >
                 <ul className="flex flex-col">
                   {areas.map((area) => {
@@ -455,6 +465,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               <div
                 role="tabpanel"
                 className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+                style={{ maxHeight: "400px", overflowY: "scroll" }}
               >
                 <ul className="flex flex-col">
                   {areasAntall.map((area) => {
@@ -485,6 +496,7 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
               <div
                 role="tabpanel"
                 className="tab-content bg-base-100 border-base-300 rounded-box p-6"
+                style={{ maxHeight: "400px", overflowY: "scroll" }}
               >
                 <ul className="flex flex-col">
                   <li
