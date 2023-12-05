@@ -79,7 +79,7 @@ wss.on("connection", (clientWebSocket) => {
 });
 
 // Start the HTTP server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
   console.log(`WebSocket proxy server is listening on port ${PORT}`);
 });

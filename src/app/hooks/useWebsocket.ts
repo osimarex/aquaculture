@@ -19,7 +19,7 @@ const useWebSocket = () => {
     // const ws = new WebSocket("ws://localhost:3000");
     const wsUrl =
       window.location.hostname === "localhost"
-        ? "ws://localhost:3000"
+        ? "ws://localhost:8000"
         : "wss://imarexdevapp-staging.azurewebsites.net";
 
     const ws = new WebSocket(wsUrl);
