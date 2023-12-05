@@ -15,6 +15,7 @@ import Proteins from "./components/client/Proteins";
 import Image from "next/image";
 import "@radix-ui/themes/styles.css";
 import BiomassProdArea from "./components/client/BiomassProdArea";
+import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false); // Manage darkMode state here
@@ -23,7 +24,7 @@ export default function Home() {
     <div>
       {/* <RemoveScroll as={Slot} allowPinchZoom enabled> */}
       <main className={darkMode ? "dark" : ""}>
-        <div className="">
+        <div className="flex justify-between">
           <Image
             src={darkMode ? "/imarex-logo-dark.png" : "/imarex-logo.png"}
             width={142}
@@ -31,6 +32,9 @@ export default function Home() {
             alt="Logo"
             priority={true}
           />
+          <div className="">
+            <UserButton afterSignOutUrl="/" />
+          </div>
           <hr className="border-cyan-500 border-2" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 cs:grid-cols-4 gap-4">
