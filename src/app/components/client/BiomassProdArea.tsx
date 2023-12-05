@@ -15,8 +15,6 @@ type ApiDataType = {
   [key: string]: string | number;
 };
 
-type TabName = "Tonn" | "Antall" | "Year";
-
 type TabClickCountType = Record<string, number>;
 
 const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
@@ -31,27 +29,6 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
   const [tonnData, setTonnData] = useState<ApiDataType[]>([]);
   const [antallData, setAntallData] = useState<ApiDataType[]>([]);
 
-  const [isProdAreasOpen, setIsProdAreasOpen] = useState(false);
-  const [isProdAreasAntallOpen, setIsProdAreasAntallOpen] = useState(false);
-
-  const [isTonnTabOpen, setIsTonnTabOpen] = useState(false);
-  const [isAntallTabOpen, setIsAntallTabOpen] = useState(false);
-  const [isYearTabOpen, setIsYearTabOpen] = useState(false);
-
-  const toggleTonnTab = () => {
-    setIsTonnTabOpen(!isTonnTabOpen);
-  };
-
-  const toggleAntallTab = () => {
-    setIsAntallTabOpen(!isAntallTabOpen);
-  };
-
-  const toggleYearTab = () => {
-    setIsYearTabOpen(!isYearTabOpen);
-  };
-
-  const [activeTab, setActiveTab] = useState(null);
-
   const [tabClickCount, setTabClickCount] = useState<TabClickCountType>({
     Tonn: 0,
     Antall: 0,
@@ -64,15 +41,12 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
       [tabName]: prevCount[tabName] + 1,
     }));
 
-    // Console log tab status
     console.log(
       `Tab pressed: ${tabName} = ${
         tabClickCount[tabName] % 2 === 0 ? "Open" : "Close"
       }`
     );
   };
-
-  const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
 
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
 
@@ -86,18 +60,6 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
     setSelectedAntallAreas(
       (prevAreas) => new Set([...prevAreas].filter((x) => x !== area))
     );
-  };
-
-  const toggleProdAreasTonnDropdown = () => {
-    setIsProdAreasOpen((prevState) => !prevState);
-  };
-
-  const toggleProdAreasAntallDropdown = () => {
-    setIsProdAreasAntallOpen((prevState) => !prevState);
-  };
-
-  const toggleYearDropdown = () => {
-    setIsYearDropdownOpen((prevState) => !prevState);
   };
 
   // Modified toggle functions for each dropdown
