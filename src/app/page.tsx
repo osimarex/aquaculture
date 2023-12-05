@@ -35,8 +35,8 @@ export default function Home() {
           <div className="">
             <UserButton afterSignOutUrl="/" />
           </div>
-          <hr className="border-cyan-500 border-2" />
         </div>
+        <hr className="border-cyan-500 border-2" />
         <div className="grid grid-cols-1 md:grid-cols-2 cs:grid-cols-4 gap-4">
           <div className="lg:ml-2 text-black dark:text-white h-fit w-full overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
             <List />
