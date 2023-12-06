@@ -243,17 +243,20 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
       if (selectedTonnAreas.size > 0) {
         try {
           const response = await fetch("/api/bioTonnProdAreas");
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
           const data = await response.json();
-          setTonnData(data);
-          const combinedData = [...tonnData, ...antallData];
-          setYears(extractYears(combinedData));
+          // Here, ensure that 'data' is an array before setting it
+          setTonnData(Array.isArray(data) ? data : []);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
       }
     };
+
     fetchData();
-  }, [selectedTonnAreas, tonnData, antallData]);
+  }, [selectedTonnAreas]);
 
   // Fetch and set antallData
   useEffect(() => {
@@ -261,21 +264,27 @@ const BiomassProdArea: React.FC<BiomassProps> = ({ darkMode }) => {
       if (selectedAntallAreas.size > 0) {
         try {
           const response = await fetch("/api/bioAntallProdAreas");
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
           const data = await response.json();
-          setAntallData(data);
-          const combinedData = [...tonnData, ...antallData];
-          setYears(extractYears(combinedData));
+          // Here, ensure that 'data' is an array before setting it
+          setAntallData(Array.isArray(data) ? data : []);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
       }
     };
+
     fetchData();
-  }, [selectedAntallAreas, tonnData, antallData]);
+  }, [selectedAntallAreas]);
 
   // Update chart data when tonnData or antallData changes
   useEffect(() => {
-    if (tonnData.length > 0 || antallData.length > 0) {
+    if (
+      (tonnData && tonnData.length > 0) ||
+      (antallData && antallData.length > 0)
+    ) {
       updateChartData();
     }
   }, [
