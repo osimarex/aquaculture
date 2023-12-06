@@ -20,11 +20,10 @@ import BiomassProdArea from "./components/client/BiomassProdArea";
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false); // Manage darkMode state here
 
-  //ensures
-  const UserButton = dynamic(
-    () => import("@clerk/nextjs").then((mod) => mod.UserButton),
-    { ssr: false }
-  );
+  // const UserButton = dynamic(
+  //   () => import("@clerk/nextjs").then((mod) => mod.UserButton),
+  //   { ssr: false }
+  // );
 
   return (
     <div>
@@ -38,9 +37,9 @@ export default function Home() {
             alt="Logo"
             priority={true}
           />
-          <div className="">
+          {/* <div className="">
             <UserButton afterSignOutUrl="/" />
-          </div>
+          </div> */}
         </div>
         <hr className="border-cyan-500 border-2" />
         <div className="grid grid-cols-1 md:grid-cols-2 cs:grid-cols-4 gap-4">
