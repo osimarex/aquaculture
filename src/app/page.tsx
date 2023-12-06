@@ -15,10 +15,16 @@ import Proteins from "./components/client/Proteins";
 import Image from "next/image";
 import "@radix-ui/themes/styles.css";
 import BiomassProdArea from "./components/client/BiomassProdArea";
-import { UserButton } from "@clerk/nextjs";
+// import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false); // Manage darkMode state here
+
+  //ensures
+  const UserButton = dynamic(
+    () => import("@clerk/nextjs").then((mod) => mod.UserButton),
+    { ssr: false }
+  );
 
   return (
     <div>
