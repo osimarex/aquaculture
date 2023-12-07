@@ -10,19 +10,34 @@ const server = http.createServer((req, res) => {
   res.end("WebSocket proxy server is running");
 });
 
+// Handle HTTP server errors
+server.on("error", (error) => {
+  console.error("HTTP Server Error:", error);
+});
+
 // Create a WebSocket server attached to the HTTP server
-const wss = new WebSocket.Server({ server });
+// const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server, perMessageDeflate: false });
+
+// Handle errors on the WebSocket server
+wss.on("error", (error) => {
+  console.error("WebSocket Server Error:", error);
+});
 
 // WebSocket connection to the data provider with user key
 const dataProviderWebSocket = new WebSocket(
   "wss://marketdata.tradermade.com/feedadv",
   {
     headers: {
-      // Include the user key in the WebSocket request headers
       Authorization: `Bearer ${USER_KEY}`,
     },
   }
 );
+
+// Handle errors in the data provider WebSocket
+dataProviderWebSocket.on("error", (error) => {
+  console.error("DataProvider WebSocket Error:", error);
+});
 
 // Keep track of connected clients
 let connectedClients = 0;
@@ -39,96 +54,32 @@ function broadcast(data) {
 // Listen for WebSocket connections from clients
 wss.on("connection", (clientWebSocket) => {
   console.log("Client connected");
-  connectedClients++; // Increment the count
+  connectedClients++;
   console.log(`Connected clients: ${connectedClients}`);
 
-  // Forward messages from the client to the data provider
+  clientWebSocket.on("error", (error) => {
+    console.error("Error in client WebSocket connection:", error);
+  });
+
   clientWebSocket.on("message", (message) => {
     console.log("Received from client:", message);
     dataProviderWebSocket.send(message);
   });
 
-  // Forward messages from the data provider to the client
   dataProviderWebSocket.on("message", (message) => {
-    // console.log("Received from data provider:", message);
-
     const jsonData = message.toString("utf-8");
-    broadcast(jsonData); // Broadcast to all connected clients
+    broadcast(jsonData);
   });
 
-  // Handle WebSocket disconnection
-  clientWebSocket.on("close", () => {
-    console.log("Client disconnected");
-    connectedClients--; // Decrement the count
-    console.log(`Connected clients: ${connectedClients}`); // Log the updated number of connected clients
+  clientWebSocket.on("close", (code, reason) => {
+    console.log("Client disconnected with code:", code, "and reason:", reason);
+    connectedClients--;
+    console.log(`Connected clients: ${connectedClients}`);
   });
 });
 
 // Start the HTTP server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
   console.log(`WebSocket proxy server is listening on port ${PORT}`);
 });
-
-// const WebSocket = require("ws");
-// const http = require("http");
-
-// // Your user key
-// const USER_KEY = process.env.NEXT_PUBLIC_WEBSOCKET_USER_KEY || "your-user-key";
-
-// // Create an HTTP server
-// const server = http.createServer((req, res) => {
-//   res.writeHead(200, { "Content-Type": "text/plain" });
-//   res.end("WebSocket proxy server is running");
-// });
-
-// // Create a WebSocket server attached to the HTTP server
-// const wss = new WebSocket.Server({ server });
-
-// // WebSocket connection to the data provider with user key
-// const dataProviderWebSocket = new WebSocket(
-//   "wss://marketdata.tradermade.com/feedadv",
-//   {
-//     headers: {
-//       // Include the user key in the WebSocket request headers
-//       Authorization: `Bearer ${USER_KEY}`,
-//     },
-//   }
-// );
-
-// // Listen for WebSocket connections from clients
-// wss.on("connection", (clientWebSocket) => {
-//   console.log("Client connected");
-
-//   // Forward messages from the client to the data provider
-//   clientWebSocket.on("message", (message) => {
-//     console.log("Received from client:", message);
-//     dataProviderWebSocket.send(message);
-//   });
-
-//   // Forward messages from the data provider to the client
-//   dataProviderWebSocket.on("message", (message) => {
-//     console.log("Received from data provider:", message);
-
-//     // Check if the message is a Blob
-//     if (message instanceof Buffer) {
-//       // Convert Blob to JSON assuming it's in string format
-//       const jsonData = message.toString("utf-8");
-//       clientWebSocket.send(jsonData);
-//     } else {
-//       // Forward non-Blob data as-is
-//       clientWebSocket.send(message);
-//     }
-//   });
-
-//   // Handle WebSocket disconnection
-//   clientWebSocket.on("close", () => {
-//     console.log("Client disconnected");
-//   });
-// });
-
-// // Start the HTTP server
-// const PORT = process.env.PORT || 3000;
-// server.listen(PORT, () => {
-//   console.log(`WebSocket proxy server is listening on port ${PORT}`);
-// });

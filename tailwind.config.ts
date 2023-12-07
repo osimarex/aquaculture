@@ -23,6 +23,6 @@ const config: Config = {
       cs: "1660px",
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };
 export default config;
