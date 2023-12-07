@@ -19,7 +19,7 @@ const useWebSocket = () => {
     // const ws = new WebSocket("ws://localhost:3000");
     const wsUrl =
       window.location.hostname === "localhost"
-        ? "ws://localhost:3000"
+        ? "ws://localhost:8000"
         : "wss://imarexdevapp-staging.azurewebsites.net";
 
     const ws = new WebSocket(wsUrl);
@@ -36,7 +36,7 @@ const useWebSocket = () => {
     };
 
     ws.onmessage = (event) => {
-      console.log("Received message:", event.data);
+      // console.log("Received message:", event.data);
 
       if (typeof event.data === "string") {
         // Handle JSON data
@@ -62,6 +62,11 @@ const useWebSocket = () => {
 
     ws.onerror = (error) => {
       console.error("WebSocket Error:", error);
+      // Additional logging
+      if (error instanceof Event) {
+        console.error("Error event type:", error.type);
+        console.error("Error target:", error.target);
+      }
     };
 
     ws.onclose = () => {

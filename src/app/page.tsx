@@ -10,21 +10,26 @@ import dynamic from "next/dynamic";
 import Smolt from "./components/client/Smolt";
 import DarkModeToggle from "./components/client/DarkMode";
 import SalmonToday from "./components/client/SalmonToday";
-import SwitchButton from "./components/client/SwitchButton";
 import ProductionAreas from "./components/client/ProductionAreas";
 import Proteins from "./components/client/Proteins";
 import Image from "next/image";
 import "@radix-ui/themes/styles.css";
 import BiomassProdArea from "./components/client/BiomassProdArea";
+// import { UserButton } from "@clerk/nextjs";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState(false); // Manage darkMode state here
+
+  // const UserButton = dynamic(
+  //   () => import("@clerk/nextjs").then((mod) => mod.UserButton),
+  //   { ssr: false }
+  // );
 
   return (
     <div>
       {/* <RemoveScroll as={Slot} allowPinchZoom enabled> */}
       <main className={darkMode ? "dark" : ""}>
-        <div className="">
+        <div className="flex justify-between">
           <Image
             src={darkMode ? "/imarex-logo-dark.png" : "/imarex-logo.png"}
             width={142}
@@ -32,8 +37,11 @@ export default function Home() {
             alt="Logo"
             priority={true}
           />
-          <hr className="border-cyan-500 border-2" />
+          {/* <div className="">
+            <UserButton afterSignOutUrl="/" />
+          </div> */}
         </div>
+        <hr className="border-cyan-500 border-2" />
         <div className="grid grid-cols-1 md:grid-cols-2 cs:grid-cols-4 gap-4">
           <div className="lg:ml-2 text-black dark:text-white h-fit w-full overflow-hidden rounded-lg bg-white shadow-xl dark:bg-gray-800 dark:border-transparent">
             <List />
