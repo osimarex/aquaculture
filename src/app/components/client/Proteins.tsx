@@ -120,7 +120,6 @@ const Protein: React.FC = () => {
 
         const isNegative = result > 100;
 
-
         // Set result to 100% for the "Salmon" protein
         if (protein.name === "Salmon") {
           result = 100;
@@ -132,7 +131,6 @@ const Protein: React.FC = () => {
             className="grid grid-cols-4 text-left border-t py-2 ml-4 mb-2 text-gray-800 dark:text-white relative"
           >
             <div>{protein.name}</div>
-
             <div>{`€${convertedPrice.toFixed(2)}`}</div>
             <div>{protein.date}</div>
             <div className="relative h-10">
@@ -148,9 +146,7 @@ const Protein: React.FC = () => {
               ></div>
               {/* Result Text (conditionally displayed on hover) */}
               <div
-
                 className={`absolute top-3 opacity-100 hover:opacity-100 text-black transition-opacity duration-300 ease-in-out
-
                 }`}
               >
                 {result === 100 ? "100%" : `${result.toFixed(1)} %`}
