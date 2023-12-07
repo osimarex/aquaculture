@@ -2,8 +2,7 @@ module.exports = {
   apps: [
     {
       name: "NextApp",
-      script: "npm",
-      args: "run start",
+      script: "./start-next.js",
       watch: false,
     },
     {
