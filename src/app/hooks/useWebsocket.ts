@@ -42,12 +42,14 @@ const useWebSocket = () => {
         // Handle JSON data
         const dataStr = event.data.toString();
         try {
+
           const parsedData = JSON.parse(dataStr) as WebSocketData;
           const { symbol } = parsedData;
           setData((prevData) => ({
             ...prevData,
             [symbol]: parsedData,
           }));
+
         } catch (e) {
           console.error("Error parsing JSON:", e);
         }
@@ -59,6 +61,7 @@ const useWebSocket = () => {
         console.error("Received unsupported data type:", event.data);
       }
     };
+
 
     ws.onerror = (error) => {
       console.error("WebSocket Error:", error);
